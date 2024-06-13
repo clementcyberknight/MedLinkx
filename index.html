@@ -37,17 +37,30 @@
 
         /* Header Styles */
         header {
-            background: #ffffff;
-            color: #000000;
-            padding: 10px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background-color: #ffffff;
+            padding: 10px 20px;
         }
 
         header .logo img {
-            height: 50px;
-            vertical-align: middle;
+            height: 40px;
+        }
+
+        header .nav-buttons button {
+            background-color: #FFA500;
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        header .nav-buttons button:hover {
+            opacity: 0.9;
         }
 
         header nav ul {
@@ -68,29 +81,6 @@
             font-size: 18px;
         }
 
-        header .auth-buttons {
-            display: flex;
-            align-items: center;
-        }
-
-        header .auth-buttons .btn {
-            color: #000000;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin-left: 10px;
-            border-radius: 5px;
-        }
-
-        header .auth-buttons .btn-primary {
-            background-color: #FFA500;
-            color: #ffffff;
-        }
-
-        header .auth-buttons .btn:hover {
-            opacity: 0.8;
-        }
-
-        /* Hero Section Styles */
         .hero {
             background: #007BFF;
             color: white;
@@ -269,20 +259,20 @@
 <body>
     <!-- Header Section -->
     <header>
-        <div class="container">
-            <div class="logo">
-                <img src="images/MedLinx.png" alt="MedLinkX Logo">
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li></li><a href="login.html">Login</a></li>
-                    <li></li><a href="signup.html">Sign Up</a></li>
-                </ul>
-            </nav>
+        <div class="logo">
+            <img src="images/MedLinx.png" alt="MedLinkX Logo">
+        </div>
+        <nav class="nav-1">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <button onclick="location.href='/login.html'">Login</button>
+            <button onclick="location.href='/signup.html'">Signup</button>
         </div>
     </header>
 
