@@ -14,15 +14,20 @@
     <meta name="googlebot" content="index, follow" />
     <link rel="icon" href="./images/MedLinx.png" type="image/x-png">
     <style>
+        /* Existing CSS */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Base Styles */
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
             color: #ffffff;
             background-color: #007BFF;
-            margin: 0;
-            /* Ensure no margin around the body */
-            padding: 0;
-            /* Ensure no padding around the body */
         }
 
         .container {
@@ -40,8 +45,6 @@
             background-color: #ffffff;
             padding: 10px 20px;
             position: relative;
-            width: 100%;
-            /* Ensure header takes full width */
         }
 
         header .logo img {
@@ -86,10 +89,6 @@
             color: white;
             text-align: center;
             padding: 80px 0;
-            width: 100%;
-            /* Ensure hero takes full width */
-            box-sizing: border-box;
-            /* Include padding and border in the element's total width and height */
         }
 
         .hero h1 {
@@ -119,8 +118,6 @@
         .features {
             background: white;
             padding: 50px 0;
-            width: 100%;
-            /* Ensure features section takes full width */
         }
 
         .features h2 {
@@ -158,8 +155,6 @@
         .about {
             background: #f4f4f4;
             padding: 50px 0;
-            width: 100%;
-            /* Ensure about section takes full width */
         }
 
         .about h2 {
@@ -180,8 +175,6 @@
         .testimonials {
             background: white;
             padding: 50px 0;
-            width: 100%;
-            /* Ensure testimonials section takes full width */
         }
 
         .testimonials h2 {
@@ -217,8 +210,6 @@
             text-align: center;
             padding: 40px 0;
             font-size: 14px;
-            width: 100%;
-            /* Ensure footer takes full width */
         }
 
         footer .container {
@@ -326,11 +317,6 @@
         @media (min-width: 769px) {
             .menu-icon {
                 display: none;
-            }
-
-            .mobile-nav {
-                display: none;
-                /* Ensure mobile nav is hidden on larger screens */
             }
         }
     </style>
