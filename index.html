@@ -14,18 +14,15 @@
     <meta name="googlebot" content="index, follow" />
     <link rel="icon" href="./images/MedLinx.png" type="image/x-png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Base Styles */
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
             color: #ffffff;
             background-color: #007BFF;
+            margin: 0;
+            /* Ensure no margin around the body */
+            padding: 0;
+            /* Ensure no padding around the body */
         }
 
         .container {
@@ -42,6 +39,9 @@
             align-items: center;
             background-color: #ffffff;
             padding: 10px 20px;
+            position: relative;
+            width: 100%;
+            /* Ensure header takes full width */
         }
 
         header .logo img {
@@ -86,6 +86,10 @@
             color: white;
             text-align: center;
             padding: 80px 0;
+            width: 100%;
+            /* Ensure hero takes full width */
+            box-sizing: border-box;
+            /* Include padding and border in the element's total width and height */
         }
 
         .hero h1 {
@@ -115,6 +119,8 @@
         .features {
             background: white;
             padding: 50px 0;
+            width: 100%;
+            /* Ensure features section takes full width */
         }
 
         .features h2 {
@@ -152,6 +158,8 @@
         .about {
             background: #f4f4f4;
             padding: 50px 0;
+            width: 100%;
+            /* Ensure about section takes full width */
         }
 
         .about h2 {
@@ -172,6 +180,8 @@
         .testimonials {
             background: white;
             padding: 50px 0;
+            width: 100%;
+            /* Ensure testimonials section takes full width */
         }
 
         .testimonials h2 {
@@ -207,6 +217,8 @@
             text-align: center;
             padding: 40px 0;
             font-size: 14px;
+            width: 100%;
+            /* Ensure footer takes full width */
         }
 
         footer .container {
@@ -255,21 +267,70 @@
 
         /* Responsive Styles */
         @media (max-width: 768px) {
-            .feature {
-                width: 100%;
+            header .nav-buttons {
+                display: none;
             }
 
-            .testimonial {
-                width: 100%;
+            header nav {
+                display: none;
             }
 
-            .container {
-                width: 90%;
+            .menu-icon {
+                display: block;
+                cursor: pointer;
             }
 
-            header nav ul {
+            .menu-icon img {
+                height: 30px;
+                width: 30px;
+            }
+
+            .mobile-nav {
+                display: none;
                 flex-direction: column;
                 align-items: center;
+                background-color: #ffffff;
+                position: absolute;
+                top: 60px;
+                width: 100%;
+                padding: 10px 0;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .mobile-nav a {
+                color: #000000;
+                padding: 10px 0;
+                text-decoration: none;
+                font-size: 18px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .mobile-nav .nav-buttons {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mobile-nav .nav-buttons button {
+                background-color: #FFA500;
+                color: #FFFFFF;
+                border: none;
+                padding: 10px;
+                margin: 5px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .menu-icon {
+                display: none;
+            }
+
+            .mobile-nav {
+                display: none;
+                /* Ensure mobile nav is hidden on larger screens */
             }
         }
     </style>
@@ -293,7 +354,24 @@
             <button onclick="location.href='/login.html'">Login</button>
             <button onclick="location.href='/signup.html'">Signup</button>
         </div>
+        <div class="menu-icon">
+            <img src="images/menu.png" alt="Menu Icon">
+        </div>
     </header>
+    <div class="mobile-nav" id="mobile-nav">
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <button onclick="location.href='/login.html'">Login</button>
+            <button onclick="location.href='/signup.html'">Signup</button>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
@@ -376,6 +454,14 @@
             <p>&copy; 2024 MedLinkX. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+        const menuIcon = document.querySelector('.menu-icon');
+        const mobileNav = document.getElementById('mobile-nav');
+
+        menuIcon.addEventListener('click', () => {
+            mobileNav.style.display = mobileNav.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
 </body>
 
 </html>
