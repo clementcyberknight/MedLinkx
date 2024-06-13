@@ -202,20 +202,36 @@
 
         /* Footer Styles */
         footer {
-            background: #333;
-            color: white;
+            background: #222;
+            color: #fff;
             text-align: center;
-            padding: 20px 0;
+            padding: 40px 0;
+            font-size: 14px;
+        }
+
+        footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        footer .footer-links {
+            margin-bottom: 20px;
         }
 
         footer .footer-links a {
-            color: white;
+            color: #FFA500;
             text-decoration: none;
-            margin: 0 10px;
+            margin: 0 15px;
+            font-size: 16px;
         }
 
         footer .footer-links a:hover {
             text-decoration: underline;
+        }
+
+        footer .social-media {
+            margin-bottom: 20px;
         }
 
         footer .social-media a {
@@ -225,7 +241,16 @@
 
         footer .social-media a img {
             height: 30px;
-            filter: brightness(0) invert(1);
+            transition: transform 0.3s;
+        }
+
+        footer .social-media a:hover img {
+            transform: scale(1.1);
+        }
+
+        footer p {
+            margin-top: 10px;
+            color: #bbb;
         }
 
         /* Responsive Styles */
@@ -245,12 +270,6 @@
             header nav ul {
                 flex-direction: column;
                 align-items: center;
-            }
-
-            header .auth-buttons {
-                float: none;
-                text-align: center;
-                margin-top: 10px;
             }
         }
     </style>
@@ -292,22 +311,22 @@
             <h2>Our Features</h2>
             <div class="feature-list">
                 <div class="feature">
-                    <img src="icon1.png" alt="Health Records Icon"> <!-- Replace with your icons -->
+                    <img src="images/safe.png" alt="Health Records Icon"> <!-- Replace with your icons -->
                     <h3>Centralized Health Records</h3>
                     <p>Securely store and access your medical history anytime, anywhere.</p>
                 </div>
                 <div class="feature">
-                    <img src="icon2.png" alt="Appointment Scheduling Icon">
+                    <img src="images/calender.png" alt="Appointment Scheduling Icon">
                     <h3>Smart Appointment Scheduling</h3>
                     <p>Book and manage your healthcare appointments seamlessly.</p>
                 </div>
                 <div class="feature">
-                    <img src="icon3.png" alt="AI-Powered First Aid Icon">
+                    <img src="images/firstaid.png" alt="AI-Powered First Aid Icon">
                     <h3>AI-Powered First Aid</h3>
                     <p>Receive instant first aid guidance through our advanced AI system.</p>
                 </div>
                 <div class="feature">
-                    <img src="icon4.png" alt="Healthcare Connectivity Icon">
+                    <img src="images/hosp.png" alt="Healthcare Connectivity Icon">
                     <h3>Healthcare Connectivity</h3>
                     <p>Connect with hospitals and doctors effortlessly through our intuitive platform.</p>
                 </div>
@@ -345,21 +364,18 @@
     <!-- Footer Section -->
     <footer>
         <div class="container">
-            <p>&copy; 2024 MedLinkX. All rights reserved.</p>
             <div class="footer-links">
                 <a href="privacy.html">Privacy Policy</a>
                 <a href="terms.html">Terms of Service</a>
             </div>
             <div id="contact" class="social-media">
-                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
-                <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
-                <a href="#"><img src="linkedin-icon.png" alt="LinkedIn"></a>
+                <a href="#"><img src="images/facebook.png" alt="Facebook"></a>
+                <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+                <a href="#"><img src="images/linkedin.png" alt="LinkedIn"></a>
             </div>
+            <p>&copy; 2024 MedLinkX. All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- Link to your JavaScript file -->
-    <script src="scripts.js"></script>
 </body>
 
 </html>
