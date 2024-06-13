@@ -258,6 +258,15 @@
 
         /* Responsive Styles */
         @media (max-width: 768px) {
+            header {
+                flex-direction: row;
+                /* Ensure the header stays in a row layout */
+                justify-content: space-between;
+                /* Distribute space evenly */
+                align-items: center;
+                /* Center align items vertically */
+            }
+
             header .nav-buttons {
                 display: none;
             }
@@ -311,6 +320,11 @@
                 border-radius: 5px;
                 cursor: pointer;
                 font-size: 16px;
+            }
+
+            .container {
+                width: 100%;
+                padding: 0;
             }
         }
 
