@@ -261,13 +261,16 @@
                         fullname: signup_fullname.value,
 
                     });
+
+                    localStorage.setItem('userID', credentials.user.uid);
+
                     const messageDiv = document.createElement('div');
                     messageDiv.className = 'success-message';
                     messageDiv.textContent = 'User signed up successfully!';
 
                     document.body.appendChild(messageDiv);
                     setTimeout(() => document.body.removeChild(messageDiv), 3000);
-                    window.location.href = 'login.html';
+                    window.location.href = 'signup_info.html';
                     document.getElementById('signup_fullname').value = '';
                     document.getElementById('signup_email').value = '';
                     document.getElementById('signup_password').value = '';

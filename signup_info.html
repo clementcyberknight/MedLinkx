@@ -226,6 +226,16 @@
                 <input type="text" placeholder="Enter Emergency Contact 1" name="emergency_contact1"
                     id="signup_emergency_contact1" required>
 
+                <label for="signup_nationality"><b>Nationality</b></label>
+                <input type="text" placeholder="Enter Nationality" name="nationality" id="signup_nationality" required>
+
+                <label for="signup_height"><b>Height (in ft)</b></label>
+                <input type="number" placeholder="Enter Height" name="height" id="signup_height" required>
+
+                <label for="signup_weight"><b>Weight (in kg)</b></label>
+                <input type="number" placeholder="Enter Weight" name="weight" id="signup_weight" required>
+
+
                 <label for="signup_relationship1"><b>Relationship</b></label>
                 <input type="text" placeholder="Enter Relationship" name="relationship1" id="signup_relationship1"
                     required>
@@ -237,7 +247,7 @@
                 <label for="signup_relationship2"><b>Relationship</b></label>
                 <input type="text" placeholder="Enter Relationship" name="relationship2" id="signup_relationship2"
                     required>
-                <button type="submit">Next</button>
+                <button type="submit">Submit</button>
                 <p class="switch-form">Already registered? <a href="/login">Login</a></p>
             </div>
         </form>
@@ -271,69 +281,54 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const signupForm = document.getElementById('signup_form');
+        let signup_phone = document.getElementById('signup_phone');
+        let signup_dob = document.getElementById('signup_dob');
+        let signup_nationality = document.getElementById('signup_nationality');
+        let signup_gender = document.getElementById('signup_gender');
+        let signup_height = document.getElementById('signup_height');
+        let signup_weight = document.getElementById('signup_weight');
+        let signup_info_form = document.getElementById('signup_info_form');
 
-        const registerUser = async (evt) => {
-            evt.preventDefault();
+        signup_info_form.addEventListener('submit', (e) => {
+            e.preventDefault();
             showLoadingSpinner();
 
-            const ref = doc(db, 'users', signup_fullname.value);
+            let userId = localStorage.getItem('userId');
 
-            try {
-                await setDoc(ref, {
-                    gender: signup_gender.value,
-                    dob: signup_dob.value,
-                    phone: signup_phone.value,
-                    medical_condition: signup_medical_condition.value,
-                    allergies: signup_allergies.value,
-                    medication: signup_medication.value,
-                    emergency_contact1: signup_emergency_contact1.value,
-                    relationship1: signup_relationship1.value,
-                    emergency_contact2: signup_emergency_contact2.value,
-                    relationship2: signup_relationship2.value,
+            let userDoc = doc(db, 'users', userId);
+
+            updateDoc(userDoc, {
+                phone: signup_phone.value,
+                dob: signup_dob.value,
+                nationality: signup_nationality.value,
+                gender: signup_gender.value,
+                height: signup_height.value,
+                weight: signup_weight.value
+            })
+                .then(() => {
+                    alert('Information updated successfully');
+                    window.location.href = 'home.html';
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                    var error_alert = document.getElementById('error_alert');
+                    error_alert.classList.remove('hidden');
+                    error_alert.textContent = `Error: ${error.message}`;
+                })
+                .finally(() => {
+                    hideLoadingSpinner();
                 });
+        });
 
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'success-message';
-                messageDiv.textContent = 'User signed up successfully!';
-
-                document.body.appendChild(messageDiv);
-                setTimeout(() => document.body.removeChild(messageDiv), 3000);
-                window.location.href = 'login.html';
-                signupForm.reset();
-            } catch (error) {
-                if (error.code === "auth/email-already-in-use" || error.code === "auth/fullname-already-in-use") {
-                    displayAlert("User already exists.");
-                } else {
-                    displayAlert("Signup failed: " + error.message);
-                }
-                console.log(error.code, error.message);
-            } finally {
-                hideLoadingSpinner();
-            }
-        };
-
-        const displayAlert = (message) => {
-            const alertBox = document.getElementById('error_alert');
-            alertBox.textContent = message;
-            alertBox.classList.remove('hidden');
-
-            setTimeout(() => {
-                alertBox.classList.add('hidden');
-            }, 5000);
-        };
-
-        const showLoadingSpinner = () => {
+        function showLoadingSpinner() {
             const spinner = document.querySelector('.loading-spinner');
             spinner.classList.remove('hidden');
-        };
+        }
 
-        const hideLoadingSpinner = () => {
+        function hideLoadingSpinner() {
             const spinner = document.querySelector('.loading-spinner');
             spinner.classList.add('hidden');
-        };
-
-        signupForm.addEventListener('submit', registerUser);
+        }
     </script>
 </body>
 
