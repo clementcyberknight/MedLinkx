@@ -91,22 +91,6 @@
             padding: 16px;
         }
 
-        .switch-form {
-            color: white;
-            font-size: 12px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .switch-form a {
-            color: #2779F6;
-            text-decoration: none;
-        }
-
-        .switch-form a:hover {
-            text-decoration: underline;
-        }
-
         .success-message {
             background-color: #4CAF50;
             color: white;
@@ -209,7 +193,8 @@
                 <input type="date" name="dob" id="signup_dob" required>
 
                 <label for="signup_phone"><b>Phone Number</b></label>
-                <input type="number" placeholder="Enter Phone Number" name="phone" id="signup_phone" required>
+                <input type="text" placeholder="Enter Phone Number" name="phone" id="signup_phone" pattern="\d*"
+                    required>
 
                 <label for="signup_medical_condition"><b>Known Medical Condition</b></label>
                 <input type="text" placeholder="Enter Medical Condition" name="medical_condition"
@@ -226,14 +211,14 @@
                 <input type="text" placeholder="Enter Nationality" name="nationality" id="signup_nationality" required>
 
                 <label for="signup_height"><b>Height (in ft)</b></label>
-                <input type="number" placeholder="Enter Height" name="height" id="signup_height" required>
+                <input type="number" placeholder="Enter Height" name="height" id="signup_height" step="0.01" required>
 
                 <label for="signup_weight"><b>Weight (in kg)</b></label>
                 <input type="number" placeholder="Enter Weight" name="weight" id="signup_weight" required>
 
                 <label for="signup_emergency_contact1"><b>Emergency Contact 1</b></label>
                 <input type="text" placeholder="Enter Emergency Contact phone number" name="emergency_contact1"
-                    id="signup_emergency_contact1" required>
+                    id="signup_emergency_contact1" pattern="\d*" required>
 
                 <label for="signup_relationship1"><b>Relationship</b></label>
                 <input type="text" placeholder="Enter Relationship" name="relationship1" id="signup_relationship1"
@@ -241,13 +226,12 @@
 
                 <label for="signup_emergency_contact2"><b>Emergency Contact 2</b></label>
                 <input type="text" placeholder="Enter Emergency Contact phone number" name="emergency_contact2"
-                    id="signup_emergency_contact2" required>
+                    pattern="\d*" id="signup_emergency_contact2" required>
 
                 <label for="signup_relationship2"><b>Relationship</b></label>
                 <input type="text" placeholder="Enter Relationship" name="relationship2" id="signup_relationship2"
                     required>
                 <button type="submit">Submit</button>
-                <p class="switch-form">Already registered? <a href="/login">Login</a></p>
             </div>
         </form>
     </div>
@@ -293,55 +277,67 @@
         let signup_gender = document.getElementById('signup_gender');
         let signup_height = document.getElementById('signup_height');
         let signup_weight = document.getElementById('signup_weight');
-        let signup_info_form = document.getElementById('signup_info_form');
+        let signup_info_form = document.getElementById('signup_form');
 
-        signup_info_form.addEventListener('submit', (e) => {
+        signup_info_form.addEventListener('submit', async (e) => {
             e.preventDefault();
             showLoadingSpinner();
 
-            let userId = localStorage.getItem('userId');
+            let userId = sessionStorage.getItem('userID');
+            let fullname = sessionStorage.getItem('userFullname');
 
-            let userDoc = doc(db, 'users', userId);
+            console.log('Retrieved userID:', userId);
+            console.log('Retrieved userFullname:', fullname);
 
-            updateDoc(userDoc, {
-                phone: signup_phone.value,
-                dob: signup_dob.value,
-                Medical_Condition: signup_medical_condition.value,
-                current_medication: signup_medication.value,
-                allergies: signup_allergies.value,
-                emergency_contact1: signup_emergency_contact1.value,
-                emergency_contact1_relationship1: signup_relationship1.value,
-                emergency_contact2: signup_emergency_contact2.value,
-                emergency_contact2_relationship2: signup_relationship2.value,
-                nationality: signup_nationality.value,
-                gender: signup_gender.value,
-                height: signup_height.value,
-                weight: signup_weight.value
-            })
-                .then(() => {
-                    alert('Information updated successfully');
-                    window.location.href = 'login.html';
-                })
-                .catch((error) => {
-                    console.log(error.message);
-                    var error_alert = document.getElementById('error_alert');
-                    error_alert.classList.remove('hidden');
-                    error_alert.textContent = `Error: ${error.message}`;
-                })
-                .finally(() => {
-                    hideLoadingSpinner();
+
+            if (!userId || !fullname) {
+                console.error("User ID or Fullname is not found in localStorage.");
+                const error_alert = document.getElementById('error_alert');
+                error_alert.classList.remove('hidden');
+                error_alert.textContent = "an error occur please contact support team";
+                hideLoadingSpinner();
+                return;
+            }
+
+
+            try {
+                await setDoc(doc(db, 'users_data', userId), {
+                    fullname,
+                    phone: signup_phone.value,
+                    dob: signup_dob.value,
+                    medical_condition: signup_medical_condition.value,
+                    current_medication: signup_medication.value,
+                    allergies: signup_allergies.value,
+                    emergency_contact1: signup_emergency_contact1.value,
+                    emergency_contact1_relationship1: signup_relationship1.value,
+                    emergency_contact2: signup_emergency_contact2.value,
+                    emergency_contact2_relationship2: signup_relationship2.value,
+                    nationality: signup_nationality.value,
+                    gender: signup_gender.value,
+                    height: signup_height.value,
+                    weight: signup_weight.value
                 });
+                alert('Information updated successfully');
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error(error.message);
+                const error_alert = document.getElementById('error_alert');
+                error_alert.classList.remove('hidden');
+                error_alert.textContent = `Error: ${error.message}`;
+            } finally {
+                hideLoadingSpinner();
+            }
         });
 
-        function showLoadingSpinner() {
+        const showLoadingSpinner = () => {
             const spinner = document.querySelector('.loading-spinner');
             spinner.classList.remove('hidden');
-        }
+        };
 
-        function hideLoadingSpinner() {
+        const hideLoadingSpinner = () => {
             const spinner = document.querySelector('.loading-spinner');
             spinner.classList.add('hidden');
-        }
+        };
     </script>
 </body>
 

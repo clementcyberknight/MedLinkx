@@ -262,11 +262,14 @@
 
                     });
 
-                    localStorage.setItem('userID', credentials.user.uid);
+                    sessionStorage.setItem('userID', credentials.user.uid);
+                    sessionStorage.setItem('userFullname', signup_fullname.value);
 
                     const messageDiv = document.createElement('div');
                     messageDiv.className = 'success-message';
                     messageDiv.textContent = 'User signed up successfully!';
+                    console.log('userID:', sessionStorage.getItem('userID'));
+                    console.log('userFullname:', sessionStorage.getItem('userFullname'));
 
                     document.body.appendChild(messageDiv);
                     setTimeout(() => document.body.removeChild(messageDiv), 3000);
