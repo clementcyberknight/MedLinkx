@@ -18,6 +18,7 @@
             background-color: #383e4e;
             margin: 0;
             overflow: hidden;
+            padding-top: 20px;
         }
 
         header {
@@ -44,17 +45,18 @@
             cursor: pointer;
         }
 
+
         .form_container {
-            background: rgb(255, 255, 255);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            margin-top: 70px;
-            /* To avoid header overlap */
-            overflow-y: auto;
-            max-height: calc(100vh - 90px);
-            /* Adjust according to header height */
+            background: #f0f4f8;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            /* Wider form for laptop view */
+            max-width: 800px;
+            /* Maximum width for larger screens */
+            margin: 0 auto;
+            /* Center form container */
         }
 
         input[type="text"],
@@ -79,6 +81,7 @@
             margin: 10px 0;
             border: none;
             cursor: pointer;
+            font-size: medium;
             width: 100%;
             border-radius: 5px;
         }
@@ -213,7 +216,7 @@
                 </div>
 
                 <button type="submit">Next</button>
-                <p class="switch-form">Already registered? <a href="/login">Login</a></p>
+                <p class="switch-form">Already registered? <a href="/login.html">Login</a></p>
             </div>
         </form>
     </div>
