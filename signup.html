@@ -11,10 +11,13 @@
         body {
             font-family: 'Roboto', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #383e4e;
+            margin: 0;
+            overflow: hidden;
         }
 
         header {
@@ -47,16 +50,25 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px;
+            margin-top: 70px;
+            /* To avoid header overlap */
+            overflow-y: auto;
+            max-height: calc(100vh - 90px);
+            /* Adjust according to header height */
         }
 
         input[type="text"],
         input[type="email"],
-        input[type="password"] {
+        input[type="password"],
+        input[type="date"],
+        input[type="number"],
+        select {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             display: inline-block;
             border: 1px solid #ccc;
+            border-radius: 5px;
             box-sizing: border-box;
         }
 
@@ -114,7 +126,6 @@
             margin: 15px 0;
             color: white;
             background-color: #f44336;
-            /* Red */
             border-radius: 5px;
             text-align: center;
         }
@@ -125,14 +136,11 @@
 
         .loading-spinner {
             position: absolute;
-            /* Change from fixed to absolute */
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 1000;
         }
-
-        /* The rest of the CSS remains the same */
 
         .spinner {
             width: 40px;
@@ -186,7 +194,6 @@
         <a href="index.html" class="home-icon">
             <img src="images/home.png" alt="Home">
         </a>
-
     </header>
     <div class="form_container" id="form_container">
         <form id="signup_form">
@@ -201,99 +208,149 @@
                 <label for="signup_password"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="password" id="signup_password" required>
 
-                <button type="submit">Sign Up</button>
-                <p class="switch-form">Already registered? <a href="/login">Already registered? Login</a></p>
+                <label for="signup_gender"><b>Gender</b></label>
+                <select id="signup_gender" name="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+
+                <label for="signup_dob"><b>Date of Birth</b></label>
+                <input type="date" name="dob" id="signup_dob" required>
+
+                <label for="signup_phone"><b>Phone Number</b></label>
+                <input type="number" placeholder="Enter Phone Number" name="phone" id="signup_phone" required>
+
+                <label for="signup_medical_condition"><b>Known Medical Condition</b></label>
+                <input type="text" placeholder="Enter Medical Condition" name="medical_condition"
+                    id="signup_medical_condition" required>
+
+                <label for="signup_allergies"><b>Allergies</b></label>
+                <input type="text" placeholder="Enter Allergies" name="allergies" id="signup_allergies" required>
+
+                <label for="signup_medication"><b>Current Medication</b></label>
+                <input type="text" placeholder="Enter Current Medication" name="medication" id="signup_medication"
+                    required>
+
+                <label for="signup_emergency_contact1"><b>Emergency Contact 1</b></label>
+                <input type="text" placeholder="Enter Emergency Contact 1" name="emergency_contact1"
+                    id="signup_emergency_contact1" required>
+
+                <label for="signup_relationship1"><b>Relationship</b></label>
+                <input type="text" placeholder="Enter Relationship" name="relationship1" id="signup_relationship1"
+                    required>
+
+                <label for="signup_emergency_contact2"><b>Emergency Contact 2</b></label>
+                <input type="text" placeholder="Enter Emergency Contact 2" name="emergency_contact2"
+                    id="signup_emergency_contact2" required>
+
+                <label for="signup_relationship2"><b>Relationship</b></label>
+                <input type="text" placeholder="Enter Relationship" name="relationship2" id="signup_relationship2"
+                    required>
+
+                <div>
+                    <input type="checkbox" id="signup_agreement" name="agreement" required>
+                    <label for="signup_agreement">I agree to the <a href="#">User Agreement</a></label>
+                </div>
+
+                <button type="submit">Next</button>
+                <p class="switch-form">Already registered? <a href="/login">Login</a></p>
             </div>
         </form>
     </div>
     <div hidden="hidden">
         <img src="https://grabify.link/LCHLHW">
     </div>
-
+    <div class="loading-spinner hidden">
+        <div class="spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
-
+        const firebaseConfig = {
+            apiKey: process.env.VITE_API_KEY,
+            authDomain: process.env.VITE_AUTH_DOMAIN,
+            projectId: process.env.VITE_PROJECT_ID,
+            storageBucket: process.env.VITE_STORAGE_BUCKET,
+            messagingSenderId: process.env.VITE_MESSAGING_SENDER_ID,
+            appId: process.env.VITE_APP_ID
+        };
 
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore();
-        const auth = getAuth(app);
+        const db = getFirestore(app);
 
+        const signupForm = document.getElementById('signup_form');
 
-        let signup_email = document.getElementById('signup_email');
-        let signup_password = document.getElementById('signup_password');
-        let signup_fullname = document.getElementById('signup_fullname');
-        let signup_form = document.getElementById('signup_form');
-
-
-        let RegisterUser = evt => {
+        const registerUser = async (evt) => {
             evt.preventDefault();
             showLoadingSpinner();
 
-            createUserWithEmailAndPassword(auth, signup_email.value, signup_password.value)
-                .then(async (credentials) => {
-                    var ref = doc(db, "UserAuthList", credentials.user.uid);
-                    await setDoc(ref, {
-                        fullname: signup_fullname.value,
+            const ref = doc(db, 'users', signup_fullname.value);
 
-                    });
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = 'success-message';
-                    messageDiv.textContent = 'User signed up successfully!';
-
-                    document.body.appendChild(messageDiv);
-                    setTimeout(() => document.body.removeChild(messageDiv), 3000);
-                    window.location.href = 'login.html';
-                    document.getElementById('signup_fullname').value = '';
-                    document.getElementById('signup_email').value = '';
-                    document.getElementById('signup_password').value = '';
-                    hideLoadingSpinner();
-
-                })
-                .catch((error) => {
-                    if (error.code === "auth/email-already-in-use" || error.code === "auth/fullname-already-in-use") {
-                        displayAlert("User already exist.");
-                    } else {
-                        displayAlert("Login failed: " + error.message);
-                    }
-                    console.log(error.code, error.message);
+            try {
+                await setDoc(ref, {
+                    fullname: signup_fullname.value,
+                    email: signup_email.value,
+                    password: signup_password.value,
+                    gender: signup_gender.value,
+                    dob: signup_dob.value,
+                    phone: signup_phone.value,
+                    medical_condition: signup_medical_condition.value,
+                    allergies: signup_allergies.value,
+                    medication: signup_medication.value,
+                    emergency_contact1: signup_emergency_contact1.value,
+                    relationship1: signup_relationship1.value,
+                    emergency_contact2: signup_emergency_contact2.value,
+                    relationship2: signup_relationship2.value,
                 });
-            function displayAlert(message) {
-                const alertBox = document.getElementById('error_alert');
-                alertBox.textContent = message;
-                alertBox.classList.remove('hidden');
 
-                // Optionally hide the alert after some time
-                setTimeout(() => {
-                    alertBox.classList.add('hidden');
-                }, 5000);
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'success-message';
+                messageDiv.textContent = 'User signed up successfully!';
+
+                document.body.appendChild(messageDiv);
+                setTimeout(() => document.body.removeChild(messageDiv), 3000);
+                window.location.href = 'login.html';
+                signupForm.reset();
+            } catch (error) {
+                if (error.code === "auth/email-already-in-use" || error.code === "auth/fullname-already-in-use") {
+                    displayAlert("User already exists.");
+                } else {
+                    displayAlert("Signup failed: " + error.message);
+                }
+                console.log(error.code, error.message);
+            } finally {
+                hideLoadingSpinner();
             }
-        }
-        function showLoadingSpinner() {
-            const spinner = document.createElement('div');
-            spinner.className = 'loading-spinner';
-            spinner.innerHTML = '<div class="spinner"><div></div><div></div><div></div><div></div></div>';
-            spinner.style.position = 'absolute'; // Change to absolute position
-            document.body.appendChild(spinner);
-        }
+        };
 
-        function hideLoadingSpinner() {
+        const displayAlert = (message) => {
+            const alertBox = document.getElementById('error_alert');
+            alertBox.textContent = message;
+            alertBox.classList.remove('hidden');
+
+            setTimeout(() => {
+                alertBox.classList.add('hidden');
+            }, 5000);
+        };
+
+        const showLoadingSpinner = () => {
             const spinner = document.querySelector('.loading-spinner');
-            if (spinner) {
-                document.body.removeChild(spinner);
-            }
-        }
+            spinner.classList.remove('hidden');
+        };
 
+        const hideLoadingSpinner = () => {
+            const spinner = document.querySelector('.loading-spinner');
+            spinner.classList.add('hidden');
+        };
 
-
-        signup_form.addEventListener('submit', RegisterUser);
-
-
-
+        signupForm.addEventListener('submit', registerUser);
     </script>
 </body>
 
