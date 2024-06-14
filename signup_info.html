@@ -222,10 +222,6 @@
                 <input type="text" placeholder="Enter Current Medication" name="medication" id="signup_medication"
                     required>
 
-                <label for="signup_emergency_contact1"><b>Emergency Contact 1</b></label>
-                <input type="text" placeholder="Enter Emergency Contact 1" name="emergency_contact1"
-                    id="signup_emergency_contact1" required>
-
                 <label for="signup_nationality"><b>Nationality</b></label>
                 <input type="text" placeholder="Enter Nationality" name="nationality" id="signup_nationality" required>
 
@@ -235,13 +231,16 @@
                 <label for="signup_weight"><b>Weight (in kg)</b></label>
                 <input type="number" placeholder="Enter Weight" name="weight" id="signup_weight" required>
 
+                <label for="signup_emergency_contact1"><b>Emergency Contact 1</b></label>
+                <input type="text" placeholder="Enter Emergency Contact phone number" name="emergency_contact1"
+                    id="signup_emergency_contact1" required>
 
                 <label for="signup_relationship1"><b>Relationship</b></label>
                 <input type="text" placeholder="Enter Relationship" name="relationship1" id="signup_relationship1"
                     required>
 
                 <label for="signup_emergency_contact2"><b>Emergency Contact 2</b></label>
-                <input type="text" placeholder="Enter Emergency Contact 2" name="emergency_contact2"
+                <input type="text" placeholder="Enter Emergency Contact phone number" name="emergency_contact2"
                     id="signup_emergency_contact2" required>
 
                 <label for="signup_relationship2"><b>Relationship</b></label>
@@ -283,6 +282,13 @@
 
         let signup_phone = document.getElementById('signup_phone');
         let signup_dob = document.getElementById('signup_dob');
+        let signup_medical_condition = document.getElementById('signup_medical_condition');
+        let signup_medication = document.getElementById('signup_medication')
+        let signup_allergies = document.getElementById('signup_allergies');
+        let signup_emergency_contact1 = document.getElementById('signup_emergency_contact1');
+        let signup_relationship1 = document.getElementById('signup_relationship1');
+        let signup_emergency_contact2 = document.getElementById('signup_emergency_contact2');
+        let signup_relationship2 = document.getElementById('signup_relationship2');
         let signup_nationality = document.getElementById('signup_nationality');
         let signup_gender = document.getElementById('signup_gender');
         let signup_height = document.getElementById('signup_height');
@@ -300,6 +306,13 @@
             updateDoc(userDoc, {
                 phone: signup_phone.value,
                 dob: signup_dob.value,
+                Medical_Condition: signup_medical_condition.value,
+                current_medication: signup_medication.value,
+                allergies: signup_allergies.value,
+                emergency_contact1: signup_emergency_contact1.value,
+                emergency_contact1_relationship1: signup_relationship1.value,
+                emergency_contact2: signup_emergency_contact2.value,
+                emergency_contact2_relationship2: signup_relationship2.value,
                 nationality: signup_nationality.value,
                 gender: signup_gender.value,
                 height: signup_height.value,
@@ -307,7 +320,7 @@
             })
                 .then(() => {
                     alert('Information updated successfully');
-                    window.location.href = 'home.html';
+                    window.location.href = 'login.html';
                 })
                 .catch((error) => {
                     console.log(error.message);
