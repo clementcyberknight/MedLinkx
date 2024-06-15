@@ -14,8 +14,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            background-color: #f0f4f8;
+            min-height: 100vh;
+            background: linear-gradient(to right, #f0f4f8, #d9e2ec);
             margin: 0;
         }
 
@@ -46,31 +46,32 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 70px;
             border-radius: 12px;
             background-color: #fff;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            margin-top: 80px;
+            margin-top: 100px;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
         }
 
         h1 {
             margin-bottom: 20px;
             font-size: 24px;
+            color: #333;
         }
 
         .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 20px;
             width: 100%;
         }
 
         .grid-item {
             background-color: #fff;
             border: 1px solid #ccc;
-            border-radius: 8px;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -78,11 +79,38 @@
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
 
         .grid-item img {
             height: 50px;
             margin-bottom: 10px;
+        }
+
+        .grid-item span {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+                border-radius: 12px;
+                background-color: #fff;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                margin-top: 100px;
+                width: 90%;
+                max-width: 800px;
+            }
         }
     </style>
 </head>
@@ -100,20 +128,21 @@
         <h1 id="welcome_message">Welcome!</h1>
         <div class="grid-container">
             <div class="grid-item">
-                <img src="images/user-icon.png" alt="User Icon">
-                <span>Login as user</span>
+                <img src="images/record.png" alt="Health Records Icon" onclick="window.location.href='records.html';">
+                <span>Health Records</span>
             </div>
             <div class="grid-item">
-                <img src="images/user-icon.png" alt="User Icon">
-                <span>Login as user</span>
+                <img src="images/appointment.png" alt="Schedule Appointment Icon"
+                    onclick="window.location.href='appointment.html';">
+                <span>Schedule Appointment</span>
             </div>
             <div class="grid-item">
-                <img src="images/user-icon.png" alt="User Icon">
-                <span>Login as user</span>
+                <img src="images/bot.png" alt="Chat with Linkxy Icon" onclick="window.location.href='chatbot.html';">
+                <span>Chat with Linkxy</span>
             </div>
             <div class="grid-item">
-                <img src="images/user-icon.png" alt="User Icon">
-                <span>Login as user</span>
+                <img src="images/history.png" alt="Health History Icon" onclick="window.location.href='history.html';">
+                <span>Health history</span>
             </div>
         </div>
     </div>
