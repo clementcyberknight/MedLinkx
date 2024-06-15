@@ -43,12 +43,16 @@
         }
 
         .container {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 20px;
             border-radius: 12px;
             background-color: #fff;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             margin-top: 80px;
+            width: 90%;
+            max-width: 600px;
         }
 
         h1 {
@@ -56,10 +60,29 @@
             font-size: 24px;
         }
 
-        .user-info {
-            margin-top: 20px;
-            text-align: left;
-            font-size: 16px;
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+
+        .grid-item {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .grid-item img {
+            height: 50px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -75,57 +98,31 @@
     </header>
     <div class="container">
         <h1 id="welcome_message">Welcome!</h1>
-        <div class="user-info">
-            <p><strong>Full Name:</strong> <span id="user_fullname"></span></p>
-            <p><strong>Phone:</strong> <span id="user_phone"></span></p>
-            <p><strong>Date of Birth:</strong> <span id="user_dob"></span></p>
-            <p><strong>Medical Condition:</strong> <span id="user_medical_condition"></span></p>
-            <p><strong>Current Medication:</strong> <span id="user_current_medication"></span></p>
-            <p><strong>Allergies:</strong> <span id="user_allergies"></span></p>
-            <p><strong>Emergency Contact 1:</strong> <span id="user_emergency_contact1"></span></p>
-            <p><strong>Relationship 1:</strong> <span id="user_relationship1"></span></p>
-            <p><strong>Emergency Contact 2:</strong> <span id="user_emergency_contact2"></span></p>
-            <p><strong>Relationship 2:</strong> <span id="user_relationship2"></span></p>
-            <p><strong>Nationality:</strong> <span id="user_nationality"></span></p>
-            <p><strong>Gender:</strong> <span id="user_gender"></span></p>
-            <p><strong>Height:</strong> <span id="user_height"></span></p>
-            <p><strong>Weight:</strong> <span id="user_weight"></span></p>
+        <div class="grid-container">
+            <div class="grid-item">
+                <img src="images/user-icon.png" alt="User Icon">
+                <span>Login as user</span>
+            </div>
+            <div class="grid-item">
+                <img src="images/user-icon.png" alt="User Icon">
+                <span>Login as user</span>
+            </div>
+            <div class="grid-item">
+                <img src="images/user-icon.png" alt="User Icon">
+                <span>Login as user</span>
+            </div>
+            <div class="grid-item">
+                <img src="images/user-icon.png" alt="User Icon">
+                <span>Login as user</span>
+            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const userFullname = sessionStorage.getItem('userFullname');
-            const userPhone = sessionStorage.getItem('userPhone');
-            const userDOB = sessionStorage.getItem('userDOB');
-            const userMedicalCondition = sessionStorage.getItem('userMedicalCondition');
-            const userCurrentMedication = sessionStorage.getItem('userCurrentMedication');
-            const userAllergies = sessionStorage.getItem('userAllergies');
-            const userEmergencyContact1 = sessionStorage.getItem('userEmergencyContact1');
-            const userRelationship1 = sessionStorage.getItem('userRelationship1');
-            const userEmergencyContact2 = sessionStorage.getItem('userEmergencyContact2');
-            const userRelationship2 = sessionStorage.getItem('userRelationship2');
-            const userNationality = sessionStorage.getItem('userNationality');
-            const userGender = sessionStorage.getItem('userGender');
-            const userHeight = sessionStorage.getItem('userHeight');
-            const userWeight = sessionStorage.getItem('userWeight');
 
-            document.getElementById('welcome_message').innerText = `Welcome, ${userFullname}!`;
-
-            document.getElementById('user_fullname').innerText = userFullname;
-            document.getElementById('user_phone').innerText = userPhone;
-            document.getElementById('user_dob').innerText = userDOB;
-            document.getElementById('user_medical_condition').innerText = userMedicalCondition;
-            document.getElementById('user_current_medication').innerText = userCurrentMedication;
-            document.getElementById('user_allergies').innerText = userAllergies;
-            document.getElementById('user_emergency_contact1').innerText = userEmergencyContact1;
-            document.getElementById('user_relationship1').innerText = userRelationship1;
-            document.getElementById('user_emergency_contact2').innerText = userEmergencyContact2;
-            document.getElementById('user_relationship2').innerText = userRelationship2;
-            document.getElementById('user_nationality').innerText = userNationality;
-            document.getElementById('user_gender').innerText = userGender;
-            document.getElementById('user_height').innerText = userHeight;
-            document.getElementById('user_weight').innerText = userWeight;
+            document.getElementById('welcome_message').innerText = `Hi, ${userFullname}`;
         });
     </script>
 </body>
