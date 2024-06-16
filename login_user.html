@@ -202,13 +202,14 @@
         login_form.addEventListener('submit', async (evt) => {
             evt.preventDefault();
             showLoadingSpinner();
+            sessionStorage.setItem('userEmail', login_email.email);
 
             try {
                 const credentials = await signInWithEmailAndPassword(auth, login_email.value, login_password.value);
                 const user = credentials.user;
-
                 const docRef = doc(db, "users_data", user.uid);
                 const docSnap = await getDoc(docRef);
+                sessionStorage.setItem('userEmail', login_email.value);
 
                 if (docSnap.exists()) {
                     const userData = docSnap.data();
@@ -228,7 +229,6 @@
                     sessionStorage.setItem('userGender', userData.gender);
                     sessionStorage.setItem('userHeight', userData.height);
                     sessionStorage.setItem('userWeight', userData.weight);
-
                     window.location.href = 'home.html';
                 } else {
                     displayAlert("No user data found");
