@@ -225,11 +225,6 @@
             const userWeight = sessionStorage.getItem('userWeight');
             const userEmail = sessionStorage.getItem('userEmail');
 
-            function welcomeUser(userFullname) {
-                const welcomeMessage = `Hello ${userFullname}, i am linkxy your AI doctor, how can i help you today?`;
-                displayMessage(welcomeMessage, 'ai-response', 'AI Response');
-            }
-
             if (!userEmail) {
                 window.location.href = "login.html";
             } else {
@@ -316,6 +311,11 @@
                 markdownText = '<ul>' + markdownText + '</ul>';
             }
             return markdownText;
+        }
+
+        function welcomeUser(fullname) {
+            const welcomeMessage = `Hello ${fullname}, how can I assist you today?`;
+            displayMessage(welcomeMessage, 'ai-response', 'AI Response');
         }
     </script>
 
