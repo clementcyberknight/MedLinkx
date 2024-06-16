@@ -167,8 +167,19 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const userFullname = sessionStorage.getItem('userFullname');
+            const userPhone = sessionStorage.getItem('userPhone');
+            const userDOB = sessionStorage.getItem('userDOB');
+            const userMedicalCondition = sessionStorage.getItem('userMedicalCondition');
+            const userCurrentMedication = sessionStorage.getItem('userCurrentMedication');
+            const userAllergies = sessionStorage.getItem('userAllergies');
+            const userGender = sessionStorage.getItem('userGender');
+            const userHeight = sessionStorage.getItem('userHeight');
+            const userWeight = sessionStorage.getItem('userWeight');
             const userEmail = sessionStorage.getItem('userEmail');
-            if (!userFullname || userEmail) {
+
+
+
+            if (!userFullname) {
                 window.location.href = "login.html";
             } else {
                 console.log('what are you looking for is not here the api key are blocked to allow only request from this site')
