@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Medlinkx</title>
+    <title>Profile - Medlinkx</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
     <style>
@@ -20,7 +20,7 @@
         }
 
         header {
-            background-color: #FFFFFF;
+            background-color: #f3f1f1;
             padding: 10px 20px;
             text-align: left;
             width: 100%;
@@ -35,31 +35,78 @@
 
         header .logo img {
             height: 50px;
+            padding-left: 10px;
         }
 
-        header .home-icon img {
-            height: 40px;
+        header .settings-icon img {
+            height: 30px;
             cursor: pointer;
+            padding-right: 10px;
         }
 
-        .container {
-            text-align: center;
-            padding: 20px;
-            border-radius: 12px;
+        .profile-card {
             background-color: #fff;
+            border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            margin-top: 80px;
+            text-align: center;
+            padding: 40px;
+            width: 400px;
+            margin-top: 100px;
+            /* Added margin-top for spacing */
         }
 
-        h1 {
+        .profile-card img {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
             margin-bottom: 20px;
+        }
+
+        .profile-card h2 {
+            margin: 10px 0 5px;
             font-size: 24px;
         }
 
-        .user-info {
-            margin-top: 20px;
-            text-align: left;
+        .profile-card p {
+            margin: 5px 0;
             font-size: 16px;
+            color: #666;
+        }
+
+        .user-info {
+            text-align: left;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .user-info p {
+            margin: 10px 0;
+        }
+
+        .user-info p span {
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .profile-card {
+                width: 90%;
+                padding: 20px;
+                margin-top: 60px;
+            }
+
+            .profile-card h2 {
+                font-size: 20px;
+            }
+
+            .profile-card p,
+            .user-info {
+                font-size: 14px;
+            }
+
+            .profile-card img {
+                height: 80px;
+                width: 80px;
+            }
         }
     </style>
 </head>
@@ -69,27 +116,24 @@
         <div class="logo">
             <img src="images/MedLinx.png" alt="MedLinkX logo">
         </div>
-        <a href="index.html" class="home-icon">
-            <img src="images/home.png" alt="Home">
-        </a>
+        <div class="settings-icon" onclick="window.location.href='home.html';">
+            <img src="images/home.png" alt="home icon">
+        </div>
     </header>
-    <div class="container">
-        <h1 id="welcome_message">Welcome!</h1>
+    <div class="profile-card">
+        <img src="images/user.png" alt="User">
+        <h2 id="user_name"></h2>
+        <p id="user_email"></p>
         <div class="user-info">
-            <p><strong>Full Name:</strong> <span id="user_fullname"></span></p>
-            <p><strong>Phone:</strong> <span id="user_phone"></span></p>
-            <p><strong>Date of Birth:</strong> <span id="user_dob"></span></p>
-            <p><strong>Medical Condition:</strong> <span id="user_medical_condition"></span></p>
-            <p><strong>Current Medication:</strong> <span id="user_current_medication"></span></p>
-            <p><strong>Allergies:</strong> <span id="user_allergies"></span></p>
-            <p><strong>Emergency Contact 1:</strong> <span id="user_emergency_contact1"></span></p>
-            <p><strong>Relationship 1:</strong> <span id="user_relationship1"></span></p>
-            <p><strong>Emergency Contact 2:</strong> <span id="user_emergency_contact2"></span></p>
-            <p><strong>Relationship 2:</strong> <span id="user_relationship2"></span></p>
-            <p><strong>Nationality:</strong> <span id="user_nationality"></span></p>
-            <p><strong>Gender:</strong> <span id="user_gender"></span></p>
-            <p><strong>Height:</strong> <span id="user_height"></span></p>
-            <p><strong>Weight:</strong> <span id="user_weight"></span></p>
+            <p><span>Full Name:</span> <span id="user_fullname"></span></p>
+            <p><span>Phone:</span> <span id="user_phone"></span></p>
+            <p><span>Date of Birth:</span> <span id="user_dob"></span></p>
+            <p><span>Medical Condition:</span> <span id="user_medical_condition"></span></p>
+            <p><span>Current Medication:</span> <span id="user_current_medication"></span></p>
+            <p><span>Allergies:</span> <span id="user_allergies"></span></p>
+            <p><span>Gender:</span> <span id="user_gender"></span></p>
+            <p><span>Height:</span> <span id="user_height"></span></p>
+            <p><span>Weight:</span> <span id="user_weight"></span></p>
         </div>
     </div>
 
@@ -101,29 +145,19 @@
             const userMedicalCondition = sessionStorage.getItem('userMedicalCondition');
             const userCurrentMedication = sessionStorage.getItem('userCurrentMedication');
             const userAllergies = sessionStorage.getItem('userAllergies');
-            const userEmergencyContact1 = sessionStorage.getItem('userEmergencyContact1');
-            const userRelationship1 = sessionStorage.getItem('userRelationship1');
-            const userEmergencyContact2 = sessionStorage.getItem('userEmergencyContact2');
-            const userRelationship2 = sessionStorage.getItem('userRelationship2');
-            const userNationality = sessionStorage.getItem('userNationality');
             const userGender = sessionStorage.getItem('userGender');
             const userHeight = sessionStorage.getItem('userHeight');
             const userWeight = sessionStorage.getItem('userWeight');
+            const userEmail = sessionStorage.getItem('userEmail');
 
-            document.getElementById('welcome_message').innerText = `Welcome, ${userFullname}!`;
-
-            document.getElementById('user_fullname').innerText = userFullname;
+            document.getElementById('user_name').innerText = userFullname;
             document.getElementById('user_email').innerText = userEmail;
+            document.getElementById('user_fullname').innerText = userFullname;
             document.getElementById('user_phone').innerText = userPhone;
             document.getElementById('user_dob').innerText = userDOB;
             document.getElementById('user_medical_condition').innerText = userMedicalCondition;
             document.getElementById('user_current_medication').innerText = userCurrentMedication;
             document.getElementById('user_allergies').innerText = userAllergies;
-            document.getElementById('user_emergency_contact1').innerText = userEmergencyContact1;
-            document.getElementById('user_relationship1').innerText = userRelationship1;
-            document.getElementById('user_emergency_contact2').innerText = userEmergencyContact2;
-            document.getElementById('user_relationship2').innerText = userRelationship2;
-            document.getElementById('user_nationality').innerText = userNationality;
             document.getElementById('user_gender').innerText = userGender;
             document.getElementById('user_height').innerText = userHeight;
             document.getElementById('user_weight').innerText = userWeight;
