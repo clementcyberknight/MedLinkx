@@ -214,7 +214,7 @@
             <img src="images/MedLinx.png" alt="MedLinkX logo">
         </div>
         <div class="settings-icon">
-            <img src="images/home.png" alt="Settings">
+            <img src="images/linkxy.png" alt="Settings">
         </div>
     </header>
     <div class="main">
@@ -287,9 +287,9 @@
             const skeletonLoading = document.getElementById('skeleton-loading');
             skeletonLoading.classList.add('active'); // Show skeleton loading
 
-            const hardcodedPrompt = "i want you to ACT as SkypeAI: SkypeAI is an innovative AI tool designed to provide you with personalized elaborate explanations and learning aids to students through 'detailed explanations of complex concepts', and serving as a virtual assistant and tutor. SkypeAI tailors its approach to your individual needs and understanding. ''only answer if ask what ai are you, what are you, what you name and anything asking about you' say i am SkypeAI, trained by Akhimien clement and tell them your capabilites'.and always provide detail explanation of what is ask so user can understander 'now answer this question do not introduce your self'=>:";
+            const hardcodedPrompt = `I want you to be Linkxy, an AI doctor that helps provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips. Provide clear, concise, and accurate information in a friendly and professional tone. 'Only answer if asked what AI are you, what are you, what is your name, and anything asking about you' say 'I am Linkxy MedLinkx AI, trained by Akhimien Clement' and tell them your capabilities. Lastly, keep these user health info in mind "${sessionStorage.getItem('userFullname')}, ${sessionStorage.getItem('userDOB')}, ${sessionStorage.getItem('userHeight')}, ${sessionStorage.getItem('userGender')}, ${sessionStorage.getItem('userMedicalCondition')}, ${sessionStorage.getItem('userWeight')}, ${sessionStorage.getItem('userCurrentMedication')}, ${sessionStorage.getItem('userAllergies')}". 'Now answer this question' do not introduce yourself =>:`;
 
-            const combinedPrompt = `${hardcodedPrompt} ${prompt}`;
+            const combinedPrompt = `${hardcodedPrompt}${prompt}`;
 
             try {
                 const result = await model.generateContent(combinedPrompt);
