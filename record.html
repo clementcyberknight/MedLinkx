@@ -150,6 +150,12 @@
             const userWeight = sessionStorage.getItem('userWeight');
             const userEmail = sessionStorage.getItem('userEmail');
 
+            if (!userFullname || userEmail) {
+                window.location.href = "login.html";
+            } else {
+                console.log('what are you looking for is not here the api key are blocked to allow only request from this site')
+            }
+
             document.getElementById('user_name').innerText = userFullname;
             document.getElementById('user_email').innerText = userEmail;
             document.getElementById('user_fullname').innerText = userFullname;

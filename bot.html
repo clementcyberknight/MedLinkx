@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkxy - Medlinkx</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" sizes="16x16" href="./images/MedLinx.png" type="image/x-png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body,
+        html {
+            height: 100%;
+            background-color: #dfdfe2;
+            color: #333;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .home-icon img {
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .markdown {
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .markdown h2 {
+            font-size: 1.5em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .markdown ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+
+        .markdown li {
+            margin-bottom: 5px;
+        }
+
+        .markdown strong {
+            font-weight: bold;
+        }
+
+        .markdown em {
+            font-style: italic;
+        }
+
+        .markdown div {
+            margin-bottom: 10px;
+        }
+
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            height: calc(100vh - var(--top-bar-height, 60px));
+            /* Adjust if your top bar height changes */
+            overflow-y: auto;
+        }
+
+
+        .chat-container {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px 15px;
+            border-radius: 25px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: none;
+            margin-left: 10px;
+            outline: none;
+        }
+
+        .search-box img {
+            width: 24px;
+            cursor: pointer;
+        }
+
+        .message {
+            margin: 5px;
+            padding: 10px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .user-message {
+            background-color: #228B22;
+            text-align: right;
+        }
+
+        .ai-response {
+            background-color: #2196f3;
+            text-align: left;
+        }
+
+        .skeleton-loading {
+            display: none;
+        }
+
+        .skeleton-loading.active {
+            display: block;
+        }
+
+        .skeleton-loading .message {
+            background-color: #a1a1a1;
+            /* Gray background */
+            animation: pulse 1.5s infinite;
+            /* Animation */
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 0.9;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .message-label {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: auto;
+            /* Ensures it sticks at the bottom if the main content is not enough to fill the screen */
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #4A90E2;
+            /* Same blue as other interactive elements */
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+            /* Enhances interactivity */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/linkxy.png" alt="linkxy Logo">
+        </div>
+        <div class="home-icon">
+            <img src="images/home.png" alt="Home Icon" onclick="location.href='/home.html'">
+        </div>
+    </header>
+    <div class="main">
+        <div class="chat-container" id="message-area">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="skeleton-loading" id="skeleton-loading">
+            <div class="message markdown"></div>
+            <div class="message markdown"></div>
+            <div class="message markdown"></div>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Enter Prompt Here" id="user-input">
+            <img src="./images/send_icon.png" alt="Send Button" class="send-button">
+        </div>
+    </div>
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', function () {
+            const userFullname = sessionStorage.getItem('userFullname');
+            const userEmail = sessionStorage.getItem('userEmail');
+            if (!userFullname || userEmail) {
+                window.location.href = "login.html";
+            } else {
+                console.log('what are you looking for is not here the api key are blocked to allow only request from this site')
+            }
+        });
+
+
+
+        function welcomeUser(fullname) {
+            const welcomeMessage = `Hello ${fullname}, Hi am linkxy your AI doctor, how can i help you today?`;
+            displayMessage(welcomeMessage, 'ai-response', 'AI Response');
+        }
+
+
+
+        import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+        const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        document.querySelector('.send-button').addEventListener('click', handleMessage);
+        document.querySelector('#user-input').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent form submission
+                handleMessage();
+            }
+        });
+
+        function handleMessage() {
+            const inputField = document.getElementById('user-input');
+            const prompt = inputField.value.trim();
+            if (prompt !== '') {
+                displayMessage(prompt, 'user-message', 'User');
+                inputField.value = ''; // Clear input field
+                run(prompt);
+            }
+        }
+
+        async function run(prompt) {
+            const skeletonLoading = document.getElementById('skeleton-loading');
+            skeletonLoading.classList.add('active'); // Show skeleton loading
+
+            const hardcodedPrompt = "i want you to be  Linkxy, an AI doctor that helps Provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips . Provide clear, concise, and accurate information in a friendly and professional tone. 'only answer if ask what ai are you, what are you, what your name and anything asking about you' say i am Linkxy MedLinkx AI, trained by Akhimien clement and tell them your capabilites'. 'now answer this question' do not introduce your self=>:";
+
+            const combinedPrompt = `${hardcodedPrompt}${prompt}`;
+
+            try {
+                const result = await model.generateContent(combinedPrompt);
+                const response = await result.response;
+                const text = await response.text();
+
+                displayMessage(text, 'ai-response', 'AI Response');
+            } catch (error) {
+                console.error('Error generating content:', error);
+                displayMessage('Sorry, there was an error processing your request due to safety concern. Please try again later.', 'ai-response', 'AI Response');
+            } finally {
+                skeletonLoading.classList.remove('active'); // Hide skeleton loading after response
+            }
+        }
+
+        function displayMessage(messageText, cssClass, label) {
+            const messageArea = document.getElementById('message-area');
+            let messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', cssClass, 'markdown');
+
+            let textNode = document.createElement('div');
+            // Convert markdown to HTML
+            textNode.innerHTML = markdownToHTML(messageText);
+
+            let labelNode = document.createElement('div');
+            labelNode.classList.add('message-label');
+            labelNode.textContent = label;
+
+            messageDiv.appendChild(labelNode);
+            messageDiv.appendChild(textNode);
+            messageArea.appendChild(messageDiv);
+
+            messageArea.scrollTop = messageArea.scrollHeight; // Auto scroll to the bottom
+        }
+        function markdownToHTML(markdownText) {
+            // Converts markdown bold **text** to HTML bold <strong>text</strong>
+            markdownText = markdownText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Converts markdown italic *text* to HTML italic <em>text</em>
+            markdownText = markdownText.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            // Converts markdown bullets * item to HTML list <li>item</li>
+            markdownText = markdownText.replace(/^\s*\*\s+(.*)/gm, '<li>$1</li>').replace(/<\/li>\n<li>/g, '</li><li>');
+            // Wraps lines that are list items with <ul></ul>
+            if (markdownText.includes('<li>')) {
+                markdownText = '<ul>' + markdownText + '</ul>';
+            }
+            return markdownText;
+        }
+    </script>
+
+</body>
+
+</html>
