@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkypeAI</title>
+    <title>Linkxy</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="icon" sizes="16x16" href="./icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" sizes="16x16" href="images/linkxy.png" type="image/x-png">
     <style>
         * {
             margin: 0;
@@ -22,37 +22,29 @@
             color: #333;
         }
 
-        .top-bar {
+        header {
+            background-color: #f3f1f1;
+            padding: 10px 20px;
+            text-align: left;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            background-color: #333;
-            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .right a {
-            /* Remove margin-left property */
-            /* margin-left: 20px; */
-            margin-right: 20px;
-            /* Add margin-right for spacing */
-            text-decoration: none;
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 50px;
-            background-color: #363497;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+        header .logo img {
+            height: 50px;
+            padding-left: 10px;
         }
 
-        .top-bar img {
+        header .settings-icon img {
+            height: 30px;
             cursor: pointer;
-            height: 24px;
-        }
-
-        .logo {
-            width: 100px;
-            height: auto;
+            padding-right: 10px;
         }
 
         .markdown {
@@ -92,9 +84,10 @@
         .main {
             display: flex;
             flex-direction: column;
-            padding: 20px;
-            height: calc(100vh - var(--top-bar-height, 60px));
-            /* Adjust if your top bar height changes */
+            padding: 80px 20px 20px 20px;
+            /* Add top padding to accommodate the fixed header */
+            height: calc(100vh - 60px);
+            /* Adjust height to account for the header */
             overflow-y: auto;
         }
 
@@ -108,13 +101,14 @@
             display: flex;
             align-items: center;
             background-color: #fff;
-            padding: 15px 20px;
+            padding: 20px 20px;
             /* Increase padding for a larger box */
             border-radius: 25px;
+            margin-bottom: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             font-size: 24px;
             margin-top: 10px;
-            height: 45px;
+            height: 55px;
             /* Increase height for a larger box */
         }
 
@@ -124,7 +118,7 @@
             background: none;
             margin-left: 10px;
             outline: none;
-            font-size: 17px;
+            font-size: 19px;
             /* Increase font size for better readability */
         }
 
@@ -185,33 +179,44 @@
         }
 
         .footer {
+            background-color: #f3f1f1;
             text-align: center;
-            margin-top: auto;
-            /* Ensures it sticks at the bottom if the main content is not enough to fill the screen */
-            padding: 5px;
+            padding: 20px 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer p {
             font-size: 14px;
+            color: #333;
         }
 
         .footer a {
-            color: #4A90E2;
-            /* Same blue as other interactive elements */
+            color: #2196f3;
             text-decoration: none;
         }
 
         .footer a:hover {
             text-decoration: underline;
-            /* Enhances interactivity */
         }
     </style>
 </head>
 
 <body>
-    <div class="top-bar">
-        <img src="SKYPE.png" alt="Skype Logo" class="logo">
-        <nav class="right">
-            <a href="paraphase.html" class="login">AI Paraphraser</a>
-        </nav>
-    </div>
+    <header>
+        <div class="logo">
+            <img src="images/MedLinx.png" alt="MedLinkX logo">
+        </div>
+        <div class="settings-icon">
+            <img src="images/home.png" alt="Settings">
+        </div>
+    </header>
     <div class="main">
         <div class="chat-container" id="message-area">
             <!-- Messages will appear here -->
@@ -223,28 +228,32 @@
         </div>
         <div class="search-box">
             <input type="text" placeholder="Enter Prompt Here" id="user-input">
-            <img src="./icons/send_icon.png" alt="Send Button" class="send-button">
-        </div>
-        <div class="footer">
-            <p>Your <a href="/feedback.html" id="feedback-link">feedback</a> would be valuable.</p>
+            <img src="images/send_icon.png" alt="Send Button" class="send-button">
         </div>
     </div>
+    <div class="footer">
+        <p>&copy; <span id="year"></span> Medlinkx. All rights reserved.</p>
+        <p>Developed by <a href="https://linkedin.com/in/akhimien-clement" target="_blank">Clement</a></p>
+    </div>
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
     <script type="module">
         document.addEventListener('DOMContentLoaded', function () {
-            const userInfo = sessionStorage.getItem("user-info");
+            const userEmail = sessionStorage.getItem('userEmail');
 
-            if (!userInfo) {
+            if (!userEmail) {
                 window.location.href = "login.html"; // Redirect if no user info
             } else {
-                const { fullname } = JSON.parse(userInfo);
-                welcomeUser(fullname);
+                const userFullname = sessionStorage.getItem('userFullname');
+                welcomeUser(userFullname);
             }
         });
 
 
 
-        function welcomeUser(fullname) {
-            const welcomeMessage = `Hello ${fullname}, welcome to SkypeAI! How can I assist you today?`;
+        function welcomeUser(userFullname) {
+            const welcomeMessage = `Hello ${userFullname}, Hi, i am linkxy! How can I help you today?`;
             displayMessage(welcomeMessage, 'ai-response', 'AI Response');
         }
 
@@ -252,7 +261,7 @@
 
         import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
-        const API_KEY = "AIzaSyA2Hk3YvkseqShBc1tgF_FKEd2ng3XlXLo";
+        const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
         const genAI = new GoogleGenerativeAI(API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
 
