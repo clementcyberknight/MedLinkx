@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linkxy - Medlinkx</title>
+    <title>SkypeAI</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="icon" sizes="16x16" href="./images/MedLinx.png" type="image/x-png">
+    <link rel="icon" sizes="16x16" href="./icons/favicon.ico" type="image/x-icon">
     <style>
         * {
             margin: 0;
@@ -18,26 +18,41 @@
         body,
         html {
             height: 100%;
-            background-color: #dfdfe2;
+            background-color: #f4f4f9;
             color: #333;
         }
 
-        header {
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .right a {
+            /* Remove margin-left property */
+            /* margin-left: 20px; */
+            margin-right: 20px;
+            /* Add margin-right for spacing */
+            text-decoration: none;
+            color: #ffffff;
             padding: 10px 20px;
-            background-color: #ffffff;
-            color: rgb(0, 0, 0);
+            border-radius: 50px;
+            background-color: #363497;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
         }
 
-        .logo img {
-            height: 50px;
-        }
-
-        .home-icon img {
-            height: 50px;
+        .top-bar img {
             cursor: pointer;
+            height: 24px;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
         }
 
         .markdown {
@@ -93,13 +108,13 @@
             display: flex;
             align-items: center;
             background-color: #fff;
-            padding: 35px 20px;
+            padding: 15px 20px;
             /* Increase padding for a larger box */
             border-radius: 25px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            font-size: 50px;
+            font-size: 24px;
             margin-top: 10px;
-            height: 30px;
+            height: 45px;
             /* Increase height for a larger box */
         }
 
@@ -109,7 +124,8 @@
             background: none;
             margin-left: 10px;
             outline: none;
-            font-size: 20px;
+            font-size: 17px;
+            /* Increase font size for better readability */
         }
 
         .search-box img {
@@ -190,14 +206,12 @@
 </head>
 
 <body>
-    <header>
-        <div class="logo">
-            <img src="images/linkxy.png" alt="linkxy Logo">
-        </div>
-        <div class="home-icon">
-            <img src="images/home.png" alt="Home Icon" onclick="location.href='/home.html'">
-        </div>
-    </header>
+    <div class="top-bar">
+        <img src="SKYPE.png" alt="Skype Logo" class="logo">
+        <nav class="right">
+            <a href="paraphase.html" class="login">AI Paraphraser</a>
+        </nav>
+    </div>
     <div class="main">
         <div class="chat-container" id="message-area">
             <!-- Messages will appear here -->
@@ -209,36 +223,38 @@
         </div>
         <div class="search-box">
             <input type="text" placeholder="Enter Prompt Here" id="user-input">
-            <img src="./images/send_icon.png" alt="Send Button" class="send-button">
+            <img src="./icons/send_icon.png" alt="Send Button" class="send-button">
+        </div>
+        <div class="footer">
+            <p>Your <a href="/feedback.html" id="feedback-link">feedback</a> would be valuable.</p>
         </div>
     </div>
     <script type="module">
         document.addEventListener('DOMContentLoaded', function () {
-            const userFullname = sessionStorage.getItem('userFullname');
-            const userPhone = sessionStorage.getItem('userPhone');
-            const userDOB = sessionStorage.getItem('userDOB');
-            const userMedicalCondition = sessionStorage.getItem('userMedicalCondition');
-            const userCurrentMedication = sessionStorage.getItem('userCurrentMedication');
-            const userAllergies = sessionStorage.getItem('userAllergies');
-            const userGender = sessionStorage.getItem('userGender');
-            const userHeight = sessionStorage.getItem('userHeight');
-            const userWeight = sessionStorage.getItem('userWeight');
-            const userEmail = sessionStorage.getItem('userEmail');
+            const userInfo = sessionStorage.getItem("user-info");
 
-            if (!userEmail) {
-                window.location.href = "login.html";
+            if (!userInfo) {
+                window.location.href = "login.html"; // Redirect if no user info
             } else {
-                console.log('what are you looking for is not here the api key are blocked to allow only request from this site');
-                welcomeUser(userFullname);
+                const { fullname } = JSON.parse(userInfo);
+                welcomeUser(fullname);
             }
         });
 
 
+
+        function welcomeUser(fullname) {
+            const welcomeMessage = `Hello ${fullname}, welcome to SkypeAI! How can I assist you today?`;
+            displayMessage(welcomeMessage, 'ai-response', 'AI Response');
+        }
+
+
+
         import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
-        const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
+        const API_KEY = "AIzaSyA2Hk3YvkseqShBc1tgF_FKEd2ng3XlXLo";
         const genAI = new GoogleGenerativeAI(API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
 
         document.querySelector('.send-button').addEventListener('click', handleMessage);
         document.querySelector('#user-input').addEventListener('keypress', function (event) {
@@ -262,9 +278,9 @@
             const skeletonLoading = document.getElementById('skeleton-loading');
             skeletonLoading.classList.add('active'); // Show skeleton loading
 
-            const hardcodedPrompt = `i want you to be Linkxy, an AI doctor that helps Provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips. Provide clear, concise, and accurate information in a friendly and professional tone. 'only answer if ask what ai are you, what are you, what your name and anything asking about you' say i am Linkxy MedLinkx AI, trained by Akhimien clement and tell them your capabilites' lastly keep these user health info in mind "${sessionStorage.getItem('userFullname')}, ${sessionStorage.getItem('userDOB')}, ${sessionStorage.getItem('userHeight')}, ${sessionStorage.getItem('userGender')}, ${sessionStorage.getItem('userMedicalCondition')}, ${sessionStorage.getItem('userWeight')}, ${sessionStorage.getItem('userCurrentMedication')}, ${sessionStorage.getItem('userAllergies')}". 'now answer this question' do not introduce your self=>:`;
+            const hardcodedPrompt = "i want you to ACT as SkypeAI: SkypeAI is an innovative AI tool designed to provide you with personalized elaborate explanations and learning aids to students through 'detailed explanations of complex concepts', and serving as a virtual assistant and tutor. SkypeAI tailors its approach to your individual needs and understanding. ''only answer if ask what ai are you, what are you, what you name and anything asking about you' say i am SkypeAI, trained by Akhimien clement and tell them your capabilites'.and always provide detail explanation of what is ask so user can understander 'now answer this question do not introduce your self'=>:";
 
-            const combinedPrompt = `${hardcodedPrompt}${prompt}`;
+            const combinedPrompt = `${hardcodedPrompt} ${prompt}`;
 
             try {
                 const result = await model.generateContent(combinedPrompt);
@@ -312,16 +328,8 @@
             }
             return markdownText;
         }
-
-        function welcomeUser(fullname) {
-            const welcomeMessage = `Hello ${fullname}, how can I assist you today?`;
-            displayMessage(welcomeMessage, 'ai-response', 'AI Response');
-        }
     </script>
 
-</body>
-
-</html>
 </body>
 
 </html>
