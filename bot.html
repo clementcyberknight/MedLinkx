@@ -221,20 +221,22 @@
             const userWeight = sessionStorage.getItem('userWeight');
             const userEmail = sessionStorage.getItem('userEmail');
 
+            function welcomeUser(userFullname) {
+                const welcomeMessage = `Hello ${userFullname}, i am linkxy your AI doctor, how can i help you today?`;
+                displayMessage(welcomeMessage, 'ai-response', 'AI Response');
+            }
 
             if (!userEmail) {
                 window.location.href = "login.html";
             } else {
-                console.log('what are you looking for is not here the api key are blocked to allow only request from this site')
+                console.log('what are you looking for is not here the api key are blocked to allow only request from this site');
+                welcomeUser(userFullname);
             }
         });
 
 
 
-        function welcomeUser(fullname) {
-            const welcomeMessage = `Hello ${fullname}, Hi am linkxy your AI doctor, how can i help you today?`;
-            displayMessage(welcomeMessage, 'ai-response', 'AI Response');
-        }
+
 
 
 
