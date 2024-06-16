@@ -211,6 +211,14 @@
     <script type="module">
         document.addEventListener('DOMContentLoaded', function () {
             const userFullname = sessionStorage.getItem('userFullname');
+            const userPhone = sessionStorage.getItem('userPhone');
+            const userDOB = sessionStorage.getItem('userDOB');
+            const userMedicalCondition = sessionStorage.getItem('userMedicalCondition');
+            const userCurrentMedication = sessionStorage.getItem('userCurrentMedication');
+            const userAllergies = sessionStorage.getItem('userAllergies');
+            const userGender = sessionStorage.getItem('userGender');
+            const userHeight = sessionStorage.getItem('userHeight');
+            const userWeight = sessionStorage.getItem('userWeight');
             const userEmail = sessionStorage.getItem('userEmail');
             if (!userFullname || userEmail) {
                 window.location.href = "login.html";
@@ -256,7 +264,7 @@
             const skeletonLoading = document.getElementById('skeleton-loading');
             skeletonLoading.classList.add('active'); // Show skeleton loading
 
-            const hardcodedPrompt = "i want you to be  Linkxy, an AI doctor that helps Provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips . Provide clear, concise, and accurate information in a friendly and professional tone. 'only answer if ask what ai are you, what are you, what your name and anything asking about you' say i am Linkxy MedLinkx AI, trained by Akhimien clement and tell them your capabilites'. 'now answer this question' do not introduce your self=>:";
+            const hardcodedPrompt = `i want you to be Linkxy, an AI doctor that helps Provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips. Provide clear, concise, and accurate information in a friendly and professional tone. 'only answer if ask what ai are you, what are you, what your name and anything asking about you' say i am Linkxy MedLinkx AI, trained by Akhimien clement and tell them your capabilites' lastly keep these user health info in mind "${sessionStorage.getItem('userFullname')}, ${sessionStorage.getItem('userDOB')}, ${sessionStorage.getItem('userHeight')}, ${sessionStorage.getItem('userGender')}, ${sessionStorage.getItem('userMedicalCondition')}, ${sessionStorage.getItem('userWeight')}, ${sessionStorage.getItem('userCurrentMedication')}, ${sessionStorage.getItem('userAllergies')}". 'now answer this question' do not introduce your self=>:`;
 
             const combinedPrompt = `${hardcodedPrompt}${prompt}`;
 
