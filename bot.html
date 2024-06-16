@@ -215,6 +215,7 @@
     <script type="module">
         document.addEventListener('DOMContentLoaded', function () {
             const userFullname = sessionStorage.getItem('userFullname');
+            console.log(userFullname)
 
             if (!userFullname) {
                 window.location.href = "login.html";
@@ -222,6 +223,8 @@
                 console.log('User authenticated');
                 welcomeUser(userFullname);
             }
+
+            console.log(userFullname)
 
             function welcomeUser(userFullname) {
                 const welcomeMessage = `Hello ${userFullname}, I am Linkxy, your AI doctor. How can I help you today?`;
