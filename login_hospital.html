@@ -184,17 +184,17 @@
                 if (docSnap.exists()) {
                     const userData = docSnap.data();
 
-                    sessionStorage.setItem('hospitalName', hospitalName);
-                    sessionStorage.setItem('establishmentDate', establishmentDate);
-                    sessionStorage.setItem('address', address);
-                    sessionStorage.setItem('city', city);
-                    sessionStorage.setItem('state', state);
-                    sessionStorage.setItem('country', country);
-                    sessionStorage.setItem('phoneNumber', phoneNumber);
-                    sessionStorage.setItem('email', email);
-                    sessionStorage.setItem('website', website);
-                    sessionStorage.setItem('hospitalType', hospitalType);
-                    sessionStorage.setItem('emergencyContact', emergencyContact);
+                    sessionStorage.setItem('hospitalName', userData.hospitalName);
+                    sessionStorage.setItem('establishmentDate', userData.establishmentDate);
+                    sessionStorage.setItem('address', userData.address);
+                    sessionStorage.setItem('city', userData.city);
+                    sessionStorage.setItem('state', userData.state);
+                    sessionStorage.setItem('country', userData.country);
+                    sessionStorage.setItem('phoneNumber', userData.phoneNumber);
+                    sessionStorage.setItem('email', userData.email);
+                    sessionStorage.setItem('website', userData.website);
+                    sessionStorage.setItem('hospitalType', userData.hospitalType);
+                    sessionStorage.setItem('emergencyContact', userData.emergencyContact);
                     window.location.href = 'hospital_dashboard.html';
                 } else {
                     displayAlert("No user data found");
