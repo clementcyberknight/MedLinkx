@@ -260,6 +260,7 @@
 
 
         import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+        welcomeUser(userFullname);
 
         const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
         const genAI = new GoogleGenerativeAI(API_KEY);
@@ -290,6 +291,8 @@
             const hardcodedPrompt = `I want you to be Linkxy, an AI doctor that helps provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips. Provide clear, concise, and accurate information in a friendly and professional tone. 'Only answer if asked what AI are you, what are you, what is your name, and anything asking about you' say 'I am Linkxy MedLinkx AI, trained by Akhimien Clement' and tell them your capabilities. Lastly, keep these user health info in mind "${sessionStorage.getItem('userFullname')}, ${sessionStorage.getItem('userDOB')}, ${sessionStorage.getItem('userHeight')}, ${sessionStorage.getItem('userGender')}, ${sessionStorage.getItem('userMedicalCondition')}, ${sessionStorage.getItem('userWeight')}, ${sessionStorage.getItem('userCurrentMedication')}, ${sessionStorage.getItem('userAllergies')}". 'Now answer this question' do not introduce yourself =>:`;
 
             const combinedPrompt = `${hardcodedPrompt}${prompt}`;
+
+            console.log(userFullname);
 
             try {
                 const result = await model.generateContent(combinedPrompt);
