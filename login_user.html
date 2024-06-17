@@ -206,6 +206,7 @@
                 }
             } catch (error) {
                 displayAlert(error.message);
+                spinner.style.display = 'none';
                 console.error(error.code, error.message);
             } finally {
                 console.log("hehehe");

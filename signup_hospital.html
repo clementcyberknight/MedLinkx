@@ -134,6 +134,44 @@
                 margin-top: 370px;
             }
         }
+
+        .alert {
+            padding: 15px;
+            margin: 15px 0;
+            color: white;
+            background-color: #f44336;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -148,6 +186,7 @@
     </header>
     <div class="container">
         <form id="appointmentForm">
+            <div id="error_alert" class="alert hidden">Error message here.</div>
             <h3>Hospital Registration</h3>
             <label for="HospitalName">Hospital Name</label>
             <input type="text" id="HospitalName" name="HospitalName" required>
@@ -200,6 +239,8 @@
         </form>
     </div>
 
+    <div class="spinner" id="spinner"></div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -219,23 +260,28 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        let hospitalName = document.getElementById('HospitalName').value;
-        let establishmentDate = document.getElementById('doc').value;
-        let address = document.getElementById('address').value;
-        let city = document.getElementById('city').value;
-        let state = document.getElementById('state').value;
-        let country = document.getElementById('country').value;
-        let phoneNumber = document.getElementById('phoneNumber').value;
-        let email = document.getElementById('email').value;
-        let website = document.getElementById('website').value;
-        let hospitalType = document.getElementById('hospitalType').value;
-        let emergencyContact = document.getElementById('emergencyContact').value;
-        let verificationDocument = document.getElementById('verificationDocument').files[0];
-        let comments = document.getElementById('comments').value;
+
         const appointmentForm = document.getElementById('appointmentForm');
+        const errorAlert = document.getElementById('error_alert');
 
         appointmentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            spinner.style.display = 'block';
+
+
+            let hospitalName = document.getElementById('HospitalName').value;
+            let establishmentDate = document.getElementById('doc').value;
+            let address = document.getElementById('address').value;
+            let city = document.getElementById('city').value;
+            let state = document.getElementById('state').value;
+            let country = document.getElementById('country').value;
+            let phoneNumber = document.getElementById('phoneNumber').value;
+            let email = document.getElementById('email').value;
+            let website = document.getElementById('website').value;
+            let hospitalType = document.getElementById('hospitalType').value;
+            let emergencyContact = document.getElementById('emergencyContact').value;
+            let verificationDocument = document.getElementById('verificationDocument').files[0];
+            let comments = document.getElementById('comments').value;
 
             let userId = sessionStorage.getItem('userID');
             let fullname = sessionStorage.getItem('userFullname');
@@ -244,47 +290,60 @@
             console.log('Retrieved userFullname:', fullname);
 
             if (!userId || !fullname) {
-                console.error("User ID or Fullname is not found in localStorage.");
-                const error_alert = document.getElementById('error_alert');
-                error_alert.classList.remove('hidden');
-                error_alert.textContent = "an error occur please contact support team";
-                hideLoadingSpinner();
+                console.error("User ID or Fullname is not found in sessionStorage.");
+                errorAlert.classList.remove('hidden');
+                errorAlert.textContent = "An error occurred. Please contact support.";
+                spinner.style.display = 'none';
                 return;
             }
 
             try {
-
                 const storageRef = ref(storage, `verificationDocuments/${userId}/${verificationDocument.name}`);
-                await uploadBytes(storageRef, verificationDocument);
-                const downloadURL = await getDownloadURL(storageRef);
+                const uploadTask = uploadBytesResumable(storageRef, verificationDocument);
+
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload is ' + progress + '% complete');
+                        // You can update a progress bar or UI element here
+                    },
+                    (error) => {
+                        console.error('Upload failed:', error);
+                        errorAlert.classList.remove('hidden');
+                        errorAlert.textContent = `Upload error: ${error.message}`;
+                    },
 
 
-                await setDoc(doc(db, 'hospital_data', email), {
-                    hospitalName: hospitalName,
-                    establishmentDate: establishmentDate,
-                    address: address,
-                    city: city,
-                    state: state,
-                    country: country,
-                    phoneNumber: phoneNumber,
-                    email: email,
-                    website: website,
-                    hospitalType: hospitalType,
-                    emergencyContact: emergencyContact,
-                    verificationDocumentURL: downloadURL,
-                    comments: comments
-                });
-                alert('Information updated successfully');
-                window.location.href = 'login.html';
+                    async () => {
+                        const downloadURL = await getDownloadURL(storageRef);
+
+                        await setDoc(doc(db, 'hospital_data', userId), {
+                            hospitalName: hospitalName,
+                            establishmentDate: establishmentDate,
+                            address: address,
+                            city: city,
+                            state: state,
+                            country: country,
+                            phoneNumber: phoneNumber,
+                            email: email,
+                            website: website,
+                            hospitalType: hospitalType,
+                            emergencyContact: emergencyContact,
+                            verificationDocumentURL: downloadURL,
+                            comments: comments
+                        });
+                        alert('Information updated successfully');
+                        window.location.href = 'login.html';
+                    }
+                );
             } catch (error) {
                 console.error(error.message);
                 const error_alert = document.getElementById('error_alert');
                 error_alert.classList.remove('hidden');
                 error_alert.textContent = `Error: ${error.message}`;
             } finally {
-                hideLoadingSpinner();
+                spinner.style.display = 'none';
             }
-
         });
 
     </script>
