@@ -8,20 +8,18 @@
     <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
+            font-family: 'Roboto', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden;
+            background-color: #ccced3;
+            margin: 0;
         }
 
         header {
-            background-color: #f3f1f1;
-            padding: 10px 20px;
+            background-color: #FFFFFF;
             text-align: left;
             width: 100%;
             position: fixed;
@@ -31,34 +29,29 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 70px;
+            /* Added height to the header */
         }
 
         header .logo img {
             height: 50px;
-            padding-left: 10px;
+            padding: 10px;
         }
 
-        header .settings-icon img {
-            height: 30px;
+        header .home-icon img {
+            height: 40px;
             cursor: pointer;
-            padding-right: 10px;
-        }
-
-        .main-content {
-            margin-top: 80px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            overflow-y: auto;
         }
 
         .container {
-            background-color: #e6f2f5;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
+            background: #f0f4f8;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 500px;
+            /* Increased width */
+            margin-top: 530px;
+            /* Adjusted margin-top */
         }
 
         form {
@@ -67,24 +60,23 @@
         }
 
         label {
+            margin-top: 10px;
             margin-bottom: 5px;
-            font-weight: bold;
         }
 
         input {
-            margin-bottom: 15px;
             padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 4px;
         }
 
         button {
+            margin-top: 20px;
             padding: 10px;
-            background-color: #00a2d1;
-            color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
+            background-color: #00A0C6;
+            color: white;
             font-size: 16px;
             cursor: pointer;
         }
@@ -93,9 +85,32 @@
             background-color: #007ea6;
         }
 
-        @media (min-width: 768px) {
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #e6f2f5;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ffffff;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #007ea6;
+        }
+
+        @media (max-width: 650px) {
             .container {
-                max-width: 600px;
+                background: #f0f4f8;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                width: 300px;
+                margin-top: 210px;
             }
         }
     </style>
@@ -106,12 +121,13 @@
         <div class="logo">
             <img src="images/MedLinx.png" alt="MedLinkX logo">
         </div>
-        <div class="settings-icon">
-            <img src="images/home.png" alt="home">
-        </div>
+        <a href="index.html" class="home-icon">
+            <img src="images/home.png" alt="Home">
+        </a>
     </header>
     <div class="container">
         <form id="appointmentForm">
+            <h3>Schedule an Appointment</h3>
             <label for="fullName">Full Name</label>
             <input type="text" id="fullName" name="fullName" required>
 
@@ -148,7 +164,10 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-    <script></script>
+
+    <script>
+
+    </script>
 </body>
 
 </html>
