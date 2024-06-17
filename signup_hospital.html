@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - MedLink</title>
+    <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ccced3;
+            margin: 0;
+        }
+
+        header {
+            background-color: #FFFFFF;
+            text-align: left;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 70px;
+            /* Added height to the header */
+        }
+
+        header .logo img {
+            height: 50px;
+            padding: 14px;
+        }
+
+        header .home-icon img {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .container {
+            background: #f0f4f8;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 500px;
+            /* Increased width */
+            margin-top: 530px;
+            /* Adjusted margin-top */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #00A0C6;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #007ea6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #e6f2f5;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ffffff;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #007ea6;
+        }
+
+        @media (max-width: 650px) {
+            .container {
+                background: #f0f4f8;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                width: 300px;
+                margin-top: 210px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/MedLinx.png" alt="MedLinkX logo">
+        </div>
+        <a href="index.html" class="home-icon">
+            <img src="images/home.png" alt="Home">
+        </a>
+    </header>
+    <div class="container">
+        <form id="appointmentForm">
+            <h3>Hospital Registration</h3>
+            <label for="HospitalName">Hospital Name</label>
+            <input type="text" id="HospitalName" name="HospitalName" required>
+
+            <label for="doc">Establishment Date</label>
+            <input type="date" id="doc" name="doc" required>
+
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" required>
+
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" required>
+
+            <label for="phoneNumber">Contact Phone Number</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="website">Website URL</label>
+            <input type="url" id="website" name="website">
+
+            <label for="hospitalType">Hospital Type</label>
+            <select id="hospitalType" name="hospitalType" required>
+                <option value="">Select Hospital Type</option>
+                <option value="General">General</option>
+                <option value="Specialty">Specialty</option>
+                <option value="Teaching">Teaching</option>
+                <option value="Community">Community</option>
+                <option value="Research">Research</option>
+                <option value="Others">Others</option>
+            </select>
+
+            <label for="emergencyContact">Emergency Contact Number</label>
+            <input type="text" id="emergencyContact" name="emergencyContact" required>
+
+            <label for="verificationDocument">Verification Document</label>
+            <input type="file" id="verificationDocument" name="verificationDocument" required>
+
+            <label for="comments">Additional Comment</label>
+            <input type="text" id="comments" name="comments">
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+            authDomain: "medlinkx.firebaseapp.com",
+            projectId: "medlinkx",
+            storageBucket: "medlinkx.appspot.com",
+            messagingSenderId: "565852723046",
+            appId: "1:565852723046:web:33d9cacb134d3dc5791aa7"
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        let hospitalName = document.getElementById('HospitalName').value;
+        let establishmentDate = document.getElementById('doc').value;
+        let address = document.getElementById('address').value;
+        let city = document.getElementById('city').value;
+        let state = document.getElementById('state').value;
+        let country = document.getElementById('country').value;
+        let phoneNumber = document.getElementById('phoneNumber').value;
+        let email = document.getElementById('email').value;
+        let website = document.getElementById('website').value;
+        let hospitalType = document.getElementById('hospitalType').value;
+        let emergencyContact = document.getElementById('emergencyContact').value;
+        let verificationDocument = document.getElementById('verificationDocument').files[0];
+        let comments = document.getElementById('comments').value;
+        let appointmentForm = document.getElementById('appointmentForm').value;
+
+        appointmentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            let userId = sessionStorage.getItem('userID');
+            let fullname = sessionStorage.getItem('userFullname');
+
+            console.log('Retrieved userID:', userId);
+            console.log('Retrieved userFullname:', fullname);
+
+            if (!userId || !fullname) {
+                console.error("User ID or Fullname is not found in localStorage.");
+                const error_alert = document.getElementById('error_alert');
+                error_alert.classList.remove('hidden');
+                error_alert.textContent = "an error occur please contact support team";
+                hideLoadingSpinner();
+                return;
+            }
+
+            try {
+
+                const storageRef = ref(storage, `verificationDocuments/${userId}/${verificationDocument.name}`);
+                await uploadBytes(storageRef, verificationDocument);
+                const downloadURL = await getDownloadURL(storageRef);
+
+
+                await setDoc(doc(db, 'hospital_data', email), {
+                    hospitalName: hospitalName,
+                    establishmentDate: establishmentDate,
+                    address: address,
+                    city: city,
+                    state: state,
+                    country: country,
+                    phoneNumber: phoneNumber,
+                    email: email,
+                    website: website,
+                    hospitalType: hospitalType,
+                    emergencyContact: emergencyContact,
+                    verificationDocumentURL: downloadURL,
+                    comments: comments
+                });
+                alert('Information updated successfully');
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error(error.message);
+                const error_alert = document.getElementById('error_alert');
+                error_alert.classList.remove('hidden');
+                error_alert.textContent = `Error: ${error.message}`;
+            } finally {
+                hideLoadingSpinner();
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>
