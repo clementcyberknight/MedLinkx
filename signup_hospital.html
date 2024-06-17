@@ -50,7 +50,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             width: 500px;
             /* Increased width */
-            margin-top: 530px;
+            margin-top: 640px;
             /* Adjusted margin-top */
         }
 
@@ -103,6 +103,27 @@
             background: #007ea6;
         }
 
+        select#hospitalType {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            /* Optional: you can add more specific styles for the select element */
+            appearance: none;
+            /* For better cross-browser consistency */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            /* Optional: add a background image for the dropdown arrow */
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="gray" d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+        }
+
         @media (max-width: 650px) {
             .container {
                 background: #f0f4f8;
@@ -110,7 +131,7 @@
                 border-radius: 12px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                 width: 300px;
-                margin-top: 210px;
+                margin-top: 370px;
             }
         }
     </style>
@@ -211,7 +232,7 @@
         let emergencyContact = document.getElementById('emergencyContact').value;
         let verificationDocument = document.getElementById('verificationDocument').files[0];
         let comments = document.getElementById('comments').value;
-        let appointmentForm = document.getElementById('appointmentForm').value;
+        const appointmentForm = document.getElementById('appointmentForm');
 
         appointmentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
