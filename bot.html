@@ -260,6 +260,7 @@
 
 
         import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+        const userFullname = sessionStorage.getItem('userFullname');
         welcomeUser(userFullname);
 
         const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
