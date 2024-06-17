@@ -242,12 +242,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             const userEmail = sessionStorage.getItem('userEmail');
 
-            if (!userEmail) {
-                window.location.href = "login.html"; // Redirect if no user info
-            } else {
-                const userFullname = sessionStorage.getItem('userFullname');
-                welcomeUser(userFullname);
-            }
         });
 
 
@@ -261,7 +255,13 @@
 
         import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
         const userFullname = sessionStorage.getItem('userFullname');
-        welcomeUser(userFullname);
+
+        if (!userFullname) {
+            window.location.href = "login.html"; // Redirect if no user info
+        } else {
+            const userFullname = sessionStorage.getItem('userFullname');
+            welcomeUser(userFullname);
+        }
 
         const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
         const genAI = new GoogleGenerativeAI(API_KEY);
