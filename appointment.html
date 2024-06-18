@@ -293,10 +293,10 @@
                 querySnapshot.forEach((doc) => {
                     const hospitalData = doc.data();
                     hospitalNames.push(hospitalData.hospitalName);
-                };
+                });
 
                 return hospitalNames;
-            });
+            };
 
 
         appointmentForm.addEventListener('DOMContentLoaded', async () => {
