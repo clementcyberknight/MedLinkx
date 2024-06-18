@@ -339,6 +339,7 @@
         }
 
         try {
+          addHospital(hospitalName);
           const storageRef = ref(
             storage,
             `verificationDocuments/${userId}/${verificationDocument.name}`
@@ -384,7 +385,6 @@
               messageDiv.className = "success-message";
               messageDiv.textContent = "User signed up successfully!";
               document.body.appendChild(messageDiv);
-              addHospital(hospitalName);
               setTimeout(() => document.body.removeChild(messageDiv), 3000);
               window.location.href = "login.html";
             }
@@ -413,9 +413,15 @@
 
         try {
           const querySnapshot = await getDocs(hospitalsRef);
-          if (!querySnapshot.empty) {
+          if (querySnapshot.empty) {
+            // No documents in the collection, create a new one
+            await addDoc(hospitalsRef, {
+              hospitalNames: [hospitalName],
+            });
+            console.log("Created new hospitals document with hospitalName.");
+          } else {
+            // Update the first document in the collection
             const docSnapshot = querySnapshot.docs[0];
-
             const currentData = docSnapshot.data();
             let updatedHospitalNames = [];
 
@@ -428,13 +434,10 @@
               updatedHospitalNames = [hospitalName];
             }
 
-            // Use docSnapshot.ref to get the DocumentReference
             await updateDoc(docSnapshot.ref, {
               hospitalNames: updatedHospitalNames,
             });
-            console.log(updatedHospitalNames);
-          } else {
-            console.error('No documents found in "hospitals" collection.');
+            console.log("Updated hospitals document with new hospitalName.");
           }
         } catch (error) {
           console.error("Error updating hospital names:", error.message);
