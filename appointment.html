@@ -103,6 +103,27 @@
             background: #007ea6;
         }
 
+        select#hospitalType {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            /* Optional: you can add more specific styles for the select element */
+            appearance: none;
+            /* For better cross-browser consistency */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            /* Optional: add a background image for the dropdown arrow */
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="gray" d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+        }
+
         @media (max-width: 650px) {
             .container {
                 background: #f0f4f8;
@@ -148,7 +169,7 @@
 
             <label for="hospitalType">Preferred Hospital</label>
             <select id="hospitalType" name="hospitalType" required>
-                <option value="">Select Hospital Type</option>
+                <option value="">Select Preferred Hospital</option>
 
             </select>
 
@@ -188,20 +209,57 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let appointmentForm = document.getElementById('appointmentForm');
+        const appointmentForm = document.getElementById('appointmentForm');
 
-        login_form.addEventListener('submit', async (evt) => {
+        appointmentForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const dob = document.getElementById('dob').value;
+            const gender = document.getElementById('gender').value;
+            const address = document.getElementById('address').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const email = document.getElementById('email').value;
+            const hospitalType = document.getElementById('hospitalType').value;
+            const emergencyContact = document.getElementById('emergencyContact').value;
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            const appointmentTime = document.getElementById('appointmentTime').value;
+            const reason = document.getElementById('reason').value;
+            const comments = document.getElementById('comments').value;
             spinner.style.display = 'block';
 
+            const appointmentData = {
+                fullName,
+                dob,
+                gender,
+                address,
+                phoneNumber,
+                email,
+                hospitalType,
+                emergencyContact,
+                appointmentDate,
+                appointmentTime,
+                reason,
+                comments
+            };
+
+            const userID = sessionStorage.getItem('userID');
+
+            const userHistoryRef = collection(db, 'user_history', userId);
+            await addDoc(userHistoryRef, appointmentData);
+
+            const hospitalUserId = ;
+            const patientAppointmentRef = collection(db, 'patient_appointments', hospitalUserId);
+            await addDoc(patientAppointmentRef, appointmentData);
+
             async function getHospitals() {
-                const hospitalsRef = collection(db, 'hospitals'); // Reference hospitals collection
+                const hospitalsRef = collection(db, 'hospitals');
                 const querySnapshot = await getDocs(hospitalsRef);
 
                 const hospitalNames = [];
                 querySnapshot.forEach((doc) => {
                     const hospitalData = doc.data();
-                    hospitalNames.push(hospitalData.hospitalName); // Assuming "hospitalName" field exists
+                    hospitalNames.push(hospitalData.hospitalName);
                 };
 
                 return hospitalNames;
@@ -224,4 +282,4 @@
     </script>
 </body>
 
-</html>
+</html> 
