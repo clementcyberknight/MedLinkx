@@ -334,15 +334,15 @@
                         });
 
                         async function addHospital(hospitalName) {
-                            const hospitalsRef = firestore.collection('hospitals');
-                            const newHospitalRef = hospitalsRef.doc(); // Generate unique ID
+    const hospitalsRef = collection(db, 'hospitals');
+    const newHospitalRef = doc(hospitalsRef); // Generate unique ID
 
-                            const hospitalData = {
-                                hospitalNames: firebase.firestore.FieldValue.arrayUnion(hospitalName)
-                            };
+    const hospitalData = {
+        hospitalNames: FieldValue.arrayUnion(hospitalName)
+    };
 
-                            await setDoc(newHospitalRef, hospitalData);
-                        };
+    await setDoc(newHospitalRef, hospitalData, { merge: true });
+};
                         alert('Information updated successfully');
                         window.location.href = 'login.html';
                     }
