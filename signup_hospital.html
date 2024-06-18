@@ -335,7 +335,7 @@
 
                         async function addHospital(hospitalName) {
                             const hospitalsRef = collection(db, 'hospitals');
-                            const newHospitalRef = doc(hospitalsRef); // Generate unique ID
+                            const newHospitalRef = doc(hospitalsRef);
 
                             const hospitalData = {
                                 hospitalNames: FieldValue.arrayUnion(hospitalName)

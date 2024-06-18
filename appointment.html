@@ -169,7 +169,7 @@
             <h3>Schedule an Appointment</h3>
             <div class="message success" id="successMessage">Appointment successfully scheduled!</div>
             <div class="message error" id="errorMessage">An error occurred. Please try again.</div>
-   
+
             <label for="fullName">Full Name</label>
             <input type="text" id="fullName" name="fullName" required>
 
@@ -229,11 +229,11 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
+
         const appointmentForm = document.getElementById('appointmentForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
-        
+
 
         appointmentForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
@@ -266,7 +266,7 @@
                 reason,
                 comments
             };
-     try {
+            try {
                 const userID = sessionStorage.getItem('userID');
                 const userHistoryRef = collection(db, 'user_history', userID);
                 await addDoc(userHistoryRef, appointmentData);
@@ -285,18 +285,18 @@
             }
         });
 
-            async function getHospitals() {
-                const hospitalsRef = collection(db, 'hospitals');
-                const querySnapshot = await getDocs(hospitalsRef);
+        async function getHospitals() {
+            const hospitalsRef = collection(db, 'hospitals');
+            const querySnapshot = await getDocs(hospitalsRef);
 
-                const hospitalNames = [];
-                querySnapshot.forEach((doc) => {
-                    const hospitalData = doc.data();
-                    hospitalNames.push(hospitalData.hospitalName);
-                });
+            const hospitalNames = [];
+            querySnapshot.forEach((doc) => {
+                const hospitalData = doc.data();
+                hospitalNames.push(hospitalData.hospitalName);
+            });
 
-                return hospitalNames;
-            };
+            return hospitalNames;
+        };
 
 
         appointmentForm.addEventListener('DOMContentLoaded', async () => {
@@ -315,4 +315,4 @@
     </script>
 </body>
 
-</html> 
+</html>
