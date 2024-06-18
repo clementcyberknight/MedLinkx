@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scheduled Appointments</title>
+    <title>Hospital View - Scheduled Appointments</title>
     <link
       rel="icon"
       sizes="16x16"
@@ -39,12 +39,10 @@
 
       header .logo img {
         height: 50px;
-        padding: 10px;
       }
 
       header h3 {
         margin: 0;
-        padding: 10px;
       }
 
       header .home-icon img {
@@ -90,8 +88,8 @@
       <div class="logo">
         <img src="images/MedLinx.png" alt="MedLinkX logo" />
       </div>
-      <h3>Appointments</h3>
-      <a href="hospital_dashboard.html" class="home-icon">
+      <h3>Appointments History</h3>
+      <a href="index.html" class="home-icon">
         <img src="images/home.png" alt="Home" />
       </a>
     </header>
@@ -119,19 +117,9 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      function isFutureAppointment(appointmentDate, appointmentTime) {
-        const currentDateTime = new Date();
-        const appointmentDateTime = new Date(
-          `${appointmentDate}T${appointmentTime}`
-        );
-        console.log(currentDateTime);
-        console.log(appointmentDateTime);
-        return appointmentDateTime >= currentDateTime;
-      }
-
       async function loadHospitalAppointments() {
         const hospital = sessionStorage.getItem("hospitalName"); // Assuming hospitalID is stored in sessionStorage
-        const hospitalID = hospital.replace(/[^a-zA-Z0-9]/g, ""); // Assuming hospitalID is stored in sessionStorage
+        const hospitalID = hospital.replace(/[^a-zA-Z0-9]/g, "");
         const appointmentsRef = collection(
           db,
           "patient_appointments",
@@ -144,46 +132,33 @@
 
         querySnapshot.forEach((doc) => {
           const appointmentData = doc.data();
-          if (
-            isFutureAppointment(
-              appointmentData.appointmentDate,
-              appointmentData.appointmentTime
-            )
-          ) {
-            const appointmentCard = document.createElement("div");
-            appointmentCard.classList.add("appointment-card");
+          const appointmentCard = document.createElement("div");
+          appointmentCard.classList.add("appointment-card");
 
-            appointmentCard.innerHTML = `
-                        <h4>${appointmentData.fullName}</h4>
-                        <p><strong>Date:</strong> ${
-                          appointmentData.appointmentDate
-                        }</p>
-                        <p><strong>Time:</strong> ${
-                          appointmentData.appointmentTime
-                        }</p>
-                        <p><strong>Gender:</strong> ${
-                          appointmentData.gender
-                        }</p>
-                        <p><strong>Address:</strong> ${
-                          appointmentData.address
-                        }</p>
-                        <p><strong>Phone Number:</strong> ${
-                          appointmentData.phoneNumber
-                        }</p>
-                        <p><strong>Email:</strong> ${appointmentData.email}</p>
-                        <p><strong>Emergency Contact:</strong> ${
-                          appointmentData.emergencyContact
-                        }</p>
-                        <p><strong>Reason:</strong> ${
-                          appointmentData.reason
-                        }</p>
-                        <p><strong>Comments:</strong> ${
-                          appointmentData.comments || "N/A"
-                        }</p>
-                    `;
+          appointmentCard.innerHTML = `
+                    <h4>${appointmentData.fullName}</h4>
+                    <p><strong>Date:</strong> ${
+                      appointmentData.appointmentDate
+                    }</p>
+                    <p><strong>Time:</strong> ${
+                      appointmentData.appointmentTime
+                    }</p>
+                    <p><strong>Gender:</strong> ${appointmentData.gender}</p>
+                    <p><strong>Address:</strong> ${appointmentData.address}</p>
+                    <p><strong>Phone Number:</strong> ${
+                      appointmentData.phoneNumber
+                    }</p>
+                    <p><strong>Email:</strong> ${appointmentData.email}</p>
+                    <p><strong>Emergency Contact:</strong> ${
+                      appointmentData.emergencyContact
+                    }</p>
+                    <p><strong>Reason:</strong> ${appointmentData.reason}</p>
+                    <p><strong>Comments:</strong> ${
+                      appointmentData.comments || "N/A"
+                    }</p>
+                `;
 
-            appointmentHistoryContainer.appendChild(appointmentCard);
-          }
+          appointmentHistoryContainer.appendChild(appointmentCard);
         });
       }
 
