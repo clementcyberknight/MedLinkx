@@ -1,194 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home - Medlinkx</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #ffffff;
-            margin: 0;
-        }
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ffffff;
+        margin: 0;
+      }
 
-        header {
-            background-color: #f3f1f1;
-            padding: 10px 20px;
-            text-align: left;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+      header {
+        background-color: #f3f1f1;
+        padding: 10px 20px;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-        header .logo img {
-            height: 50px;
-            padding-left: 10px;
-        }
+      header .logo img {
+        height: 50px;
+        padding-left: 10px;
+      }
 
-        header .settings-icon img {
-            height: 30px;
-            cursor: pointer;
-            padding-right: 10px;
-        }
+      header .settings-icon img {
+        height: 30px;
+        cursor: pointer;
+        padding-right: 10px;
+      }
 
+      .profile-container {
+        padding-bottom: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.541);
+        border-radius: 5px;
+        width: 90%;
+        max-width: 400px;
+        margin: 120px auto 20px auto;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .profile-pic img {
+        height: 80px;
+        margin-bottom: 10px;
+      }
+
+      .user-info h2,
+      .user-info p {
+        margin: 5px 0;
+        color: #333;
+        text-align: center;
+      }
+
+      .menu-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 400px;
+        margin-top: 20px;
+        padding: 30px;
+        border-radius: 5px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: #fff;
+        margin: 5px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+      }
+
+      .menu-item img {
+        height: 30px;
+        margin-right: 15px;
+      }
+
+      .menu-item span {
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      .menu-item:hover {
+        background-color: #e0e4e8;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Media Queries for Mobile View */
+      @media (max-width: 600px) {
         .profile-container {
-            padding-bottom: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.541);
-            border-radius: 5px;
-            width: 90%;
-            max-width: 400px;
-            margin: 120px auto 20px auto;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .profile-pic img {
-            height: 80px;
-            margin-bottom: 10px;
-        }
-
-        .user-info h2,
-        .user-info p {
-            margin: 5px 0;
-            color: #333;
-            text-align: center;
+          max-width: 95%;
         }
 
         .menu-container {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 400px;
-            margin-top: 20px;
-            padding: 30px;
-            border-radius: 5px;
-            margin-left: auto;
-            margin-right: auto;
+          max-width: 90%;
         }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: #fff;
-            margin: 5px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .menu-item img {
-            height: 30px;
-            margin-right: 15px;
-        }
-
-        .menu-item span {
-            font-size: 16px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .menu-item:hover {
-            background-color: #e0e4e8;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Media Queries for Mobile View */
-        @media (max-width: 600px) {
-
-            .profile-container {
-                max-width: 95%;
-            }
-
-            .menu-container {
-                max-width: 90%;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="logo">
-            <img src="images/MedLinx.png" alt="MedLinkX logo">
-        </div>
-        <div class="settings-icon">
-            <img src="images/setting.png" alt="Settings">
-        </div>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <div class="settings-icon">
+        <img src="images/setting.png" alt="Settings" />
+      </div>
     </header>
     <div class="profile-container">
-        <div class="profile-pic">
-            <img src="images/user.png" alt="Profile Picture">
-        </div>
-        <div class="user-info">
-            <h2 id="Hospital_Name"></h2>
-            <p id="address"></p>
-        </div>
+      <div class="profile-pic">
+        <img src="images/hospital.png" alt="Profile Picture" />
+      </div>
+      <div class="user-info">
+        <h2 id="Hospital_Name"></h2>
+        <p id="address"></p>
+      </div>
     </div>
     <div class="menu-container">
-        <div class="menu-item" onclick="window.location.href='index.html';">
-            <img src="images/home.png" alt="Home Icon">
-            <span>Home</span>
-        </div>
-        <div class="menu-item" onclick="window.location.href='patient_history.html';">
-            <img src="images/history.png" alt="Appointment History Icon">
-            <span>Appointment History</span>
-        </div>
-        <div class="menu-item" onclick="window.location.href='patient_record.html';">
-            <img src="images/record.png" alt="Record Icon">
-            <span>Store Patient Data</span>
-        </div>
-        <div class="menu-item" onclick="window.location.href='patient_appointment.html';">
-            <img src="images/appointment.png" alt="Make Appointment Icon">
-            <span>View patient appointment</span>
-        </div>
+      <div class="menu-item" onclick="window.location.href='index.html';">
+        <img src="images/home.png" alt="Home Icon" />
+        <span>Home</span>
+      </div>
+      <div
+        class="menu-item"
+        onclick="window.location.href='patient_history.html';"
+      >
+        <img src="images/history.png" alt="Appointment History Icon" />
+        <span>Appointment History</span>
+      </div>
+      <div
+        class="menu-item"
+        onclick="window.location.href='patient_record.html';"
+      >
+        <img src="images/record.png" alt="Record Icon" />
+        <span>Store Patient Data</span>
+      </div>
+      <div
+        class="menu-item"
+        onclick="window.location.href='patient_appointment.html';"
+      >
+        <img src="images/appointment.png" alt="Make Appointment Icon" />
+        <span>View patient appointment</span>
+      </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const hospitalName = sessionStorage.getItem('hospitalName');
-            const establishmentDate = sessionStorage.getItem('establishmentDate');
-            const address = sessionStorage.getItem('address');
+      document.addEventListener("DOMContentLoaded", function () {
+        const hospitalName = sessionStorage.getItem("hospitalName");
+        const establishmentDate = sessionStorage.getItem("establishmentDate");
+        const address = sessionStorage.getItem("address");
 
-            
-            const city = sessionStorage.getItem('city');
-            const state = sessionStorage.getItem('state');
-            const country = sessionStorage.getItem('country');
-            const phoneNumber = sessionStorage.getItem('phoneNumber');
-            const email = sessionStorage.getItem('email');
-            const website = sessionStorage.getItem('website');
-            const hospitalType = sessionStorage.getItem('hospitalType');
-            const emergencyContact = sessionStorage.getItem('emergencyContact');
+        const city = sessionStorage.getItem("city");
+        const state = sessionStorage.getItem("state");
+        const country = sessionStorage.getItem("country");
+        const phoneNumber = sessionStorage.getItem("phoneNumber");
+        const email = sessionStorage.getItem("email");
+        const website = sessionStorage.getItem("website");
+        const hospitalType = sessionStorage.getItem("hospitalType");
+        const emergencyContact = sessionStorage.getItem("emergencyContact");
 
+        if (!hospitalName) {
+          window.location.href = "login.html";
+        } else {
+          console.log(
+            "what are you looking for is not here the api key are blocked to allow only request from this site"
+          );
+        }
 
-
-            if (!hospitalName) {
-                window.location.href = "login.html";
-            } else {
-                console.log('what are you looking for is not here the api key are blocked to allow only request from this site')
-            }
-
-
-            document.getElementById('Hospital_Name').innerText = hospitalName;
-            document.getElementById('address').innerText = address;
-        });
+        document.getElementById("Hospital_Name").innerText = hospitalName;
+        document.getElementById("address").innerText = address;
+      });
     </script>
-</body>
-
+  </body>
 </html>
