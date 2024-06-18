@@ -139,22 +139,27 @@
         }
       }
 
+      .success-message {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-size: 16px;
+        border-radius: 5px;
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+      }
+
       .alert {
         padding: 15px;
         margin: 15px 0;
+        color: white;
+        background-color: #f44336;
         border-radius: 5px;
         text-align: center;
-        display: none;
-      }
-
-      .success {
-        color: white;
-        background-color: #28a745; /* Green */
-      }
-
-      .error {
-        color: white;
-        background-color: #dc3545; /* Red */
       }
 
       .hidden {
@@ -164,7 +169,7 @@
       .spinner {
         position: absolute;
         top: 50%;
-        left: 50%;
+        left: 42%;
         transform: translate(-50%, -50%);
         border: 4px solid rgba(0, 0, 0, 0.1);
         border-top: 4px solid #007bff;
@@ -197,11 +202,8 @@
       </a>
     </header>
     <div class="container">
+      <div id="error_alert" class="alert hidden">Error message here.</div>
       <form id="appointmentForm">
-        <div id="error_alert" class="alert hidden">Error message here.</div>
-        <div id="success_alert" class="alert hidden success">
-          Success message here.
-        </div>
         <h3>Hospital Registration</h3>
         <label for="HospitalName">Hospital Name</label>
         <input type="text" id="HospitalName" name="HospitalName" required />
@@ -304,8 +306,6 @@
       appointmentForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         spinner.style.display = "block";
-        errorAlert.classList.add("hidden");
-        successAlert.classList.add("hidden");
 
         let hospitalName = document.getElementById("HospitalName").value;
         let establishmentDate = document.getElementById("doc").value;
@@ -380,20 +380,32 @@
                 verificationDocumentURL: downloadURL,
                 comments: comments,
               });
-              await addHospital(hospitalName);
-              successAlert.classList.remove("hidden");
-              alert("Information updated successfully");
+              const messageDiv = document.createElement("div");
+              messageDiv.className = "success-message";
+              messageDiv.textContent = "User signed up successfully!";
+              document.body.appendChild(messageDiv);
+              setTimeout(() => document.body.removeChild(messageDiv), 3000);
               window.location.href = "login.html";
             }
           );
         } catch (error) {
-          console.error(error.message);
-          errorAlert.classList.remove("hidden");
-          errorAlert.textContent = `Error: ${error.message}`;
+          displayAlert("Login failed: " + error.message);
+          spinner.style.display = "none";
         } finally {
           spinner.style.display = "none";
         }
       });
+
+      function displayAlert(message) {
+        const alertBox = document.getElementById("error_alert");
+        alertBox.textContent = message;
+        alertBox.classList.remove("hidden");
+
+        // Optionally hide the alert after some time
+        setTimeout(() => {
+          alertBox.classList.add("hidden");
+        }, 5000);
+      }
 
       async function addHospital(hospitalName) {
         const hospitalsRef = collection(db, "hospitals");
