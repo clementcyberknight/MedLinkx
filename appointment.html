@@ -249,6 +249,7 @@
       import {
         getFirestore,
         collection,
+        setDoc,
         doc,
         getDoc,
         getDocs,
@@ -278,6 +279,8 @@
 
       appointmentForm.addEventListener("submit", async (evt) => {
         evt.preventDefault();
+
+        const userID = sessionStorage.getItem("userID");
 
         const fullName = document.getElementById("fullName").value;
         const dob = document.getElementById("dob").value;
@@ -309,19 +312,27 @@
           appointmentTime,
           reason,
           comments,
+          userID,
         };
         try {
           const userID = sessionStorage.getItem("userID");
-          const userHistoryRef = collection(db, "user_history", userID);
-          await addDoc(userHistoryRef, appointmentData);
+          const userHistoryRef = collection(
+            db,
+            "user_history",
+            userID,
+            "appointments"
+          ); // Collection reference
+          await addDoc(userHistoryRef, appointmentData); // Add a new document
 
-          const hospitalUserId = hospitalType;
-          const patientAppointmentRef = collection(
+          const hospitalUserId = hospitalType.replace(/[^a-zA-Z0-9]/g, ""); // Assuming hospitalType holds the hospital name
+
+          const patientAppointmentCollectionRef = collection(
             db,
             "patient_appointments",
-            hospitalUserId
-          );
-          await addDoc(patientAppointmentRef, appointmentData);
+            hospitalUserId,
+            "appointments"
+          ); // Collection reference within the hospital's subcollection
+          await addDoc(patientAppointmentCollectionRef, appointmentData); // Add a new document
 
           successMessage.style.display = "block";
           errorMessage.style.display = "none";
