@@ -266,15 +266,24 @@
                 reason,
                 comments
             };
+     try {
+                const userID = sessionStorage.getItem('userID');
+                const userHistoryRef = collection(db, 'user_history', userID);
+                await addDoc(userHistoryRef, appointmentData);
 
-            const userID = sessionStorage.getItem('userID');
+                const hospitalUserId = hospitalType;
+                const patientAppointmentRef = collection(db, 'patient_appointments', hospitalUserId);
+                await addDoc(patientAppointmentRef, appointmentData);
 
-            const userHistoryRef = collection(db, 'user_history', userId);
-            await addDoc(userHistoryRef, appointmentData);
-
-            const hospitalUserId = hospitalType;
-            const patientAppointmentRef = collection(db, 'patient_appointments', hospitalUserId);
-            await addDoc(patientAppointmentRef, appointmentData);
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                appointmentForm.reset();
+            } catch (error) {
+                console.error('Error adding document: ', error);
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'block';
+            }
+        });
 
             async function getHospitals() {
                 const hospitalsRef = collection(db, 'hospitals');
