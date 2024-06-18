@@ -134,6 +134,24 @@
                 margin-top: 520px;
             }
         }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 
@@ -149,6 +167,9 @@
     <div class="container">
         <form id="appointmentForm">
             <h3>Schedule an Appointment</h3>
+            <div class="message success" id="successMessage">Appointment successfully scheduled!</div>
+            <div class="message error" id="errorMessage">An error occurred. Please try again.</div>
+   
             <label for="fullName">Full Name</label>
             <input type="text" id="fullName" name="fullName" required>
 
@@ -208,8 +229,11 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
+        
         const appointmentForm = document.getElementById('appointmentForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        
 
         appointmentForm.addEventListener('submit', async (evt) => {
             evt.preventDefault();
