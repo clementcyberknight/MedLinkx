@@ -332,6 +332,17 @@
                             verificationDocumentURL: downloadURL,
                             comments: comments
                         });
+
+                        async function addHospital(hospitalName) {
+                            const hospitalsRef = firestore.collection('hospitals');
+                            const newHospitalRef = hospitalsRef.doc(); // Generate unique ID
+
+                            const hospitalData = {
+                                hospitalNames: firebase.firestore.FieldValue.arrayUnion(hospitalName)
+                            };
+
+                            await setDoc(newHospitalRef, hospitalData);
+                        };
                         alert('Information updated successfully');
                         window.location.href = 'login.html';
                     }

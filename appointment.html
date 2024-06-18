@@ -110,7 +110,7 @@
                 border-radius: 12px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                 width: 300px;
-                margin-top: 210px;
+                margin-top: 520px;
             }
         }
     </style>
@@ -146,6 +146,12 @@
             <label for="email">Email Address</label>
             <input type="email" id="email" name="email" required>
 
+            <label for="hospitalType">Preferred Hospital</label>
+            <select id="hospitalType" name="hospitalType" required>
+                <option value="">Select Hospital Type</option>
+
+            </select>
+
             <label for="emergencyContact">Emergency Contact</label>
             <input type="text" id="emergencyContact" name="emergencyContact" required>
 
@@ -165,7 +171,55 @@
         </form>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+            authDomain: "medlinkx.firebaseapp.com",
+            projectId: "medlinkx",
+            storageBucket: "medlinkx.appspot.com",
+            messagingSenderId: "565852723046",
+            appId: "1:565852723046:web:33d9cacb134d3dc5791aa7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let appointmentForm = document.getElementById('appointmentForm');
+
+        login_form.addEventListener('submit', async (evt) => {
+            evt.preventDefault();
+            spinner.style.display = 'block';
+
+            async function getHospitals() {
+                const hospitalsRef = collection(db, 'hospitals'); // Reference hospitals collection
+                const querySnapshot = await getDocs(hospitalsRef);
+
+                const hospitalNames = [];
+                querySnapshot.forEach((doc) => {
+                    const hospitalData = doc.data();
+                    hospitalNames.push(hospitalData.hospitalName); // Assuming "hospitalName" field exists
+                };
+
+                return hospitalNames;
+            });
+
+
+        appointmentForm.addEventListener('DOMContentLoaded', async () => {
+            const hospitalNames = await getHospitals();
+
+            const hospitalSelect = document.getElementById('hospitalType');
+            hospitalNames.forEach(hospitalName => {
+                const option = document.createElement('option');
+                option.value = hospitalName;
+                option.textContent = hospitalName;
+                hospitalSelect.appendChild(option);
+            });
+        });
+
 
     </script>
 </body>
