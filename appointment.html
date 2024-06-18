@@ -348,7 +348,7 @@
         }
       });
 
-      async function getHospitals() {
+      async function fetchAndPopulateHospitals() {
         const hospitalsRef = collection(db, "hospitals");
         try {
           const querySnapshot = await getDocs(hospitalsRef);
@@ -359,31 +359,26 @@
               hospitalNames.push(...hospitalData.hospitalNames);
             }
           });
-          return hospitalNames;
+          const hospitalSelect = document.getElementById("hospitalType");
+          hospitalSelect.innerHTML = ""; // Clear any existing options
+          const defaultOption = document.createElement("option");
+          defaultOption.value = "";
+          defaultOption.textContent = "Select Preferred Hospital";
+          hospitalSelect.appendChild(defaultOption);
+
+          hospitalNames.forEach((name) => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = name;
+            hospitalSelect.appendChild(option);
+          });
         } catch (error) {
           console.error("Error fetching hospitals: ", error);
-          return [];
         }
       }
 
-      document.addEventListener("DOMContentLoaded", async () => {
-        const hospitalNames = await getHospitals();
-        const hospitalSelect = document.getElementById("hospitalType");
-        // Clear any existing options
-        hospitalSelect.innerHTML = ""; // This line is important!
-        // Add the default option
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "Select Preferred Hospital";
-        hospitalSelect.appendChild(defaultOption);
-
-        // Add hospital names as options
-        hospitalNames.forEach((name) => {
-          const option = document.createElement("option");
-          option.value = name;
-          option.textContent = name;
-          hospitalSelect.appendChild(option);
-        });
+      document.addEventListener("DOMContentLoaded", () => {
+        fetchAndPopulateHospitals();
       });
     </script>
   </body>
