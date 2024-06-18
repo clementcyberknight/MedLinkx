@@ -1,318 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MedLink Appointment Form</title>
-    <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #ccced3;
-            margin: 0;
-        }
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #ccced3;
+        margin: 0;
+      }
 
-        header {
-            background-color: #FFFFFF;
-            text-align: left;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            height: 70px;
-            /* Added height to the header */
-        }
+      header {
+        background-color: #ffffff;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 70px;
+        /* Added height to the header */
+      }
 
-        header .logo img {
-            height: 50px;
-            padding: 14px;
-        }
+      header .logo img {
+        height: 50px;
+        padding: 14px;
+      }
 
-        header .home-icon img {
-            height: 40px;
-            cursor: pointer;
-        }
+      header .home-icon img {
+        height: 40px;
+        cursor: pointer;
+      }
 
+      .container {
+        background: #f0f4f8;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        width: 500px;
+        /* Increased width */
+        margin-top: 590px;
+        /* Adjusted margin-top */
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        margin-top: 10px;
+        margin-bottom: 5px;
+      }
+
+      input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #00a0c6;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #007ea6;
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e6f2f5;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #ffffff;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #007ea6;
+      }
+
+      select#hospitalType {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #333;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        /* Optional: you can add more specific styles for the select element */
+        appearance: none;
+        /* For better cross-browser consistency */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        /* Optional: add a background image for the dropdown arrow */
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="gray" d="M7 10l5 5 5-5z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 12px;
+      }
+
+      @media (max-width: 650px) {
         .container {
-            background: #f0f4f8;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            width: 500px;
-            /* Increased width */
-            margin-top: 530px;
-            /* Adjusted margin-top */
+          background: #f0f4f8;
+          padding: 30px;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          width: 300px;
+          margin-top: 300px;
         }
+      }
 
-        form {
-            display: flex;
-            flex-direction: column;
-        }
+      .message {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 4px;
+        font-size: 16px;
+        display: none;
+      }
 
-        label {
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+      }
 
-        input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            background-color: #00A0C6;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #007ea6;
-        }
-
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #e6f2f5;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #ffffff;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #007ea6;
-        }
-
-        select#hospitalType {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #fff;
-            color: #333;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            /* Optional: you can add more specific styles for the select element */
-            appearance: none;
-            /* For better cross-browser consistency */
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            /* Optional: add a background image for the dropdown arrow */
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="gray" d="M7 10l5 5 5-5z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 12px;
-        }
-
-        @media (max-width: 650px) {
-            .container {
-                background: #f0f4f8;
-                padding: 30px;
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                width: 300px;
-                margin-top: 520px;
-            }
-        }
-
-        .message {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 16px;
-            display: none;
-        }
-
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="logo">
-            <img src="images/MedLinx.png" alt="MedLinkX logo">
-        </div>
-        <a href="index.html" class="home-icon">
-            <img src="images/home.png" alt="Home">
-        </a>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <a href="index.html" class="home-icon">
+        <img src="images/home.png" alt="Home" />
+      </a>
     </header>
     <div class="container">
-        <form id="appointmentForm">
-            <h3>Schedule an Appointment</h3>
-            <div class="message success" id="successMessage">Appointment successfully scheduled!</div>
-            <div class="message error" id="errorMessage">An error occurred. Please try again.</div>
+      <form id="appointmentForm">
+        <h3>Schedule an Appointment</h3>
+        <div class="message success" id="successMessage">
+          Appointment successfully scheduled!
+        </div>
+        <div class="message error" id="errorMessage">
+          An error occurred. Please try again.
+        </div>
 
-            <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" name="fullName" required>
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required />
 
-            <label for="dob">Date of Birth</label>
-            <input type="date" id="dob" name="dob" required>
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" required />
 
-            <label for="gender">Gender</label>
-            <input type="text" id="gender" name="gender" required>
+        <label for="gender">Gender</label>
+        <input type="text" id="gender" name="gender" required />
 
-            <label for="address">Address</label>
-            <input type="text" id="address" name="address" required>
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address" required />
 
-            <label for="phoneNumber">Phone Number</label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" required>
+        <label for="phoneNumber">Phone Number</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" required />
 
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required>
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required />
 
-            <label for="hospitalType">Preferred Hospital</label>
-            <select id="hospitalType" name="hospitalType" required>
-                <option value="">Select Preferred Hospital</option>
+        <label for="hospitalType">Preferred Hospital</label>
+        <select id="hospitalType" name="hospitalType" required>
+          <option value="">Select Preferred Hospital</option>
+          <option value="hospital name 1">hospital name 1</option>
+          <option value="hospital name 2">hospital name 2</option>
+        </select>
 
-            </select>
+        <label for="emergencyContact">Emergency Contact</label>
+        <input
+          type="text"
+          id="emergencyContact"
+          name="emergencyContact"
+          required
+        />
 
-            <label for="emergencyContact">Emergency Contact</label>
-            <input type="text" id="emergencyContact" name="emergencyContact" required>
+        <label for="appointmentDate">Preferred Appointment Date</label>
+        <input
+          type="date"
+          id="appointmentDate"
+          name="appointmentDate"
+          required
+        />
 
-            <label for="appointmentDate">Preferred Appointment Date</label>
-            <input type="date" id="appointmentDate" name="appointmentDate" required>
+        <label for="appointmentTime">Appointment Time</label>
+        <input
+          type="time"
+          id="appointmentTime"
+          name="appointmentTime"
+          required
+        />
 
-            <label for="appointmentTime">Appointment Time</label>
-            <input type="time" id="appointmentTime" name="appointmentTime" required>
+        <label for="reason">Reason for Appointment</label>
+        <input type="text" id="reason" name="reason" required />
 
-            <label for="reason">Reason for Appointment</label>
-            <input type="text" id="reason" name="reason" required>
+        <label for="comments">Additional Comment</label>
+        <input type="text" id="comments" name="comments" />
 
-            <label for="comments">Additional Comment</label>
-            <input type="text" id="comments" name="comments">
-
-            <button type="submit">Submit</button>
-        </form>
+        <button type="submit">Submit</button>
+      </form>
     </div>
 
+    <div class="spinner" id="spinner"></div>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        doc,
+        getDoc,
+        getDocs,
+        addDoc,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
-            authDomain: "medlinkx.firebaseapp.com",
-            projectId: "medlinkx",
-            storageBucket: "medlinkx.appspot.com",
-            messagingSenderId: "565852723046",
-            appId: "1:565852723046:web:33d9cacb134d3dc5791aa7"
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const appointmentForm = document.getElementById("appointmentForm");
+      const successMessage = document.getElementById("successMessage");
+      const errorMessage = document.getElementById("errorMessage");
+      const spinner = document.getElementById("spinner");
+
+      appointmentForm.addEventListener("submit", async (evt) => {
+        evt.preventDefault();
+
+        const fullName = document.getElementById("fullName").value;
+        const dob = document.getElementById("dob").value;
+        const gender = document.getElementById("gender").value;
+        const address = document.getElementById("address").value;
+        const phoneNumber = document.getElementById("phoneNumber").value;
+        const email = document.getElementById("email").value;
+        const hospitalType = document.getElementById("hospitalType").value;
+        const emergencyContact =
+          document.getElementById("emergencyContact").value;
+        const appointmentDate =
+          document.getElementById("appointmentDate").value;
+        const appointmentTime =
+          document.getElementById("appointmentTime").value;
+        const reason = document.getElementById("reason").value;
+        const comments = document.getElementById("comments").value;
+        spinner.style.display = "block";
+
+        const appointmentData = {
+          fullName,
+          dob,
+          gender,
+          address,
+          phoneNumber,
+          email,
+          hospitalType,
+          emergencyContact,
+          appointmentDate,
+          appointmentTime,
+          reason,
+          comments,
         };
+        try {
+          const userID = sessionStorage.getItem("userID");
+          const userHistoryRef = collection(db, "user_history", userID);
+          await addDoc(userHistoryRef, appointmentData);
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+          const hospitalUserId = hospitalType;
+          const patientAppointmentRef = collection(
+            db,
+            "patient_appointments",
+            hospitalUserId
+          );
+          await addDoc(patientAppointmentRef, appointmentData);
 
-        const appointmentForm = document.getElementById('appointmentForm');
-        const successMessage = document.getElementById('successMessage');
-        const errorMessage = document.getElementById('errorMessage');
+          successMessage.style.display = "block";
+          errorMessage.style.display = "none";
+          appointmentForm.reset();
+          spinner.style.display = "none";
+        } catch (error) {
+          console.error("Error adding document: ", error);
+          successMessage.style.display = "none";
+          errorMessage.style.display = "block";
+          spinner.style.display = "none";
+        }
+      });
 
-
-        appointmentForm.addEventListener('submit', async (evt) => {
-            evt.preventDefault();
-
-            const fullName = document.getElementById('fullName').value;
-            const dob = document.getElementById('dob').value;
-            const gender = document.getElementById('gender').value;
-            const address = document.getElementById('address').value;
-            const phoneNumber = document.getElementById('phoneNumber').value;
-            const email = document.getElementById('email').value;
-            const hospitalType = document.getElementById('hospitalType').value;
-            const emergencyContact = document.getElementById('emergencyContact').value;
-            const appointmentDate = document.getElementById('appointmentDate').value;
-            const appointmentTime = document.getElementById('appointmentTime').value;
-            const reason = document.getElementById('reason').value;
-            const comments = document.getElementById('comments').value;
-            spinner.style.display = 'block';
-
-            const appointmentData = {
-                fullName,
-                dob,
-                gender,
-                address,
-                phoneNumber,
-                email,
-                hospitalType,
-                emergencyContact,
-                appointmentDate,
-                appointmentTime,
-                reason,
-                comments
-            };
-            try {
-                const userID = sessionStorage.getItem('userID');
-                const userHistoryRef = collection(db, 'user_history', userID);
-                await addDoc(userHistoryRef, appointmentData);
-
-                const hospitalUserId = hospitalType;
-                const patientAppointmentRef = collection(db, 'patient_appointments', hospitalUserId);
-                await addDoc(patientAppointmentRef, appointmentData);
-
-                successMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
-                appointmentForm.reset();
-            } catch (error) {
-                console.error('Error adding document: ', error);
-                successMessage.style.display = 'none';
-                errorMessage.style.display = 'block';
+      async function getHospitals() {
+        const hospitalsRef = collection(db, "hospitals");
+        try {
+          const querySnapshot = await getDocs(hospitalsRef);
+          const hospitalNames = [];
+          querySnapshot.forEach((doc) => {
+            const hospitalData = doc.data();
+            if (hospitalData.hospitalNames) {
+              hospitalNames.push(...hospitalData.hospitalNames);
             }
+          });
+          return hospitalNames;
+        } catch (error) {
+          console.error("Error fetching hospitals: ", error);
+          return [];
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const hospitalNames = await getHospitals();
+        console.log(hospitalNames);
+        const hospitalSelect = document.getElementById("hospitalType");
+        // Clear any existing options
+        hospitalSelect.innerHTML = ""; // This line is important!
+        // Add the default option
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select Preferred Hospital";
+        hospitalSelect.appendChild(defaultOption);
+
+        // Add hospital names as options
+        hospitalNames.forEach((name) => {
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          hospitalSelect.appendChild(option);
         });
-
-        async function getHospitals() {
-            const hospitalsRef = collection(db, 'hospitals');
-            const querySnapshot = await getDocs(hospitalsRef);
-
-            const hospitalNames = [];
-            querySnapshot.forEach((doc) => {
-                const hospitalData = doc.data();
-                hospitalNames.push(hospitalData.hospitalName);
-            });
-
-            return hospitalNames;
-        };
-
-
-        appointmentForm.addEventListener('DOMContentLoaded', async () => {
-            const hospitalNames = await getHospitals();
-
-            const hospitalSelect = document.getElementById('hospitalType');
-            hospitalNames.forEach(hospitalName => {
-                const option = document.createElement('option');
-                option.value = hospitalName;
-                option.textContent = hospitalName;
-                hospitalSelect.appendChild(option);
-            });
-        });
-
-
+      });
     </script>
-</body>
-
+  </body>
 </html>
