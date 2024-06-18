@@ -248,7 +248,7 @@
             const userHistoryRef = collection(db, 'user_history', userId);
             await addDoc(userHistoryRef, appointmentData);
 
-            const hospitalUserId = ;
+            const hospitalUserId = hospitalType;
             const patientAppointmentRef = collection(db, 'patient_appointments', hospitalUserId);
             await addDoc(patientAppointmentRef, appointmentData);
 
