@@ -146,45 +146,42 @@
             <img src="images/home.png" alt="Home Icon">
             <span>Home</span>
         </div>
-        <div class="menu-item" onclick="window.location.href='history.html';">
-            <img src="images/history.png" alt="Medical History Icon">
-            <span>Medical History</span>
+        <div class="menu-item" onclick="window.location.href='patient_history.html';">
+            <img src="images/history.png" alt="Appointment History Icon">
+            <span>Appointment History</span>
         </div>
-        <div class="menu-item" onclick="window.location.href='record.html';">
-            <img src="images/record.png" alt="Medical Record Icon">
-            <span>Medical Record</span>
+        <div class="menu-item" onclick="window.location.href='patient_record.html';">
+            <img src="images/record.png" alt="Record Icon">
+            <span>Store Patient Data</span>
         </div>
-        <div class="menu-item" onclick="window.location.href='bot.html';">
-            <img src="images/bot.png" alt="Chat with Linkxy Icon">
-            <span>Chat with Linkxy</span>
-        </div>
-        <div class="menu-item" onclick="window.location.href='appointment.html';">
+        <div class="menu-item" onclick="window.location.href='patient_appointment.html';">
             <img src="images/appointment.png" alt="Make Appointment Icon">
-            <span>Make appointment</span>
+            <span>View patient appointment</span>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const hospitalName = sessionStorage.setItem('hospitalName', hospitalName);
-            const establishmentDate = sessionStorage.setItem('establishmentDate', establishmentDate);
-            const address = sessionStorage.setItem('address', address);
-            const city = sessionStorage.setItem('city', city);
-            const state = sessionStorage.setItem('state', state);
-            const country = sessionStorage.setItem('country', country);
-            const phoneNumber = sessionStorage.setItem('phoneNumber', phoneNumber);
-            const email = sessionStorage.setItem('email', email);
-            const website = sessionStorage.setItem('website', website);
-            const hospitalType = sessionStorage.setItem('hospitalType', hospitalType);
-            const emergencyContact = sessionStorage.setItem('emergencyContact', emergencyContact);
+            const hospitalName = sessionStorage.getItem('hospitalName');
+            const establishmentDate = sessionStorage.getItem('establishmentDate');
+            const address = sessionStorage.getItem('address');
+            const city = sessionStorage.getItem('city');
+            const state = sessionStorage.getItem('state');
+            const country = sessionStorage.getItem('country');
+            const phoneNumber = sessionStorage.getItem('phoneNumber');
+            const email = sessionStorage.getItem('email');
+            const website = sessionStorage.getItem('website');
+            const hospitalType = sessionStorage.getItem('hospitalType');
+            const emergencyContact = sessionStorage.getItem('emergencyContact');
 
 
 
-            if (!userFullname) {
+            if (!hospitalName) {
                 window.location.href = "login.html";
             } else {
                 console.log('what are you looking for is not here the api key are blocked to allow only request from this site')
             }
+
 
             document.getElementById('Hospital_Name').innerText = hospitalName;
             document.getElementById('address').innerText = address;
