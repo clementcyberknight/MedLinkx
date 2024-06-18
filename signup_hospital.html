@@ -384,6 +384,7 @@
               messageDiv.className = "success-message";
               messageDiv.textContent = "User signed up successfully!";
               document.body.appendChild(messageDiv);
+              addHospital(hospitalName);
               setTimeout(() => document.body.removeChild(messageDiv), 3000);
               window.location.href = "login.html";
             }
@@ -431,6 +432,7 @@
             await updateDoc(docSnapshot.ref, {
               hospitalNames: updatedHospitalNames,
             });
+            console.log(updatedHospitalNames);
           } else {
             console.error('No documents found in "hospitals" collection.');
           }
