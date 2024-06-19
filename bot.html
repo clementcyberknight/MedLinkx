@@ -191,6 +191,8 @@
         position: fixed;
         width: 100%;
         bottom: 0;
+        transition: opacity 0.5s ease;
+        opacity: 1;
       }
 
       .footer p {
@@ -204,6 +206,9 @@
 
       .footer a:hover {
         text-decoration: underline;
+      }
+      .footer.hidden {
+        opacity: 0;
       }
     </style>
   </head>
@@ -231,7 +236,7 @@
         <img src="images/send_icon.png" alt="Send Button" class="send-button" />
       </div>
     </div>
-    <div class="footer">
+    <div class="footer" id="footer">
       <p>&copy; <span id="year"></span> Medlinkx. All rights reserved.</p>
       <p>
         Developed by
@@ -242,6 +247,12 @@
     </div>
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
+      document.addEventListener("DOMContentLoaded", function () {
+        const footer = document.getElementById("footer");
+        setTimeout(function () {
+          footer.classList.add("hidden");
+        }, 5000);
+      });
     </script>
     <script type="module">
       document.addEventListener("DOMContentLoaded", function () {
