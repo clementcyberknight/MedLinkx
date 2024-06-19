@@ -111,6 +111,7 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+      loadAppointmentHistory();
 
       async function loadAppointmentHistory() {
         const userID = sessionStorage.getItem("userID");
