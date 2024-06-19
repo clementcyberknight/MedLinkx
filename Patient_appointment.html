@@ -118,6 +118,7 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+      loadHospitalAppointments();
 
       function isFutureAppointment(appointmentDate, appointmentTime) {
         const currentDateTime = new Date();

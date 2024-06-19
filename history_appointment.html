@@ -116,6 +116,7 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+      loadHospitalAppointments();
 
       async function loadHospitalAppointments() {
         const hospital = sessionStorage.getItem("hospitalName"); // Assuming hospitalID is stored in sessionStorage
