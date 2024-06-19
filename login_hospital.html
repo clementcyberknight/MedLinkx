@@ -34,7 +34,7 @@
 
         header .logo img {
             height: 50px;
-            padding: 10px;
+            padding: 13px;
         }
 
         header .home-icon img {
@@ -172,19 +172,20 @@
         login_form.addEventListener('submit', async (evt) => {
             evt.preventDefault();
             spinner.style.display = 'block';
-            sessionStorage.setItem('userEmail', login_email.value);
 
             try {
                 const credentials = await signInWithEmailAndPassword(auth, login_email.value, login_password.value);
                 const user = credentials.user;
+                console.log("User ID:", user.uid);
                 const docRef = doc(db, "hospital_data", user.uid);
                 const docSnap = await getDoc(docRef);
-                sessionStorage.setItem('userEmail', login_email.value);
 
                 if (docSnap.exists()) {
                     const userData = docSnap.data();
 
+                    sessionStorage.setItem('userEmail', login_email.value);
                     sessionStorage.setItem('hospitalName', userData.hospitalName);
+                    sessionStorage.setItem("userID", user.uid);
                     sessionStorage.setItem('establishmentDate', userData.establishmentDate);
                     sessionStorage.setItem('address', userData.address);
                     sessionStorage.setItem('city', userData.city);

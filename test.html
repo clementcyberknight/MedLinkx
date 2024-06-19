@@ -1,134 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Medlinkx</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Patient Records - MedLink</title>
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f4f8;
-            margin: 0;
-        }
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+        margin: 0;
+      }
 
+      header {
+        background-color: #ffffff;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 70px;
+      }
+
+      header .logo img {
+        height: 50px;
+        padding: 14px;
+      }
+
+      header .home-icon img {
+        height: 40px;
+        cursor: pointer;
+        padding: 10px;
+      }
+
+      .container {
+        background: #dfd9d9;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        width: 800px;
+        margin-top: 1350px;
+      }
+
+      h3 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .record {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .record div {
+        margin-bottom: 10px;
+      }
+
+      .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @media (max-width: 600px) {
         header {
-            background-color: #FFFFFF;
-            padding: 10px 20px;
-            text-align: left;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          height: 60px;
         }
 
         header .logo img {
-            height: 50px;
+          height: 40px;
         }
 
         header .home-icon img {
-            height: 40px;
-            cursor: pointer;
+          height: 30px;
         }
 
         .container {
-            text-align: center;
-            padding: 20px;
-            border-radius: 12px;
-            background-color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            margin-top: 80px;
+          padding: 15px;
+          margin-top: 80px;
         }
 
-        h1 {
-            margin-bottom: 20px;
-            font-size: 24px;
+        .record {
+          padding: 10px;
         }
 
-        .user-info {
-            margin-top: 20px;
-            text-align: left;
-            font-size: 16px;
+        .record div {
+          margin-bottom: 8px;
         }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="logo">
-            <img src="images/MedLinx.png" alt="MedLinkX logo">
-        </div>
-        <a href="index.html" class="home-icon">
-            <img src="images/home.png" alt="Home">
-        </a>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <a href="home.html" class="home-icon">
+        <img src="images/home.png" alt="Home" />
+      </a>
     </header>
+
     <div class="container">
-        <h1 id="welcome_message">Welcome!</h1>
-        <div class="user-info">
-            <p><strong>Full Name:</strong> <span id="user_fullname"></span></p>
-            <p><strong>Phone:</strong> <span id="user_phone"></span></p>
-            <p><strong>Date of Birth:</strong> <span id="user_dob"></span></p>
-            <p><strong>Medical Condition:</strong> <span id="user_medical_condition"></span></p>
-            <p><strong>Current Medication:</strong> <span id="user_current_medication"></span></p>
-            <p><strong>Allergies:</strong> <span id="user_allergies"></span></p>
-            <p><strong>Emergency Contact 1:</strong> <span id="user_emergency_contact1"></span></p>
-            <p><strong>Relationship 1:</strong> <span id="user_relationship1"></span></p>
-            <p><strong>Emergency Contact 2:</strong> <span id="user_emergency_contact2"></span></p>
-            <p><strong>Relationship 2:</strong> <span id="user_relationship2"></span></p>
-            <p><strong>Nationality:</strong> <span id="user_nationality"></span></p>
-            <p><strong>Gender:</strong> <span id="user_gender"></span></p>
-            <p><strong>Height:</strong> <span id="user_height"></span></p>
-            <p><strong>Weight:</strong> <span id="user_weight"></span></p>
-        </div>
+      <h3>Patient Records</h3>
+      <div id="recordsContainer"></div>
+      <div class="spinner" id="spinner"></div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const userFullname = sessionStorage.getItem('userFullname');
-            const userPhone = sessionStorage.getItem('userPhone');
-            const userDOB = sessionStorage.getItem('userDOB');
-            const userMedicalCondition = sessionStorage.getItem('userMedicalCondition');
-            const userCurrentMedication = sessionStorage.getItem('userCurrentMedication');
-            const userAllergies = sessionStorage.getItem('userAllergies');
-            const userEmergencyContact1 = sessionStorage.getItem('userEmergencyContact1');
-            const userRelationship1 = sessionStorage.getItem('userRelationship1');
-            const userEmergencyContact2 = sessionStorage.getItem('userEmergencyContact2');
-            const userRelationship2 = sessionStorage.getItem('userRelationship2');
-            const userNationality = sessionStorage.getItem('userNationality');
-            const userGender = sessionStorage.getItem('userGender');
-            const userHeight = sessionStorage.getItem('userHeight');
-            const userWeight = sessionStorage.getItem('userWeight');
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-            document.getElementById('welcome_message').innerText = `Welcome, ${userFullname}!`;
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
 
-            document.getElementById('user_fullname').innerText = userFullname;
-            document.getElementById('user_email').innerText = userEmail;
-            document.getElementById('user_phone').innerText = userPhone;
-            document.getElementById('user_dob').innerText = userDOB;
-            document.getElementById('user_medical_condition').innerText = userMedicalCondition;
-            document.getElementById('user_current_medication').innerText = userCurrentMedication;
-            document.getElementById('user_allergies').innerText = userAllergies;
-            document.getElementById('user_emergency_contact1').innerText = userEmergencyContact1;
-            document.getElementById('user_relationship1').innerText = userRelationship1;
-            document.getElementById('user_emergency_contact2').innerText = userEmergencyContact2;
-            document.getElementById('user_relationship2').innerText = userRelationship2;
-            document.getElementById('user_nationality').innerText = userNationality;
-            document.getElementById('user_gender').innerText = userGender;
-            document.getElementById('user_height').innerText = userHeight;
-            document.getElementById('user_weight').innerText = userWeight;
-        });
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const recordsContainer = document.getElementById("recordsContainer");
+      const spinner = document.getElementById("spinner");
+
+      const fetchRecords = async () => {
+        spinner.style.display = "block";
+
+        const hospitalUserId = sessionStorage.getItem("userID"); // Retrieve the actual hospitalUserId from your application logic
+
+        if (!hospitalUserId) {
+          recordsContainer.innerHTML =
+            "<div class='alert'>Error: Hospital user ID is missing.</div>";
+          spinner.style.display = "none";
+          return;
+        }
+
+        const patientrecordsCollectionRef = collection(
+          db,
+          "patient_records",
+          hospitalUserId,
+          "records"
+        );
+
+        try {
+          const querySnapshot = await getDocs(patientrecordsCollectionRef);
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const recordElement = document.createElement("div");
+            recordElement.classList.add("record");
+
+            recordElement.innerHTML = `
+              <div><strong>Name:</strong> ${data.name}</div>
+              <div><strong>Date of Birth:</strong> ${data.dob}</div>
+              <div><strong>Gender:</strong> ${data.gender}</div>
+              <div><strong>Patient ID:</strong> ${data.patientId}</div>
+              <div><strong>Address:</strong> ${data.address}</div>
+              <div><strong>Phone:</strong> ${data.phone}</div>
+              <div><strong>Email:</strong> ${data.email}</div>
+              <div><strong>Emergency Contact:</strong> ${data.emergencyContact}</div>
+              <div><strong>Emergency Phone:</strong> ${data.emergencyPhone}</div>
+              <div><strong>Relation:</strong> ${data.relation}</div>
+              <div><strong>Allergies:</strong> ${data.allergies}</div>
+              <div><strong>Current Medications:</strong> ${data.medications}</div>
+              <div><strong>Past Conditions:</strong> ${data.pastConditions}</div>
+              <div><strong>Family History:</strong> ${data.familyHistory}</div>
+              <div><strong>Height:</strong> ${data.height}</div>
+              <div><strong>Weight:</strong> ${data.weight}</div>
+              <div><strong>Blood Pressure:</strong> ${data.bloodPressure}</div>
+              <div><strong>Heart Rate:</strong> ${data.heartRate}</div>
+            `;
+
+            recordsContainer.appendChild(recordElement);
+          });
+        } catch (error) {
+          console.error("Error fetching documents: ", error);
+          recordsContainer.innerHTML =
+            "<div class='alert'>Error: Could not fetch records.</div>";
+        } finally {
+          spinner.style.display = "none";
+        }
+      };
+
+      fetchRecords();
     </script>
-</body>
-
+  </body>
 </html>
