@@ -3,27 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>View Patient Records - MedLink</title>
+    <title>Linkxy</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="icon"
       sizes="16x16"
-      href="images/MedLinx.png"
+      href="images/linkxy.png"
       type="image/x-png"
     />
     <style>
-      body {
-        font-family: "Roboto", sans-serif;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f0f4f8;
+      * {
         margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
+
+      body,
+      html {
+        height: 100%;
+        background-color: #f4f4f9;
+        color: #333;
       }
 
       header {
-        background-color: #ffffff;
+        background-color: #f3f1f1;
+        padding: 10px 20px;
         text-align: left;
         width: 100%;
         position: fixed;
@@ -33,92 +41,173 @@
         justify-content: space-between;
         align-items: center;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        height: 70px;
       }
 
       header .logo img {
         height: 50px;
-        padding: 14px;
+        padding-left: 10px;
       }
 
-      header .home-icon img {
-        height: 40px;
+      header .settings-icon img {
+        height: 30px;
         cursor: pointer;
-        padding: 10px;
+        padding-right: 10px;
       }
 
-      .container {
-        background: #dfd9d9;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        width: 800px;
-        margin-top: 1350px;
+      .markdown {
+        line-height: 1.6;
+        font-size: 16px;
       }
 
-      h3 {
-        text-align: center;
-        margin-bottom: 20px;
+      .markdown h2 {
+        font-size: 1.5em;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #333;
       }
 
-      .record {
-        background: #f9f9f9;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
+      .markdown ul {
+        margin-left: 20px;
+        list-style-type: disc;
       }
 
-      .record div {
+      .markdown li {
+        margin-bottom: 5px;
+      }
+
+      .markdown strong {
+        font-weight: bold;
+      }
+
+      .markdown em {
+        font-style: italic;
+      }
+
+      .markdown div {
         margin-bottom: 10px;
       }
 
-      .spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border: 4px solid rgba(0, 0, 0, 0.1);
-        border-top: 4px solid #007bff;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
+      .main {
+        display: flex;
+        flex-direction: column;
+        padding: 80px 20px 20px 20px;
+        height: calc(100vh - 60px);
+        /* Adjust height to account for the header */
       }
 
-      @keyframes spin {
+      .chat-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        /* Adjust margin to accommodate footer */
+      }
+
+      .search-box {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        padding: 20px 20px;
+        /* Increase padding for a larger box */
+        border-radius: 25px;
+        margin-bottom: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        font-size: 24px;
+        margin-top: 10px;
+        height: 55px;
+        /* Increase height for a larger box */
+      }
+
+      .search-box input {
+        flex: 1;
+        border: none;
+        background: none;
+        margin-left: 10px;
+        outline: none;
+        font-size: 16px; /* Adjust font size for a better fit on mobile */
+      }
+
+      .search-box img {
+        width: 24px;
+        cursor: pointer;
+      }
+
+      .message {
+        margin: 5px;
+        padding: 10px;
+        border-radius: 10px;
+        color: white;
+      }
+
+      .user-message {
+        background-color: #228b22;
+        text-align: right;
+      }
+
+      .ai-response {
+        background-color: #2196f3;
+        text-align: left;
+      }
+
+      .skeleton-loading {
+        display: none;
+      }
+
+      .skeleton-loading.active {
+        display: block;
+      }
+
+      .skeleton-loading .message {
+        background-color: #a1a1a1;
+        /* Gray background */
+        animation: pulse 1.5s infinite;
+        /* Animation */
+      }
+
+      @keyframes pulse {
         0% {
-          transform: rotate(0deg);
+          opacity: 0.6;
         }
+
+        50% {
+          opacity: 0.9;
+        }
+
         100% {
-          transform: rotate(360deg);
+          opacity: 0.6;
         }
       }
-      @media (max-width: 600px) {
-        header {
-          height: 60px;
-        }
 
-        header .logo img {
-          height: 40px;
-        }
+      .message-label {
+        font-size: 10px;
+        opacity: 0.8;
+      }
 
-        header .home-icon img {
-          height: 30px;
-        }
+      .footer {
+        background-color: #f3f1f1;
+        text-align: center;
+        padding: 20px 10px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
 
-        .container {
-          padding: 15px;
-          margin-top: 80px;
-        }
+      .footer p {
+        font-size: 14px;
+        color: #333;
+      }
 
-        .record {
-          padding: 10px;
-        }
+      .footer a {
+        color: #2196f3;
+        text-decoration: none;
+      }
 
-        .record div {
-          margin-bottom: 8px;
-        }
+      .footer a:hover {
+        text-decoration: underline;
       }
     </style>
   </head>
@@ -126,101 +215,161 @@
   <body>
     <header>
       <div class="logo">
-        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+        <img src="images/linkxy.png" alt="MedLinkX logo" />
       </div>
-      <a href="home.html" class="home-icon">
-        <img src="images/home.png" alt="Home" />
-      </a>
+      <div class="settings-icon" onclick="window.location.href='home.html';">
+        <img src="images/home.png" alt="home" />
+      </div>
     </header>
-
-    <div class="container">
-      <h3>Patient Records</h3>
-      <div id="recordsContainer"></div>
-      <div class="spinner" id="spinner"></div>
+    <div class="main">
+      <div class="chat-container" id="message-area">
+        <!-- Messages will appear here -->
+      </div>
+      <div class="skeleton-loading" id="skeleton-loading">
+        <div class="message markdown"></div>
+        <div class="message markdown"></div>
+        <div class="message markdown"></div>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Enter Prompt Here" id="user-input" />
+        <img src="images/send_icon.png" alt="Send Button" class="send-button" />
+      </div>
     </div>
-
+    <div class="footer">
+      <p>&copy; <span id="year"></span> Medlinkx. All rights reserved.</p>
+      <p>
+        Developed by
+        <a href="https://linkedin.com/in/akhimien-clement" target="_blank"
+          >Clement</a
+        >
+      </p>
+    </div>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-      import {
-        getFirestore,
-        collection,
-        getDocs,
-      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      document.addEventListener("DOMContentLoaded", function () {
+        const userEmail = sessionStorage.getItem("userEmail");
+      });
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
-        authDomain: "medlinkx.firebaseapp.com",
-        projectId: "medlinkx",
-        storageBucket: "medlinkx.appspot.com",
-        messagingSenderId: "565852723046",
-        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
-      };
+      function welcomeUser(userFullname) {
+        const welcomeMessage = `Hello ${userFullname}, Hi, i am linkxy! How can I help you today?`;
+        displayMessage(welcomeMessage, "ai-response", "AI Response");
+      }
 
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
+      import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+      const userFullname = sessionStorage.getItem("userFullname");
 
-      const recordsContainer = document.getElementById("recordsContainer");
-      const spinner = document.getElementById("spinner");
+      if (!userFullname) {
+        window.location.href = "login.html"; // Redirect if no user info
+      } else {
+        const userFullname = sessionStorage.getItem("userFullname");
+        welcomeUser(userFullname);
+      }
 
-      const fetchRecords = async () => {
-        spinner.style.display = "block";
+      const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
+      const genAI = new GoogleGenerativeAI(API_KEY);
+      const model = genAI.getGenerativeModel({
+        model: "gemini-1.5-pro-latest",
+      });
 
-        const hospitalUserId = sessionStorage.getItem("userID"); // Retrieve the actual hospitalUserId from your application logic
+      document
+        .querySelector(".send-button")
+        .addEventListener("click", handleMessage);
+      document
+        .querySelector("#user-input")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            event.preventDefault(); // Prevent form submission
+            handleMessage();
+          }
+        });
 
-        if (!hospitalUserId) {
-          recordsContainer.innerHTML =
-            "<div class='alert'>Error: Hospital user ID is missing.</div>";
-          spinner.style.display = "none";
-          return;
+      function handleMessage() {
+        const inputField = document.getElementById("user-input");
+        const prompt = inputField.value.trim();
+        if (prompt !== "") {
+          displayMessage(prompt, "user-message", "User");
+          inputField.value = ""; // Clear input field
+          run(prompt);
         }
+      }
 
-        const patientrecordsCollectionRef = collection(
-          db,
-          "patient_records",
-          hospitalUserId,
-          "records"
-        );
+      async function run(prompt) {
+        const skeletonLoading = document.getElementById("skeleton-loading");
+        skeletonLoading.classList.add("active"); // Show skeleton loading
+
+        const hardcodedPrompt = `I want you to be Linkxy, an AI doctor that helps provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips. Provide clear, concise, and accurate information in a friendly and professional tone. 'Only answer if asked what AI are you, what are you, what is your name, and anything asking about you' say 'I am Linkxy MedLinkx AI, trained by Akhimien Clement' and tell them your capabilities. Lastly, keep these user health info in mind "${sessionStorage.getItem(
+          "userFullname"
+        )}, ${sessionStorage.getItem("userDOB")}, ${sessionStorage.getItem(
+          "userHeight"
+        )}, ${sessionStorage.getItem("userGender")}, ${sessionStorage.getItem(
+          "userMedicalCondition"
+        )}, ${sessionStorage.getItem("userWeight")}, ${sessionStorage.getItem(
+          "userCurrentMedication"
+        )}, ${sessionStorage.getItem(
+          "userAllergies"
+        )}". 'Now answer this question' do not introduce yourself =>:`;
+
+        const combinedPrompt = `${hardcodedPrompt}${prompt}`;
+
+        console.log(userFullname);
 
         try {
-          const querySnapshot = await getDocs(patientrecordsCollectionRef);
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const recordElement = document.createElement("div");
-            recordElement.classList.add("record");
+          const result = await model.generateContent(combinedPrompt);
+          const response = await result.response;
+          const text = await response.text();
 
-            recordElement.innerHTML = `
-              <div><strong>Name:</strong> ${data.name}</div>
-              <div><strong>Date of Birth:</strong> ${data.dob}</div>
-              <div><strong>Gender:</strong> ${data.gender}</div>
-              <div><strong>Patient ID:</strong> ${data.patientId}</div>
-              <div><strong>Address:</strong> ${data.address}</div>
-              <div><strong>Phone:</strong> ${data.phone}</div>
-              <div><strong>Email:</strong> ${data.email}</div>
-              <div><strong>Emergency Contact:</strong> ${data.emergencyContact}</div>
-              <div><strong>Emergency Phone:</strong> ${data.emergencyPhone}</div>
-              <div><strong>Relation:</strong> ${data.relation}</div>
-              <div><strong>Allergies:</strong> ${data.allergies}</div>
-              <div><strong>Current Medications:</strong> ${data.medications}</div>
-              <div><strong>Past Conditions:</strong> ${data.pastConditions}</div>
-              <div><strong>Family History:</strong> ${data.familyHistory}</div>
-              <div><strong>Height:</strong> ${data.height}</div>
-              <div><strong>Weight:</strong> ${data.weight}</div>
-              <div><strong>Blood Pressure:</strong> ${data.bloodPressure}</div>
-              <div><strong>Heart Rate:</strong> ${data.heartRate}</div>
-            `;
-
-            recordsContainer.appendChild(recordElement);
-          });
+          displayMessage(text, "ai-response", "AI Response");
         } catch (error) {
-          console.error("Error fetching documents: ", error);
-          recordsContainer.innerHTML =
-            "<div class='alert'>Error: Could not fetch records.</div>";
+          console.error("Error generating content:", error);
+          displayMessage(
+            "Sorry, there was an error processing your request due to safety concern. Please try again later.",
+            "ai-response",
+            "AI Response"
+          );
         } finally {
-          spinner.style.display = "none";
+          skeletonLoading.classList.remove("active"); // Hide skeleton loading after response
         }
-      };
+      }
 
-      fetchRecords();
+      function displayMessage(messageText, cssClass, label) {
+        const messageArea = document.getElementById("message-area");
+        let messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", cssClass, "markdown");
+
+        let textNode = document.createElement("div");
+        // Convert markdown to HTML
+        textNode.innerHTML = markdownToHTML(messageText);
+
+        let labelNode = document.createElement("div");
+        labelNode.classList.add("message-label");
+        labelNode.textContent = label;
+
+        messageDiv.appendChild(labelNode);
+        messageDiv.appendChild(textNode);
+        messageArea.appendChild(messageDiv);
+
+        messageArea.scrollTop = messageArea.scrollHeight; // Auto scroll to the bottom
+      }
+      function markdownToHTML(markdownText) {
+        // Converts markdown bold **text** to HTML bold <strong>text</strong>
+        markdownText = markdownText.replace(
+          /\*\*(.*?)\*\*/g,
+          "<strong>$1</strong>"
+        );
+        // Converts markdown italic *text* to HTML italic <em>text</em>
+        markdownText = markdownText.replace(/\*(.*?)\*/g, "<em>$1</em>");
+        // Converts markdown bullets * item to HTML list <li>item</li>
+        markdownText = markdownText
+          .replace(/^\s*\*\s+(.*)/gm, "<li>$1</li>")
+          .replace(/<\/li>\n<li>/g, "</li><li>");
+        // Wraps lines that are list items with <ul></ul>
+        if (markdownText.includes("<li>")) {
+          markdownText = "<ul>" + markdownText + "</ul>";
+        }
+        return markdownText;
+      }
     </script>
   </body>
 </html>
