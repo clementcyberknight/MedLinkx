@@ -1,489 +1,520 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MedLinkX</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <meta name="description"
-        content="MedLinkX health platform designed to streamline medical record management, appointment scheduling, and provide AI-driven first aid assistance.">
-    <meta name="keywords"
-        content="Medical Records,MedLinkX, medlinkx, Medlinkx, health management, appointment scheduling, First Aid AI, Health AI, digital health, ">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      name="description"
+      content="MedLinkX health platform designed to streamline medical record management, appointment scheduling, and provide AI-driven first aid assistance."
+    />
+    <meta
+      name="keywords"
+      content="Medical Records,MedLinkX, medlinkx, Medlinkx, health management, appointment scheduling, First Aid AI, Health AI, digital health, "
+    />
     <meta name="robots" content="index, follow" />
     <meta name="googlebot" content="index, follow" />
-    <link rel="icon" href="./images/MedLinx.png" type="image/x-png">
+    <link rel="icon" href="./images/MedLinx.png" type="image/x-png" />
     <style>
-        /* Existing CSS */
+      /* Existing CSS */
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Base Styles */
+      body {
+        font-family: "Arial", sans-serif;
+        line-height: 1.6;
+        color: #ffffff;
+        background-color: #007bff;
+      }
+
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        max-width: 1200px;
+        padding: 20px;
+      }
+
+      /* Header Styles */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #ffffff;
+        padding: 10px 20px;
+        position: relative;
+      }
+
+      header .logo img {
+        height: 40px;
+      }
+
+      header .nav-buttons button {
+        background-color: #ffa500;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        margin: 0 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      header .nav-buttons button:hover {
+        opacity: 0.9;
+      }
+
+      header nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+      }
+
+      header nav ul li {
+        margin: 0 15px;
+      }
+
+      header nav ul li a {
+        color: #000000;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      .hero {
+        background: #007bff;
+        color: white;
+        text-align: center;
+        padding: 80px 0;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      .hero p {
+        font-size: 24px;
+        margin-bottom: 30px;
+      }
+
+      .hero .btn-primary {
+        background-color: #ffa500;
+        color: white;
+        text-decoration: none;
+        padding: 15px 30px;
+        border-radius: 5px;
+        font-size: 18px;
+      }
+
+      .hero .btn-primary:hover {
+        opacity: 0.9;
+      }
+
+      /* Features Section Styles */
+      .features {
+        background: white;
+        padding: 50px 0;
+      }
+
+      .features h2 {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .feature-list {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+      }
+
+      .feature {
+        text-align: center;
+        width: 45%;
+        margin-bottom: 20px;
+      }
+
+      .feature img {
+        height: 50px;
+        margin-bottom: 15px;
+      }
+
+      .feature h3 {
+        margin-bottom: 10px;
+      }
+
+      .feature p {
+        font-size: 16px;
+        color: #666;
+      }
+
+      /* About Section Styles */
+      .about {
+        background: #f4f4f4;
+        padding: 50px 0;
+      }
+
+      .about h2 {
+        text-align: center;
+        color: #000000;
+        margin-bottom: 20px;
+      }
+
+      .about p {
+        text-align: center;
+        font-size: 18px;
+        color: #000000;
+        margin: 0 auto;
+        width: 70%;
+      }
+
+      /* Testimonials Section Styles */
+      .testimonials {
+        background: white;
+        padding: 50px 0;
+      }
+
+      .testimonials h2 {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .testimonial-list {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+      }
+
+      .testimonial {
+        width: 45%;
+        background: #e2dddd;
+        color: #000000;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .testimonial p {
+        margin-bottom: 10px;
+        font-style: italic;
+      }
+
+      /* Footer Styles */
+      footer {
+        background: #222;
+        color: #fff;
+        text-align: center;
+        padding: 40px 0;
+        font-size: 14px;
+      }
+
+      footer .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      footer .footer-links {
+        margin-bottom: 20px;
+      }
+
+      footer .footer-links a {
+        color: #ffa500;
+        text-decoration: none;
+        margin: 0 15px;
+        font-size: 16px;
+      }
+
+      footer .footer-links a:hover {
+        text-decoration: underline;
+      }
+
+      footer .social-media {
+        margin-bottom: 20px;
+      }
+
+      footer .social-media a {
+        display: inline-block;
+        margin: 0 10px;
+      }
+
+      footer .social-media a img {
+        height: 30px;
+        transition: transform 0.3s;
+      }
+
+      footer .social-media a:hover img {
+        transform: scale(1.1);
+      }
+
+      footer p {
+        margin-top: 10px;
+        color: #bbb;
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e6f2f5;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #ffffff;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #007ea6;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        header {
+          flex-direction: row;
+          /* Ensure the header stays in a row layout */
+          justify-content: space-between;
+          /* Distribute space evenly */
+          align-items: center;
+          /* Center align items vertically */
         }
 
-        /* Base Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #ffffff;
-            background-color: #007BFF;
+        header .nav-buttons {
+          display: none;
+        }
+
+        header nav {
+          display: none;
+        }
+
+        .menu-icon {
+          display: block;
+          cursor: pointer;
+        }
+
+        .menu-icon img {
+          height: 30px;
+          width: 30px;
+        }
+
+        .mobile-nav {
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          background-color: #ffffff;
+          position: absolute;
+          top: 60px;
+          width: 100%;
+          padding: 10px 0;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-nav a {
+          color: #000000;
+          padding: 10px 0;
+          text-decoration: none;
+          font-size: 18px;
+          width: 100%;
+          text-align: center;
+        }
+
+        .mobile-nav .nav-buttons {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .mobile-nav .nav-buttons button {
+          background-color: #ffa500;
+          color: #ffffff;
+          border: none;
+          padding: 10px;
+          margin: 5px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
         }
 
         .container {
-            width: 80%;
-            margin: 0 auto;
-            max-width: 1200px;
-            padding: 20px;
+          width: 100%;
+          padding: 0;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .menu-icon {
+          display: none;
         }
 
-        /* Header Styles */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ffffff;
-            padding: 10px 20px;
-            position: relative;
+        .mobile-nav {
+          display: none;
         }
-
-        header .logo img {
-            height: 40px;
-        }
-
-        header .nav-buttons button {
-            background-color: #FFA500;
-            color: #FFFFFF;
-            border: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        header .nav-buttons button:hover {
-            opacity: 0.9;
-        }
-
-        header nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-        }
-
-        header nav ul li {
-            margin: 0 15px;
-        }
-
-        header nav ul li a {
-            color: #000000;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        .hero {
-            background: #007BFF;
-            color: white;
-            text-align: center;
-            padding: 80px 0;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .hero .btn-primary {
-            background-color: #FFA500;
-            color: white;
-            text-decoration: none;
-            padding: 15px 30px;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-
-        .hero .btn-primary:hover {
-            opacity: 0.9;
-        }
-
-        /* Features Section Styles */
-        .features {
-            background: white;
-            padding: 50px 0;
-        }
-
-        .features h2 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .feature-list {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        .feature {
-            text-align: center;
-            width: 45%;
-            margin-bottom: 20px;
-        }
-
-        .feature img {
-            height: 50px;
-            margin-bottom: 15px;
-        }
-
-        .feature h3 {
-            margin-bottom: 10px;
-        }
-
-        .feature p {
-            font-size: 16px;
-            color: #666;
-        }
-
-        /* About Section Styles */
-        .about {
-            background: #f4f4f4;
-            padding: 50px 0;
-        }
-
-        .about h2 {
-            text-align: center;
-            color: #000000;
-            margin-bottom: 20px;
-        }
-
-        .about p {
-            text-align: center;
-            font-size: 18px;
-            color: #000000;
-            margin: 0 auto;
-            width: 70%;
-        }
-
-        /* Testimonials Section Styles */
-        .testimonials {
-            background: white;
-            padding: 50px 0;
-        }
-
-        .testimonials h2 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .testimonial-list {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        .testimonial {
-            width: 45%;
-            background: #e2dddd;
-            color: #000000;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .testimonial p {
-            margin-bottom: 10px;
-            font-style: italic;
-        }
-
-        /* Footer Styles */
-        footer {
-            background: #222;
-            color: #fff;
-            text-align: center;
-            padding: 40px 0;
-            font-size: 14px;
-        }
-
-        footer .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        footer .footer-links {
-            margin-bottom: 20px;
-        }
-
-        footer .footer-links a {
-            color: #FFA500;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 16px;
-        }
-
-        footer .footer-links a:hover {
-            text-decoration: underline;
-        }
-
-        footer .social-media {
-            margin-bottom: 20px;
-        }
-
-        footer .social-media a {
-            display: inline-block;
-            margin: 0 10px;
-        }
-
-        footer .social-media a img {
-            height: 30px;
-            transition: transform 0.3s;
-        }
-
-        footer .social-media a:hover img {
-            transform: scale(1.1);
-        }
-
-        footer p {
-            margin-top: 10px;
-            color: #bbb;
-        }
-
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #e6f2f5;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #ffffff;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #007ea6;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: row;
-                /* Ensure the header stays in a row layout */
-                justify-content: space-between;
-                /* Distribute space evenly */
-                align-items: center;
-                /* Center align items vertically */
-            }
-
-            header .nav-buttons {
-                display: none;
-            }
-
-            header nav {
-                display: none;
-            }
-
-            .menu-icon {
-                display: block;
-                cursor: pointer;
-            }
-
-            .menu-icon img {
-                height: 30px;
-                width: 30px;
-            }
-
-            .mobile-nav {
-                display: none;
-                flex-direction: column;
-                align-items: center;
-                background-color: #ffffff;
-                position: absolute;
-                top: 60px;
-                width: 100%;
-                padding: 10px 0;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            .mobile-nav a {
-                color: #000000;
-                padding: 10px 0;
-                text-decoration: none;
-                font-size: 18px;
-                width: 100%;
-                text-align: center;
-            }
-
-            .mobile-nav .nav-buttons {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .mobile-nav .nav-buttons button {
-                background-color: #FFA500;
-                color: #FFFFFF;
-                border: none;
-                padding: 10px;
-                margin: 5px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 16px;
-            }
-
-            .container {
-                width: 100%;
-                padding: 0;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .menu-icon {
-                display: none;
-            }
-
-            .mobile-nav {
-                display: none;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Header Section -->
     <header>
-        <div class="logo">
-            <img src="images/MedLinx.png" alt="MedLinkX Logo">
-        </div>
-        <nav class="nav-1">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-        <div class="nav-buttons">
-            <button onclick="location.href='/login.html'">Login</button>
-            <button onclick="location.href='/signup.html'">Signup</button>
-        </div>
-        <div class="menu-icon">
-            <img src="images/menu.png" alt="Menu Icon">
-        </div>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX Logo" />
+      </div>
+      <nav class="nav-1">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-buttons">
+        <button onclick="location.href='/login.html'">Login</button>
+        <button onclick="location.href='/signup.html'">Signup</button>
+      </div>
+      <div class="menu-icon">
+        <img src="images/menu.png" alt="Menu Icon" />
+      </div>
     </header>
     <div class="mobile-nav" id="mobile-nav">
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-        <div class="nav-buttons">
-            <button onclick="location.href='/login.html'">Login</button>
-            <button onclick="location.href='/signup.html'">Signup</button>
-        </div>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-buttons">
+        <button onclick="location.href='/login.html'">Login</button>
+        <button onclick="location.href='/signup.html'">Signup</button>
+      </div>
     </div>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="container">
-            <h1>Healthcare Connectivity At Your Tip</h1>
-            <p>Your health, our priority. Manage your health records, schedule appointments, and get help from linkxy a
-                first aid AI assistance with MedLinkX.</p>
-            <a href="signup.html" class="btn btn-primary">Get Started</a>
-        </div>
+      <div class="container">
+        <h1>Healthcare Connectivity At Your Tip</h1>
+        <p>
+          Your health, our priority. Manage your health records, schedule
+          appointments, and get help from linkxy a first aid AI assistance with
+          MedLinkX.
+        </p>
+        <a href="signup.html" class="btn btn-primary">Get Started</a>
+      </div>
     </section>
 
     <!-- Features Section -->
     <section id="features" class="features">
-        <div class="container">
-            <h2>Our Features</h2>
-            <div class="feature-list">
-                <div class="feature">
-                    <img src="images/safe.png" alt="Health Records Icon"> <!-- Replace with your icons -->
-                    <h3>Centralized Health Records</h3>
-                    <p>Securely store and access your medical record anytime, anywhere.</p>
-                </div>
-                <div class="feature">
-                    <img src="images/hosp.png" alt="Healthcare Connectivity Icon">
-                    <h3>Smart Appointment Scheduling</h3>
-                    <p>Book and manage your healthcare appointments seamlessly.</p>
-                </div>
-                <div class="feature">
-                    <img src="images/firstaid.png" alt="AI-Powered First Aid Icon">
-                    <h3>AI-Powered First Aid</h3>
-                    <p>Receive instant first aid guidance through our advanced AI system.</p>
-                </div>
-                <div class="feature">
-                    <img src="images/calender.png" alt="Keep track of medical history Icon">
-                    <h3>Health history</h3>
-                    <p>Keep track of every health related issue and vist to the hospital</p>
-                </div>
-            </div>
+      <div class="container">
+        <h2>Our Features</h2>
+        <div class="feature-list">
+          <div class="feature">
+            <img src="images/safe.png" alt="Health Records Icon" />
+            <!-- Replace with your icons -->
+            <h3>Centralized Health Records</h3>
+            <p>
+              Securely store and access your medical record anytime, anywhere.
+            </p>
+          </div>
+          <div class="feature">
+            <img src="images/hosp.png" alt="Healthcare Connectivity Icon" />
+            <h3>Smart Appointment Scheduling</h3>
+            <p>Book and manage your healthcare appointments seamlessly.</p>
+          </div>
+          <div class="feature">
+            <img src="images/firstaid.png" alt="AI-Powered First Aid Icon" />
+            <h3>AI-Powered First Aid</h3>
+            <p>
+              Receive instant first aid guidance through our advanced AI system.
+            </p>
+          </div>
+          <div class="feature">
+            <img
+              src="images/calender.png"
+              alt="Keep track of medical history Icon"
+            />
+            <h3>Health history</h3>
+            <p>
+              Keep track of every health related issue and vist to the hospital
+            </p>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- About Section -->
     <section id="about" class="about">
-        <div class="container">
-            <h2>About MedLinkX</h2>
-            <p>MedLinkX is dedicated to transforming the way healthcare is managed. Our mission is to provide a seamless
-                and connected healthcare experience for patients and providers alike.</p>
-        </div>
+      <div class="container">
+        <h2>About MedLinkX</h2>
+        <p>
+          MedLinkX is dedicated to transforming the way healthcare is managed.
+          Our mission is to provide a seamless and connected healthcare
+          experience for patients and providers alike.
+        </p>
+      </div>
     </section>
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials">
-        <div class="container">
-            <h2>What Our Users Say</h2>
-            <div class="testimonial-list">
-                <div class="testimonial">
-                    <p>"MedLinkX has made managing my health records so much easier. Highly recommend!"</p>
-                    <p>- John Doe</p>
-                </div>
-                <div class="testimonial">
-                    <p>"The AI-powered first aid feature is a lifesaver. It's like having a doctor with you all the
-                        time."</p>
-                    <p>- Jane Smith</p>
-                </div>
-            </div>
+      <div class="container">
+        <h2>What Our Users Say</h2>
+        <div class="testimonial-list">
+          <div class="testimonial">
+            <p>
+              "MedLinkX has made managing my health records so much easier.
+              Highly recommend!"
+            </p>
+            <p>- John Doe</p>
+          </div>
+          <div class="testimonial">
+            <p>
+              "The AI-powered first aid feature is a lifesaver. It's like having
+              a doctor with you all the time."
+            </p>
+            <p>- Jane Smith</p>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Footer Section -->
     <footer>
-        <div class="container">
-            <div class="footer-links">
-                <a href="privacy.html">Privacy Policy</a>
-                <a href="terms.html">Terms of Service</a>
-            </div>
-            <div id="contact" class="social-media">
-                <a href="#"><img src="images/facebook.png" alt="Facebook"></a>
-                <a href="https://x.com/clement___10"><img src="images/twitter.png" alt="Twitter"></a>
-                <a href="https://linkedin.com/in/akhimien-clement"><img src="images/linkedin.png" alt="LinkedIn"></a>
-            </div>
-            <p>&copy; 2024 MedLinkX. All rights reserved.</p>
+      <div class="container">
+        <div class="footer-links">
+          <a href="important_note.html">Privacy Policy</a>
+          <a href="important_note.html">Terms of Service</a>
         </div>
+        <div id="contact" class="social-media">
+          <a href="#"><img src="images/facebook.png" alt="Facebook" /></a>
+          <a href="https://x.com/clement___10"
+            ><img src="images/twitter.png" alt="Twitter"
+          /></a>
+          <a href="https://linkedin.com/in/akhimien-clement"
+            ><img src="images/linkedin.png" alt="LinkedIn"
+          /></a>
+        </div>
+        <p>&copy; 2024 MedLinkX. All rights reserved.</p>
+      </div>
     </footer>
     <script>
-        const menuIcon = document.querySelector('.menu-icon');
-        const mobileNav = document.getElementById('mobile-nav');
+      const menuIcon = document.querySelector(".menu-icon");
+      const mobileNav = document.getElementById("mobile-nav");
 
-        menuIcon.addEventListener('click', () => {
-            mobileNav.style.display = mobileNav.style.display === 'flex' ? 'none' : 'flex';
-        });
+      menuIcon.addEventListener("click", () => {
+        mobileNav.style.display =
+          mobileNav.style.display === "flex" ? "none" : "flex";
+      });
     </script>
-</body>
-
+  </body>
 </html>
