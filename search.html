@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Centralized Database</title>
+    <title>Centralized Database - MedLink</title>
     <link
       rel="icon"
       sizes="16x16"
@@ -38,12 +38,10 @@
 
       header .logo img {
         height: 50px;
-        padding-left: 10px;
       }
 
       header h3 {
         margin: 0;
-        padding-right: 10px;
       }
 
       header .home-icon img {
@@ -79,7 +77,7 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
 
-      .appointment-card {
+      .record-card {
         background-color: #ffffff;
         padding: 15px;
         margin-bottom: 10px;
@@ -87,17 +85,17 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
-      .appointment-card h4 {
+      .record-card h4 {
         margin: 0;
         color: #333;
       }
 
-      .appointment-card p {
+      .record-card p {
         margin: 5px 0;
         color: #666;
       }
 
-      .appointment-card p strong {
+      .record-card p strong {
         color: #333;
       }
 
@@ -138,20 +136,20 @@
       <div class="logo">
         <img src="images/MedLinx.png" alt="MedLinkX logo" />
       </div>
-      <h3>Datatbase</h3>
-      <a href="hospital_dashboard.html" class="home-icon">
+      <h3>Patient Database</h3>
+      <a href="home.html" class="home-icon">
         <img src="images/home.png" alt="Home" />
       </a>
     </header>
     <div class="container">
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search by name..." />
-        <button onclick="fetchRecords()">
+        <button onclick="filterRecords()">
           <img src="images/search.svg" alt="Search" />
         </button>
       </div>
-      <div id="appointmentHistory">
-        <!-- Appointment history will be injected here -->
+      <div id="recordHistory">
+        <!-- Patient records will be injected here -->
       </div>
     </div>
 
@@ -161,10 +159,6 @@
         getFirestore,
         collection,
         getDocs,
-        query,
-        orderBy,
-        startAt,
-        endAt,
       } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -178,56 +172,78 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+      let records = [];
+      loadPatientRecords();
 
-      const appointmentHistory = document.getElementById("appointmentHistory");
-      const searchInput = document.getElementById("searchInput");
+      async function loadPatientRecords() {
+        const recordsRef = collection(db, "Centralized_Storage");
+        const querySnapshot = await getDocs(recordsRef);
 
-      const createCard = (data) => {
-        const card = document.createElement("div");
-        card.classList.add("appointment-card");
-        card.innerHTML = `
-          <h4>${data.name}</h4>
-          <p><strong>Gender:</strong> ${data.gender}</p>
-          <p><strong>Phone:</strong> ${data.phone}</p>
-          <p><strong>Email:</strong> ${data.email}</p>
-          <p><strong>Address:</strong> ${data.address}</p>
-          <p><strong>Date of Birth:</strong> ${data.dob}</p>
-          <p><strong>Patient ID:</strong> ${data.patientId}</p>
-          <p><strong>Emergency Contact:</strong> ${data.emergencyContact}</p>
-          <p><strong>Emergency Phone:</strong> ${data.emergencyPhone}</p>
-          <p><strong>Relation:</strong> ${data.relation}</p>
-          <p><strong>Allergies:</strong> ${data.allergies}</p>
-          <p><strong>Medications:</strong> ${data.medications}</p>
-          <p><strong>Past Conditions:</strong> ${data.pastConditions}</p>
-          <p><strong>Family History:</strong> ${data.familyHistory}</p>
-          <p><strong>Height:</strong> ${data.height} ft</p>
-          <p><strong>Weight:</strong> ${data.weight} kg</p>
-          <p><strong>Blood Pressure:</strong> ${data.bloodPressure}</p>
-          <p><strong>Heart Rate:</strong> ${data.heartRate} bps</p>
-          <p><strong>Hospital Name:</strong> ${data.hospitalName}</p>
-        `;
-        return card;
-      };
-
-      const fetchRecords = async () => {
-        const searchValue = searchInput.value.toLowerCase();
-        const q = query(
-          collection(db, "appointments"),
-          orderBy("name"),
-          startAt(searchValue),
-          endAt(searchValue + "\uf8ff")
-        );
-
-        const querySnapshot = await getDocs(q);
-        appointmentHistory.innerHTML = "";
+        records = [];
         querySnapshot.forEach((doc) => {
-          appointmentHistory.appendChild(createCard(doc.data()));
+          const recordData = doc.data();
+          records.push(recordData);
         });
+
+        displayRecords(records);
+      }
+
+      function displayRecords(records) {
+        const recordHistoryContainer = document.getElementById("recordHistory");
+        recordHistoryContainer.innerHTML = "";
+
+        records.forEach((recordData) => {
+          const recordCard = document.createElement("div");
+          recordCard.classList.add("record-card");
+
+          recordCard.innerHTML = `
+          <h4>${recordData.name}</h4>
+          <p><strong>Date of Birth:</strong> ${recordData.dob}</p>
+          <p><strong>Gender:</strong> ${recordData.gender}</p>
+          <p><strong>Patient ID:</strong> ${recordData.patientId}</p>
+          <p><strong>Address:</strong> ${recordData.address}</p>
+          <p><strong>Phone:</strong> ${recordData.phone}</p>
+          <p><strong>Email:</strong> ${recordData.email || "N/A"}</p>
+          <p><strong>Emergency Contact 1:</strong> ${
+            recordData.emergencyContact || "N/A"
+          }</p>
+          <p><strong>Emergency Contact 2:</strong> ${
+            recordData.emergencyPhone || "N/A"
+          }</p>
+          <p><strong>Relation:</strong> ${recordData.relation || "N/A"}</p>
+          <p><strong>Allergies:</strong> ${recordData.allergies || "N/A"}</p>
+          <p><strong>Current Medications:</strong> ${
+            recordData.medications || "N/A"
+          }</p>
+          <p><strong>Past Conditions:</strong> ${
+            recordData.pastConditions || "N/A"
+          }</p>
+          <p><strong>Family History:</strong> ${
+            recordData.familyHistory || "N/A"
+          }</p>
+          <p><strong>Height:</strong> ${recordData.height}</p>
+          <p><strong>Weight:</strong> ${recordData.weight}</p>
+          <p><strong>Blood Pressure:</strong> ${
+            recordData.bloodPressure || "N/A"
+          }</p>
+          <p><strong>Heart Rate:</strong> ${recordData.heartRate || "N/A"}</p>
+        `;
+
+          recordHistoryContainer.appendChild(recordCard);
+        });
+      }
+
+      window.filterRecords = function () {
+        const searchInput = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const filteredRecords = records.filter((record) =>
+          record.name.toLowerCase().includes(searchInput)
+        );
+        displayRecords(filteredRecords);
       };
 
-      document
-        .querySelector(".search-bar button")
-        .addEventListener("click", fetchRecords);
+      document.addEventListener("DOMContentLoaded", loadPatientRecords);
     </script>
   </body>
 </html>
