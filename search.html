@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hospital View - Scheduled Appointments</title>
+    <title>Centralized Database</title>
     <link
       rel="icon"
       sizes="16x16"
@@ -38,10 +38,12 @@
 
       header .logo img {
         height: 50px;
+        padding-left: 10px;
       }
 
       header h3 {
         margin: 0;
+        padding-right: 10px;
       }
 
       header .home-icon img {
@@ -136,7 +138,7 @@
       <div class="logo">
         <img src="images/MedLinx.png" alt="MedLinkX logo" />
       </div>
-      <h3>Appointments History</h3>
+      <h3>Datatbase</h3>
       <a href="hospital_dashboard.html" class="home-icon">
         <img src="images/home.png" alt="Home" />
       </a>
@@ -144,7 +146,7 @@
     <div class="container">
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search by name..." />
-        <button onclick="filterAppointments()">
+        <button onclick="fetchRecords()">
           <img src="images/search.svg" alt="Search" />
         </button>
       </div>
@@ -159,6 +161,10 @@
         getFirestore,
         collection,
         getDocs,
+        query,
+        orderBy,
+        startAt,
+        endAt,
       } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -172,70 +178,56 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
-      let appointments = [];
-      loadHospitalAppointments();
 
-      async function loadHospitalAppointments() {
-        const hospital = sessionStorage.getItem("hospitalName"); // Assuming hospitalID is stored in sessionStorage
-        const hospitalID = hospital.replace(/[^a-zA-Z0-9]/g, "");
-        const appointmentsRef = collection(
-          db,
-          "patient_appointments",
-          hospitalID,
-          "appointments"
-        );
-        const querySnapshot = await getDocs(appointmentsRef);
+      const appointmentHistory = document.getElementById("appointmentHistory");
+      const searchInput = document.getElementById("searchInput");
 
-        appointments = [];
-        querySnapshot.forEach((doc) => {
-          const appointmentData = doc.data();
-          appointments.push(appointmentData);
-        });
-
-        displayAppointments(appointments);
-      }
-
-      function displayAppointments(appointments) {
-        const appointmentHistoryContainer =
-          document.getElementById("appointmentHistory");
-        appointmentHistoryContainer.innerHTML = "";
-
-        appointments.forEach((appointmentData) => {
-          const appointmentCard = document.createElement("div");
-          appointmentCard.classList.add("appointment-card");
-
-          appointmentCard.innerHTML = `
-            <h4>${appointmentData.fullName}</h4>
-            <p><strong>Date:</strong> ${appointmentData.appointmentDate}</p>
-            <p><strong>Time:</strong> ${appointmentData.appointmentTime}</p>
-            <p><strong>Gender:</strong> ${appointmentData.gender}</p>
-            <p><strong>Address:</strong> ${appointmentData.address}</p>
-            <p><strong>Phone Number:</strong> ${appointmentData.phoneNumber}</p>
-            <p><strong>Email:</strong> ${appointmentData.email}</p>
-            <p><strong>Emergency Contact:</strong> ${
-              appointmentData.emergencyContact
-            }</p>
-            <p><strong>Reason:</strong> ${appointmentData.reason}</p>
-            <p><strong>Comments:</strong> ${
-              appointmentData.comments || "N/A"
-            }</p>
-          `;
-
-          appointmentHistoryContainer.appendChild(appointmentCard);
-        });
-      }
-
-      window.filterAppointments = function () {
-        const searchInput = document
-          .getElementById("searchInput")
-          .value.toLowerCase();
-        const filteredAppointments = appointments.filter((appointment) =>
-          appointment.fullName.toLowerCase().includes(searchInput)
-        );
-        displayAppointments(filteredAppointments);
+      const createCard = (data) => {
+        const card = document.createElement("div");
+        card.classList.add("appointment-card");
+        card.innerHTML = `
+          <h4>${data.name}</h4>
+          <p><strong>Gender:</strong> ${data.gender}</p>
+          <p><strong>Phone:</strong> ${data.phone}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Address:</strong> ${data.address}</p>
+          <p><strong>Date of Birth:</strong> ${data.dob}</p>
+          <p><strong>Patient ID:</strong> ${data.patientId}</p>
+          <p><strong>Emergency Contact:</strong> ${data.emergencyContact}</p>
+          <p><strong>Emergency Phone:</strong> ${data.emergencyPhone}</p>
+          <p><strong>Relation:</strong> ${data.relation}</p>
+          <p><strong>Allergies:</strong> ${data.allergies}</p>
+          <p><strong>Medications:</strong> ${data.medications}</p>
+          <p><strong>Past Conditions:</strong> ${data.pastConditions}</p>
+          <p><strong>Family History:</strong> ${data.familyHistory}</p>
+          <p><strong>Height:</strong> ${data.height} ft</p>
+          <p><strong>Weight:</strong> ${data.weight} kg</p>
+          <p><strong>Blood Pressure:</strong> ${data.bloodPressure}</p>
+          <p><strong>Heart Rate:</strong> ${data.heartRate} bps</p>
+          <p><strong>Hospital Name:</strong> ${data.hospitalName}</p>
+        `;
+        return card;
       };
 
-      document.addEventListener("DOMContentLoaded", loadHospitalAppointments);
+      const fetchRecords = async () => {
+        const searchValue = searchInput.value.toLowerCase();
+        const q = query(
+          collection(db, "appointments"),
+          orderBy("name"),
+          startAt(searchValue),
+          endAt(searchValue + "\uf8ff")
+        );
+
+        const querySnapshot = await getDocs(q);
+        appointmentHistory.innerHTML = "";
+        querySnapshot.forEach((doc) => {
+          appointmentHistory.appendChild(createCard(doc.data()));
+        });
+      };
+
+      document
+        .querySelector(".search-bar button")
+        .addEventListener("click", fetchRecords);
     </script>
   </body>
 </html>

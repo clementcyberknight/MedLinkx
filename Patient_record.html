@@ -20,6 +20,7 @@
         height: 100vh;
         background-color: #f0f4f8;
         margin: 0;
+        padding-top: 70px; /* Adjust this value to the height of your header */
       }
       header {
         background-color: #ffffff;
@@ -212,16 +213,17 @@
         <label for="email">Email</label>
         <input type="email" id="email" name="email" />
 
-        <label for="emergencyContact">Emergency Contact</label>
+        <label for="emergencyContact">Emergency Contact 1</label>
         <input type="text" id="emergencyContact" name="emergencyContact" />
 
-        <label for="emergencyPhone">Emergency Phone</label>
+        <label for="emergencyPhone">Emergency contact 2</label>
         <input type="tel" id="emergencyPhone" name="emergencyPhone" />
 
         <label for="relation">Relation</label>
         <input type="text" id="relation" name="relation" />
 
         <h3>Medical History</h3>
+        <h4>!! in any case you do not have enter 'none'</h4>
         <label for="allergies">Allergies</label>
         <input type="text" id="allergies" name="allergies" />
 
@@ -231,7 +233,7 @@
         <label for="pastConditions">Past Conditions</label>
         <input type="text" id="pastConditions" name="pastConditions" />
 
-        <label for="familyHistory">Family History</label>
+        <label for="familyHistory">Family Historical Illness</label>
         <input type="text" id="familyHistory" name="familyHistory" />
 
         <h3>Vital Signs</h3>
@@ -276,6 +278,7 @@
       const patientForm = document.getElementById("patientForm");
       const errorAlert = document.getElementById("error_alert");
       const spinner = document.getElementById("spinner");
+      const hospitalName = sessionStorage.getItem("hospitalName");
 
       patientForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -300,6 +303,7 @@
           weight: document.getElementById("weight").value,
           bloodPressure: document.getElementById("bloodPressure").value,
           heartRate: document.getElementById("heartRate").value,
+          hospitalName: hospitalName,
         };
 
         const hospitalUserId = sessionStorage.getItem("userID"); // Retrieve the actual hospitalUserId from your application logic
@@ -318,7 +322,10 @@
           "records"
         ); // Collection reference within the hospital's subcollection
 
+        const centralCollectionRef = collection(db, "Centralized_Storage");
+
         try {
+          await addDoc(centralCollectionRef, recordsData);
           await addDoc(patientrecordsCollectionRef, recordsData);
           const successAlert = document.getElementById("success_alert");
           successAlert.classList.remove("hidden");

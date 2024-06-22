@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Linkxy</title>
+    <title>Home - Medlinkx</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
       rel="stylesheet"
@@ -11,365 +11,147 @@
     <link
       rel="icon"
       sizes="16x16"
-      href="images/linkxy.png"
+      href="images/MedLinx.png"
       type="image/x-png"
     />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+      rel="stylesheet"
+    />
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Roboto", sans-serif;
-      }
-
-      body,
-      html {
-        height: 100%;
-        background-color: #f4f4f9;
-        color: #333;
-      }
-
-      header {
-        background-color: #f3f1f1;
-        padding: 10px 20px;
-        text-align: left;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        z-index: 1000;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      header .logo img {
-        height: 50px;
-        padding-left: 10px;
-      }
-
-      header .settings-icon img {
-        height: 30px;
-        cursor: pointer;
-        padding-right: 10px;
-      }
-
-      .markdown {
-        line-height: 1.6;
-        font-size: 16px;
-      }
-
-      .markdown h2 {
-        font-size: 1.5em;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        color: #333;
-      }
-
-      .markdown ul {
-        margin-left: 20px;
-        list-style-type: disc;
-      }
-
-      .markdown li {
-        margin-bottom: 5px;
-      }
-
-      .markdown strong {
-        font-weight: bold;
-      }
-
-      .markdown em {
-        font-style: italic;
-      }
-
-      .markdown div {
-        margin-bottom: 10px;
-      }
-
-      .main {
-        display: flex;
-        flex-direction: column;
-        padding: 80px 20px 20px 20px;
-        height: calc(100vh - 60px);
-        /* Adjust height to account for the header */
-      }
-
-      .chat-container {
-        flex-grow: 1;
-        overflow-y: auto;
-        margin-bottom: 20px;
-        /* Adjust margin to accommodate footer */
-      }
-
-      .search-box {
-        display: flex;
-        align-items: center;
-        background-color: #fff;
-        padding: 20px 20px;
-        /* Increase padding for a larger box */
-        border-radius: 25px;
-        margin-bottom: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        font-size: 24px;
-        margin-top: 10px;
-        height: 55px;
-        /* Increase height for a larger box */
-      }
-
-      .search-box input {
-        flex: 1;
-        border: none;
-        background: none;
-        margin-left: 10px;
-        outline: none;
-        font-size: 16px; /* Adjust font size for a better fit on mobile */
-      }
-
-      .search-box img {
-        width: 24px;
-        cursor: pointer;
-      }
-
-      .message {
-        margin: 5px;
-        padding: 10px;
-        border-radius: 10px;
-        color: white;
-      }
-
-      .user-message {
-        background-color: #228b22;
-        text-align: right;
-      }
-
-      .ai-response {
-        background-color: #2196f3;
-        text-align: left;
-      }
-
-      .skeleton-loading {
-        display: none;
-      }
-
-      .skeleton-loading.active {
-        display: block;
-      }
-
-      .skeleton-loading .message {
-        background-color: #a1a1a1;
-        /* Gray background */
-        animation: pulse 1.5s infinite;
-        /* Animation */
-      }
-
-      @keyframes pulse {
-        0% {
-          opacity: 0.6;
-        }
-
-        50% {
-          opacity: 0.9;
-        }
-
-        100% {
-          opacity: 0.6;
-        }
-      }
-
-      .message-label {
-        font-size: 10px;
-        opacity: 0.8;
-      }
-
-      .footer {
-        background-color: #f3f1f1;
-        text-align: center;
-        padding: 20px 10px;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-      }
-
-      .footer p {
-        font-size: 14px;
-        color: #333;
-      }
-
-      .footer a {
-        color: #2196f3;
-        text-decoration: none;
-      }
-
-      .footer a:hover {
-        text-decoration: underline;
+      .dark-mode {
+        background-color: #1a202c;
+        color: #cbd5e0;
       }
     </style>
   </head>
 
-  <body>
-    <header>
-      <div class="logo">
-        <img src="images/linkxy.png" alt="MedLinkX logo" />
+  <body class="bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
+    <header
+      class="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center"
+    >
+      <div class="flex items-center">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" class="h-10 mr-3" />
+        <h1 class="text-xl font-bold">MedLinkX</h1>
       </div>
-      <div class="settings-icon" onclick="window.location.href='home.html';">
-        <img src="images/home.png" alt="home" />
+      <div class="relative">
+        <button class="settings-icon" onclick="toggleSettingsMenu()">
+          <img src="images/setting.png" alt="Settings" class="h-8" />
+        </button>
+        <div
+          class="settings-menu hidden absolute right-0 mt-2 py-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg"
+          id="settingsMenu"
+        >
+          <a href="#" class="block px-4 py-2 text-sm" onclick="toggleDarkMode()"
+            >Toggle Dark Mode</a
+          >
+          <a
+            href="index.html"
+            class="block px-4 py-2 text-sm"
+            onclick="sessionStorage.clear();"
+            >Logout</a
+          >
+        </div>
       </div>
     </header>
-    <div class="main">
-      <div class="chat-container" id="message-area">
-        <!-- Messages will appear here -->
+
+    <div class="max-w-4xl mx-auto p-4">
+      <div
+        class="profile-container bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex items-center mb-6"
+      >
+        <div class="profile-pic mr-4">
+          <img
+            src="images/user.png"
+            alt="Profile Picture"
+            class="h-16 w-16 rounded-full"
+          />
+        </div>
+        <div class="user-info">
+          <h2 id="user_fullname" class="text-xl font-semibold"></h2>
+          <p id="user_email" class="text-gray-500 dark:text-gray-400"></p>
+        </div>
       </div>
-      <div class="skeleton-loading" id="skeleton-loading">
-        <div class="message markdown"></div>
-        <div class="message markdown"></div>
-        <div class="message markdown"></div>
-      </div>
-      <div class="search-box">
-        <input type="text" placeholder="Enter Prompt Here" id="user-input" />
-        <img src="images/send_icon.png" alt="Send Button" class="send-button" />
-      </div>
-    </div>
-    <div class="footer">
-      <p>&copy; <span id="year"></span> Medlinkx. All rights reserved.</p>
-      <p>
-        Developed by
-        <a href="https://linkedin.com/in/akhimien-clement" target="_blank"
-          >Clement</a
+
+      <div class="menu-container grid grid-cols-2 gap-4">
+        <div
+          class="menu-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center cursor-pointer"
+          onclick="window.location.href='history.html';"
         >
-      </p>
+          <img
+            src="images/history.png"
+            alt="Medical History Icon"
+            class="h-10 mr-4"
+          />
+          <span class="font-medium">Medical History</span>
+        </div>
+        <div
+          class="menu-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center cursor-pointer"
+          onclick="window.location.href='record.html';"
+        >
+          <img
+            src="images/record.png"
+            alt="Medical Record Icon"
+            class="h-10 mr-4"
+          />
+          <span class="font-medium">Medical Record</span>
+        </div>
+        <div
+          class="menu-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center cursor-pointer"
+          onclick="window.location.href='bot.html';"
+        >
+          <img
+            src="images/bot.png"
+            alt="Chat with Linkxy Icon"
+            class="h-10 mr-4"
+          />
+          <span class="font-medium">Chat with Linkxy</span>
+        </div>
+        <div
+          class="menu-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center cursor-pointer"
+          onclick="window.location.href='appointment.html';"
+        >
+          <img
+            src="images/appointment.png"
+            alt="Make Appointment Icon"
+            class="h-10 mr-4"
+          />
+          <span class="font-medium">Make appointment</span>
+        </div>
+      </div>
     </div>
+
     <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
-    <script type="module">
       document.addEventListener("DOMContentLoaded", function () {
-        const userEmail = sessionStorage.getItem("userEmail");
-      });
-
-      function welcomeUser(userFullname) {
-        const welcomeMessage = `Hello ${userFullname}, Hi, i am linkxy! How can I help you today?`;
-        displayMessage(welcomeMessage, "ai-response", "AI Response");
-      }
-
-      import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
-      const userFullname = sessionStorage.getItem("userFullname");
-
-      if (!userFullname) {
-        window.location.href = "login.html"; // Redirect if no user info
-      } else {
         const userFullname = sessionStorage.getItem("userFullname");
-        welcomeUser(userFullname);
-      }
+        const userEmail = sessionStorage.getItem("userEmail");
 
-      const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
-      const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-pro-latest",
+        if (!userFullname) {
+          window.location.href = "login.html";
+        } else {
+          document.getElementById("user_fullname").innerText = userFullname;
+          document.getElementById("user_email").innerText = userEmail;
+        }
       });
 
-      document
-        .querySelector(".send-button")
-        .addEventListener("click", handleMessage);
-      document
-        .querySelector("#user-input")
-        .addEventListener("keypress", function (event) {
-          if (event.key === "Enter") {
-            event.preventDefault(); // Prevent form submission
-            handleMessage();
-          }
-        });
+      function toggleSettingsMenu() {
+        const settingsMenu = document.getElementById("settingsMenu");
+        settingsMenu.classList.toggle("hidden");
+      }
 
-      function handleMessage() {
-        const inputField = document.getElementById("user-input");
-        const prompt = inputField.value.trim();
-        if (prompt !== "") {
-          displayMessage(prompt, "user-message", "User");
-          inputField.value = ""; // Clear input field
-          run(prompt);
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+      }
+
+      document.addEventListener("click", function (event) {
+        const settingsIcon = document.querySelector(".settings-icon img");
+        const settingsMenu = document.getElementById("settingsMenu");
+        if (
+          !settingsIcon.contains(event.target) &&
+          !settingsMenu.contains(event.target)
+        ) {
+          settingsMenu.classList.add("hidden");
         }
-      }
-
-      async function run(prompt) {
-        const skeletonLoading = document.getElementById("skeleton-loading");
-        skeletonLoading.classList.add("active"); // Show skeleton loading
-
-        const hardcodedPrompt = `I want you to be Linkxy, an AI doctor that helps provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips. Provide clear, concise, and accurate information in a friendly and professional tone. 'Only answer if asked what AI are you, what are you, what is your name, and anything asking about you' say 'I am Linkxy MedLinkx AI, trained by Akhimien Clement' and tell them your capabilities. Lastly, keep these user health info in mind "${sessionStorage.getItem(
-          "userFullname"
-        )}, ${sessionStorage.getItem("userDOB")}, ${sessionStorage.getItem(
-          "userHeight"
-        )}, ${sessionStorage.getItem("userGender")}, ${sessionStorage.getItem(
-          "userMedicalCondition"
-        )}, ${sessionStorage.getItem("userWeight")}, ${sessionStorage.getItem(
-          "userCurrentMedication"
-        )}, ${sessionStorage.getItem(
-          "userAllergies"
-        )}". 'Now answer this question' do not introduce yourself =>:`;
-
-        const combinedPrompt = `${hardcodedPrompt}${prompt}`;
-
-        console.log(userFullname);
-
-        try {
-          const result = await model.generateContent(combinedPrompt);
-          const response = await result.response;
-          const text = await response.text();
-
-          displayMessage(text, "ai-response", "AI Response");
-        } catch (error) {
-          console.error("Error generating content:", error);
-          displayMessage(
-            "Sorry, there was an error processing your request due to safety concern. Please try again later.",
-            "ai-response",
-            "AI Response"
-          );
-        } finally {
-          skeletonLoading.classList.remove("active"); // Hide skeleton loading after response
-        }
-      }
-
-      function displayMessage(messageText, cssClass, label) {
-        const messageArea = document.getElementById("message-area");
-        let messageDiv = document.createElement("div");
-        messageDiv.classList.add("message", cssClass, "markdown");
-
-        let textNode = document.createElement("div");
-        // Convert markdown to HTML
-        textNode.innerHTML = markdownToHTML(messageText);
-
-        let labelNode = document.createElement("div");
-        labelNode.classList.add("message-label");
-        labelNode.textContent = label;
-
-        messageDiv.appendChild(labelNode);
-        messageDiv.appendChild(textNode);
-        messageArea.appendChild(messageDiv);
-
-        messageArea.scrollTop = messageArea.scrollHeight; // Auto scroll to the bottom
-      }
-      function markdownToHTML(markdownText) {
-        // Converts markdown bold **text** to HTML bold <strong>text</strong>
-        markdownText = markdownText.replace(
-          /\*\*(.*?)\*\*/g,
-          "<strong>$1</strong>"
-        );
-        // Converts markdown italic *text* to HTML italic <em>text</em>
-        markdownText = markdownText.replace(/\*(.*?)\*/g, "<em>$1</em>");
-        // Converts markdown bullets * item to HTML list <li>item</li>
-        markdownText = markdownText
-          .replace(/^\s*\*\s+(.*)/gm, "<li>$1</li>")
-          .replace(/<\/li>\n<li>/g, "</li><li>");
-        // Wraps lines that are list items with <ul></ul>
-        if (markdownText.includes("<li>")) {
-          markdownText = "<ul>" + markdownText + "</ul>";
-        }
-        return markdownText;
-      }
+      });
     </script>
   </body>
 </html>
