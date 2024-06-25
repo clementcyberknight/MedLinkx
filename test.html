@@ -3,154 +3,82 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home - Medlinkx</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="icon"
-      sizes="16x16"
-      href="images/MedLinx.png"
-      type="image/x-png"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
-      rel="stylesheet"
-    />
+    <title>User Record</title>
     <style>
-      .dark-mode {
-        background-color: #1a202c;
-        color: #cbd5e0;
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 80%;
+        margin: 0 auto;
+      }
+      .record {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+      }
+      .btn {
+        display: inline-block;
+        margin: 20px 0;
+        padding: 10px 20px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
       }
     </style>
   </head>
-
-  <body class="bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
-    <header
-      class="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center"
-    >
-      <div class="flex items-center">
-        <img src="images/MedLinx.png" alt="MedLinkX logo" class="h-10 mr-3" />
-        <h1 class="text-xl font-bold">MedLinkX</h1>
+  <body>
+    <div class="container">
+      <h1>User Record</h1>
+      <div class="record" id="userRecord">
+        <h2>John Doe</h2>
+        <p><strong>Age:</strong> 30</p>
+        <p><strong>Gender:</strong> Male</p>
+        <p><strong>Conditions:</strong> Hypertension, Diabetes</p>
+        <p><strong>Medications:</strong> Lisinopril, Metformin</p>
+        <p><strong>Allergies:</strong> Penicillin</p>
       </div>
-      <div class="relative">
-        <button class="settings-icon" onclick="toggleSettingsMenu()">
-          <img src="images/setting.png" alt="Settings" class="h-8" />
-        </button>
-        <div
-          class="settings-menu hidden absolute right-0 mt-2 py-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg"
-          id="settingsMenu"
-        >
-          <a href="#" class="block px-4 py-2 text-sm" onclick="toggleDarkMode()"
-            >Toggle Dark Mode</a
-          >
-          <a
-            href="index.html"
-            class="block px-4 py-2 text-sm"
-            onclick="sessionStorage.clear();"
-            >Logout</a
-          >
-        </div>
-      </div>
-    </header>
-
-    <div class="max-w-4xl mx-auto p-4">
-      <div
-        class="profile-container bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex items-center mb-6"
-      >
-        <div class="profile-pic mr-4">
-          <img
-            src="images/user.png"
-            alt="Profile Picture"
-            class="h-16 w-16 rounded-full"
-          />
-        </div>
-        <div class="user-info">
-          <h2 id="user_fullname" class="text-xl font-semibold"></h2>
-          <p id="user_email" class="text-gray-500 dark:text-gray-400"></p>
-        </div>
-      </div>
-
-      <div class="menu-container grid grid-cols-2 gap-4">
-        <div
-          class="menu-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center cursor-pointer"
-          onclick="window.location.href='history.html';"
-        >
-          <img
-            src="images/history.png"
-            alt="Medical History Icon"
-            class="h-10 mr-4"
-          />
-          <span class="font-medium">Medical History</span>
-        </div>
-        <div
-          class="menu-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center cursor-pointer"
-          onclick="window.location.href='record.html';"
-        >
-          <img
-            src="images/record.png"
-            alt="Medical Record Icon"
-            class="h-10 mr-4"
-          />
-          <span class="font-medium">Medical Record</span>
-        </div>
-        <div
-          class="menu-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center cursor-pointer"
-          onclick="window.location.href='bot.html';"
-        >
-          <img
-            src="images/bot.png"
-            alt="Chat with Linkxy Icon"
-            class="h-10 mr-4"
-          />
-          <span class="font-medium">Chat with Linkxy</span>
-        </div>
-        <div
-          class="menu-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center cursor-pointer"
-          onclick="window.location.href='appointment.html';"
-        >
-          <img
-            src="images/appointment.png"
-            alt="Make Appointment Icon"
-            class="h-10 mr-4"
-          />
-          <span class="font-medium">Make appointment</span>
-        </div>
-      </div>
+      <button class="btn" id="generatePDF">Download PDF</button>
     </div>
 
+    <!-- jsPDF, DOMPurify, and html2canvas CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.0/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const userFullname = sessionStorage.getItem("userFullname");
-        const userEmail = sessionStorage.getItem("userEmail");
+      document.getElementById("generatePDF").addEventListener("click", () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const userRecord = document.getElementById("userRecord");
 
-        if (!userFullname) {
-          window.location.href = "login.html";
-        } else {
-          document.getElementById("user_fullname").innerText = userFullname;
-          document.getElementById("user_email").innerText = userEmail;
-        }
-      });
+        // Use DOMPurify to sanitize the HTML
+        const cleanHtml = DOMPurify.sanitize(userRecord.innerHTML);
 
-      function toggleSettingsMenu() {
-        const settingsMenu = document.getElementById("settingsMenu");
-        settingsMenu.classList.toggle("hidden");
-      }
+        // Create a temporary container for the sanitized HTML
+        const tempContainer = document.createElement("div");
+        tempContainer.innerHTML = cleanHtml;
+        document.body.appendChild(tempContainer);
 
-      function toggleDarkMode() {
-        document.body.classList.toggle("dark-mode");
-      }
+        // Use html2canvas to render the HTML to a canvas
+        html2canvas(tempContainer)
+          .then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const imgProps = doc.getImageProperties(imgData);
+            const pdfWidth = doc.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-      document.addEventListener("click", function (event) {
-        const settingsIcon = document.querySelector(".settings-icon img");
-        const settingsMenu = document.getElementById("settingsMenu");
-        if (
-          !settingsIcon.contains(event.target) &&
-          !settingsMenu.contains(event.target)
-        ) {
-          settingsMenu.classList.add("hidden");
-        }
+            doc.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            doc.save("user_record.pdf");
+            document.body.removeChild(tempContainer);
+          })
+          .catch((error) => {
+            console.error("Error generating PDF:", error);
+          });
       });
     </script>
   </body>
