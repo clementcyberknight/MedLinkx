@@ -212,6 +212,7 @@
       }
     </style>
   </head>
+
   <body>
     <header>
       <div class="logo">
@@ -259,23 +260,25 @@
       });
 
       function welcomeUser(userFullname) {
-        const welcomeMessage = `Hello ${userFullname}, Hi, I am Linkxy! How can I help you today?`;
+        const welcomeMessage = `Hello ${userFullname}, Hi, i am linkxy! How can I help you today?`;
         displayMessage(welcomeMessage, "ai-response", "AI Response");
       }
 
+      import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
       const userFullname = sessionStorage.getItem("userFullname");
 
       if (!userFullname) {
         window.location.href = "login.html"; // Redirect if no user info
       } else {
+        const userFullname = sessionStorage.getItem("userFullname");
         welcomeUser(userFullname);
       }
 
-      const API_KEY =
-        "I8ZYJKVW2VMTD3J3BEGIZH1ZAUUU4KA0NYXSBJIE1GW0YKN0VB6F02JPV97RO7EF"; // Replace with your OpenAI API key
-      const BASE_URL = "https://jamsapi.hackclub.dev";
-
-      let conversationHistory = [];
+      const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
+      const genAI = new GoogleGenerativeAI(API_KEY);
+      const model = genAI.getGenerativeModel({
+        model: "gemini-1.5-pro-latest",
+      });
 
       document
         .querySelector(".send-button")
@@ -289,22 +292,21 @@
           }
         });
 
-      async function handleMessage() {
+      function handleMessage() {
         const inputField = document.getElementById("user-input");
         const prompt = inputField.value.trim();
         if (prompt !== "") {
           displayMessage(prompt, "user-message", "User");
           inputField.value = ""; // Clear input field
-          conversationHistory.push({ role: "user", content: prompt });
-          run();
+          run(prompt);
         }
       }
 
-      async function run() {
+      async function run(prompt) {
         const skeletonLoading = document.getElementById("skeleton-loading");
         skeletonLoading.classList.add("active"); // Show skeleton loading
 
-        const initialPrompt = `I want you to be Linkxy, an AI doctor that helps provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips. Provide clear, concise, and accurate information in a friendly and professional tone. 'Only answer if asked what AI are you, what are you, what is your name, and anything asking about you' say 'I am Linkxy MedLinkx AI, trained by Akhimien Clement' and tell them your capabilities. Lastly, keep these user health info in mind "${sessionStorage.getItem(
+        const hardcodedPrompt = `I want you to be Linkxy, an AI doctor that helps provide medical advice on common health issues and first aid treatment. Answer questions about symptoms, treatments, and medications. Offer general wellness tips. Provide clear, concise, and accurate information in a friendly and professional tone. 'Only answer if asked what AI are you, what are you, what is your name, and anything asking about you' say 'I am Linkxy MedLinkx AI, trained by Akhimien Clement' and tell them your capabilities. Lastly, keep these user health info in mind "${sessionStorage.getItem(
           "userFullname"
         )}, ${sessionStorage.getItem("userDOB")}, ${sessionStorage.getItem(
           "userHeight"
@@ -316,35 +318,20 @@
           "userAllergies"
         )}". 'Now answer this question' do not introduce yourself =>:`;
 
-        if (conversationHistory.length === 1) {
-          conversationHistory.unshift({
-            role: "system",
-            content: initialPrompt,
-          });
-        }
+        const combinedPrompt = `${hardcodedPrompt}${prompt}`;
+
+        console.log(userFullname);
 
         try {
-          const response = await fetch(`${BASE_URL}/openai/chat/completions`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${API_KEY}`,
-            },
-            body: JSON.stringify({
-              model: "gpt-4-turbo",
-              messages: conversationHistory,
-            }),
-          });
+          const result = await model.generateContent(combinedPrompt);
+          const response = await result.response;
+          const text = await response.text();
 
-          const data = await response.json();
-          const text = data.choices[0].message.content.trim();
-
-          conversationHistory.push({ role: "assistant", content: text });
           displayMessage(text, "ai-response", "AI Response");
         } catch (error) {
           console.error("Error generating content:", error);
           displayMessage(
-            "Sorry, there was an error processing your request. Please try again later.",
+            "Sorry, there was an error processing your request due to safety concern. Please try again later.",
             "ai-response",
             "AI Response"
           );
@@ -372,7 +359,6 @@
 
         messageArea.scrollTop = messageArea.scrollHeight; // Auto scroll to the bottom
       }
-
       function markdownToHTML(markdownText) {
         // Converts markdown bold **text** to HTML bold <strong>text</strong>
         markdownText = markdownText.replace(
