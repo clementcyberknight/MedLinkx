@@ -54,7 +54,8 @@
       }
 
       .dark-mode .profile-container,
-      .dark-mode .menu-item {
+      .dark-mode .menu-item,
+      .dark-mode .health-tips-container {
         background-color: #444;
         box-shadow: none;
       }
@@ -74,6 +75,7 @@
 
       .dark-mode .profile-container h2,
       .dark-mode .profile-container p,
+      .dark-mode #health-tips p,
       .dark-mode .menu-item span {
         color: #ffffff;
       }
@@ -81,6 +83,55 @@
       .dark-mode .menu-item img,
       .dark-mode .profile-pic img {
         filter: invert(1);
+      }
+      .dark-mode .health-tips-container {
+        background-color: #444;
+        color: #ffffff;
+      }
+
+      .dark-mode .health-tips-container p {
+        color: #ffffff;
+      }
+      .dark-mode .header .settings-menu a:hover {
+        background-color: #555; /* Dark mode settings menu link hover color */
+      }
+      .dark-mode .header {
+        background-color: #444; /* Dark mode header background */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adjust box shadow */
+      }
+
+      .dark-mode .header .logo img {
+        filter: invert(1); /* Invert logo color for dark mode */
+      }
+
+      .dark-mode .header .settings-menu {
+        background-color: #444; /* Dark mode settings menu background */
+      }
+
+      .dark-mode .header .settings-menu a {
+        color: #f9f9f9; /* Dark mode settings menu link color */
+      }
+
+      .dark-mode .header .settings-menu a:hover {
+        background-color: #555; /* Dark mode settings menu link hover color */
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e6f2f5;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #ffffff;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #007ea6;
       }
     </style>
   </head>
@@ -190,6 +241,14 @@
           <span class="font-medium">Hospitals around you</span>
         </div>
       </div>
+      <div class="max-w-4xl mx-auto p-4">
+        <div
+          class="health-tips-container bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6"
+        >
+          <h2 class="text-xl font-semibold mb-4">Personalized Health Tips</h2>
+          <div id="health-tips" class="text-gray-700 dark:text-gray-300"></div>
+        </div>
+      </div>
     </div>
 
     <script>
@@ -244,6 +303,103 @@
           settingsMenu.style.display = "none";
         }
       });
+    </script>
+    <script type="module">
+      import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const userFullname = sessionStorage.getItem("userFullname");
+        const userEmail = sessionStorage.getItem("userEmail");
+        const userMedicalCondition = sessionStorage.getItem(
+          "userMedicalCondition"
+        );
+        const userCurrentMedication = sessionStorage.getItem(
+          "userCurrentMedication"
+        );
+        const userAllergies = sessionStorage.getItem("userAllergies");
+        const userGender = sessionStorage.getItem("userGender");
+        const userHeight = sessionStorage.getItem("userHeight");
+        const userWeight = sessionStorage.getItem("userWeight");
+
+        if (!userFullname) {
+          window.location.href = "login.html";
+        } else {
+          fetchHealthTips(
+            userFullname,
+            userMedicalCondition,
+            userCurrentMedication,
+            userAllergies,
+            userGender,
+            userHeight,
+            userWeight
+          );
+        }
+      });
+
+      const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
+      const genAI = new GoogleGenerativeAI(API_KEY);
+      const model = genAI.getGenerativeModel({
+        model: "gemini-1.5-pro-latest",
+      });
+
+      async function fetchHealthTips(
+        userFullname,
+        userMedicalCondition,
+        userCurrentMedication,
+        userAllergies,
+        userGender,
+        userHeight,
+        userWeight
+      ) {
+        const prompt = `This is the user health info:
+          - Medical Condition: ${userMedicalCondition}
+          - Current Medication: ${userCurrentMedication}
+          - Allergies: ${userAllergies}
+          - Gender: ${userGender}
+          - Height: ${userHeight}
+          - Weight: ${userWeight}
+          
+          i want you to provide a "health fact or health tips" for the user "Maximun of 100 words":`;
+
+        try {
+          const result = await model.generateContent(prompt);
+          const response = await result.response;
+          const text = await response.text();
+
+          displayHealthTips(text);
+        } catch (error) {
+          console.error("Error generating health tips:", error);
+          displayHealthTips(
+            "Sorry, there was an error fetching your health tips. Please try again later."
+          );
+        }
+      }
+
+      function displayHealthTips(tips) {
+        const healthTipsContainer = document.getElementById("health-tips");
+        healthTipsContainer.innerHTML = `
+          <div class="bg-gray dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+            <p class="text-gray-700 dark:text-gray-300">${markdownToHTML(
+              tips
+            )}</p>
+          </div>
+        `;
+      }
+
+      function markdownToHTML(markdownText) {
+        markdownText = markdownText.replace(
+          /\*\*(.*?)\*\*/g,
+          "<strong>$1</strong>"
+        );
+        markdownText = markdownText.replace(/\*(.*?)\*/g, "<em>$1</em>");
+        markdownText = markdownText
+          .replace(/^\s*\*\s+(.*)/gm, "<li>$1</li>")
+          .replace(/<\/li>\n<li>/g, "</li><li>");
+        if (markdownText.includes("<li>")) {
+          markdownText = "<ul>" + markdownText + "</ul>";
+        }
+        return markdownText;
+      }
     </script>
   </body>
 </html>
