@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedLink Login</title>
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #d3d3d3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      header {
+        background-color: #ffffff;
+        padding: 10px 20px;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      header .logo img {
+        height: 50px;
+        padding: 10px;
+      }
+
+      header .home-icon img {
+        height: 40px;
+        cursor: pointer;
+        padding-right: 17px;
+      }
+
+      .container {
+        text-align: center;
+        margin-top: 80px;
+        /* Adjust to account for the fixed header */
+      }
+
+      .login-options {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 40px;
+      }
+
+      .login-option {
+        background-color: #ffffff;
+        padding: 40px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.452);
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.3s;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .login-option:hover {
+        background-color: #f0f1f1;
+      }
+
+      .login-option img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+      }
+
+      @media (max-width: 600px) {
+        .login-options {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .login-option {
+          width: 150px;
+          height: 150px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <a href="index.html" class="home-icon">
+        <img src="images/home.png" alt="Home" />
+      </a>
+    </header>
+    <div class="container">
+      <div class="login-options">
+        <div
+          class="login-option"
+          id="user-login"
+          onclick="window.location.href='search.html';"
+        >
+          <img src="images/search.svg" alt="User Icon" />
+          <p>Search for patient record</p>
+        </div>
+        <div
+          class="login-option"
+          id="hospital-login"
+          onclick="window.location.href='visit.html';"
+        >
+          <img src="images/ambulance.png" alt="Hospital Icon" />
+          <p>View Patient Visit to the hospital</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

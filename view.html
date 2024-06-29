@@ -264,7 +264,9 @@
             <div><strong>Address:</strong> ${data.address}</div>
             <div><strong>Phone:</strong> ${data.phone}</div>
             <div><strong>Email:</strong> ${data.email}</div>
-            <div><strong>Emergency Contact:</strong> ${data.emergencyContact}</div>
+            <div><strong>Emergency Contact:</strong> ${
+              data.emergencyContact
+            }</div>
             <div><strong>Emergency Phone:</strong> ${data.emergencyPhone}</div>
             <div><strong>Relation:</strong> ${data.relation}</div>
             <div><strong>Allergies:</strong> ${data.allergies}</div>
@@ -274,9 +276,28 @@
             <div><strong>Height:</strong> ${data.height}</div>
             <div><strong>Weight:</strong> ${data.weight}</div>
             <div><strong>Blood Pressure:</strong> ${data.bloodPressure}</div>
-            <div><strong>Heart Rate:</strong> ${data.heartRate}</div>
+             <div><strong>Heart Rate:</strong> ${data.heartRate}</div>
+            <h4>Hospital Visit:</h4>
+            ${
+              data.visits
+                ? data.visits
+                    .map(
+                      (visit) => `
+              <div class="visit">
+                <p><strong>Date:</strong> ${visit.visitDate}</p>
+                <p><strong>Details:</strong> ${visit.visitDetails}</p>
+                <p><strong>Attendant:</strong> ${visit.visitAttendant}</p>
+                <p><strong>Relevant Documents:</strong> ${
+                  visit.visitDocumentUrl
+                    ? `<a href="${visit.visitDocumentUrl}" target="_blank">View Document</a>`
+                    : "No document available"
+                }</p>
+              </div>`
+                    )
+                    .join("")
+                : "<div>No visits recorded</div>"
+            }
           `;
-
           recordsContainer.appendChild(recordElement);
         });
       };

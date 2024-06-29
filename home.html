@@ -321,6 +321,16 @@
         const userHeight = sessionStorage.getItem("userHeight");
         const userWeight = sessionStorage.getItem("userWeight");
 
+        fetchHealthTips(
+          userFullname,
+          userMedicalCondition,
+          userCurrentMedication,
+          userAllergies,
+          userGender,
+          userHeight,
+          userWeight
+        );
+
         if (!userFullname) {
           window.location.href = "login.html";
         } else {

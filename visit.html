@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Centralized Database - MedLink</title>
+    <title>Patient Hospitals Records</title>
     <link
       rel="icon"
       sizes="16x16"
@@ -38,6 +38,7 @@
 
       header .logo img {
         height: 50px;
+        padding-left: 10px;
       }
 
       header h3 {
@@ -47,6 +48,7 @@
       header .home-icon img {
         height: 40px;
         cursor: pointer;
+        padding-right: 10px;
       }
 
       ::-webkit-scrollbar {
@@ -99,6 +101,10 @@
         color: #333;
       }
 
+      .record-card .visit {
+        margin-bottom: 15px;
+      }
+
       .search-bar {
         width: 100%;
         max-width: 400px;
@@ -129,6 +135,21 @@
         height: 20px;
         width: 20px;
       }
+
+      .update-button {
+        background-color: #007ea6;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+        margin-top: 15px; /* Added margin to separate the button from the visits */
+      }
+
+      .update-button:hover {
+        background-color: #005f7a;
+      }
     </style>
   </head>
   <body>
@@ -136,21 +157,23 @@
       <div class="logo">
         <img src="images/MedLinx.png" alt="MedLinkX logo" />
       </div>
-      <h3>Patient Database</h3>
+      <h3>Hospitals Records</h3>
       <a href="hospital_dashboard.html" class="home-icon">
         <img src="images/home.png" alt="Home" />
       </a>
     </header>
     <div class="container">
       <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search by name..." />
-        <button onclick="filterRecords()">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by Patient name"
+        />
+        <button onclick="searchCentralVisit()">
           <img src="images/search.svg" alt="Search" />
         </button>
       </div>
-      <div id="recordHistory">
-        <!-- Patient records will be injected here -->
-      </div>
+      <div id="visitDetails"></div>
     </div>
 
     <script type="module">
@@ -172,76 +195,61 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
-      let records = [];
-      loadPatientRecords();
 
-      async function loadPatientRecords() {
-        const recordsRef = collection(db, "Centralized_Storage");
-        const querySnapshot = await getDocs(recordsRef);
+      let visitRecords = [];
+      searchCentralVisit();
 
-        records = [];
-        querySnapshot.forEach((doc) => {
-          const recordData = doc.data();
-          records.push(recordData);
-        });
-      }
-
-      function displayRecords(records) {
-        const recordHistoryContainer = document.getElementById("recordHistory");
-        recordHistoryContainer.innerHTML = "";
-
-        records.forEach((recordData) => {
-          const recordCard = document.createElement("div");
-          recordCard.classList.add("record-card");
-
-          recordCard.innerHTML = `
-          <h4>${recordData.name}</h4>
-          <p><strong>Date of Birth:</strong> ${recordData.dob}</p>
-          <p><strong>Gender:</strong> ${recordData.gender}</p>
-          <p><strong>Patient ID:</strong> ${recordData.patientId}</p>
-          <p><strong>Address:</strong> ${recordData.address}</p>
-          <p><strong>Phone:</strong> ${recordData.phone}</p>
-          <p><strong>Email:</strong> ${recordData.email || "N/A"}</p>
-          <p><strong>Emergency Contact 1:</strong> ${
-            recordData.emergencyContact || "N/A"
-          }</p>
-          <p><strong>Emergency Contact 2:</strong> ${
-            recordData.emergencyPhone || "N/A"
-          }</p>
-          <p><strong>Relation:</strong> ${recordData.relation || "N/A"}</p>
-          <p><strong>Allergies:</strong> ${recordData.allergies || "N/A"}</p>
-          <p><strong>Current Medications:</strong> ${
-            recordData.medications || "N/A"
-          }</p>
-          <p><strong>Past Conditions:</strong> ${
-            recordData.pastConditions || "N/A"
-          }</p>
-          <p><strong>Family History:</strong> ${
-            recordData.familyHistory || "N/A"
-          }</p>
-          <p><strong>Height:</strong> ${recordData.height}</p>
-          <p><strong>Weight:</strong> ${recordData.weight}</p>
-          <p><strong>Blood Pressure:</strong> ${
-            recordData.bloodPressure || "N/A"
-          }</p>
-          <p><strong>Heart Rate:</strong> ${recordData.heartRate || "N/A"}</p>
-        `;
-
-          recordHistoryContainer.appendChild(recordCard);
-        });
-      }
-
-      window.filterRecords = function () {
+      async function searchCentralVisit() {
         const searchInput = document
           .getElementById("searchInput")
           .value.toLowerCase();
-        const filteredRecords = records.filter((record) =>
-          record.name.toLowerCase().includes(searchInput)
-        );
-        displayRecords(filteredRecords);
-      };
+        const recordsRef = collection(db, "Centralised_Visit");
+        const querySnapshot = await getDocs(recordsRef);
 
-      document.addEventListener("DOMContentLoaded", loadPatientRecords);
+        visitRecords = [];
+        querySnapshot.forEach((doc) => {
+          const visitData = doc.data();
+          visitData.id = doc.id;
+          visitRecords.push(visitData);
+        });
+
+        filterRecords(searchInput);
+      }
+
+      function filterRecords(searchInput) {
+        const filteredRecords = visitRecords.filter((record) =>
+          record.name ? record.name.toLowerCase().includes(searchInput) : false
+        );
+        displayVisitDetails(filteredRecords);
+      }
+
+      function displayVisitDetails(records) {
+        const visitDetailsContainer = document.getElementById("visitDetails");
+        visitDetailsContainer.innerHTML = "";
+
+        records.forEach((record) => {
+          const recordCard = document.createElement("div");
+          recordCard.classList.add("record-card");
+          recordCard.id = `record-${record.id}`;
+
+          recordCard.innerHTML = `
+                  <h4>${record.name}</h4>
+                  <h5>${record.hospitalname}</h5>
+                  <p><strong>Visit Date:</strong> ${record.visitDate}</p>
+                  <p><strong>Attendant:</strong> ${record.visitAttendant}</p>
+                  <p><strong>Visit Details:</strong> ${record.visitDetails}</p>
+                  <p><strong>Relevant Documents:</strong> ${
+                    record.visitDocumentUrl
+                      ? `<a href="${record.visitDocumentUrl}" target="_blank">View Document</a>`
+                      : "No document available"
+                  }</p>
+                `;
+
+          visitDetailsContainer.appendChild(recordCard);
+        });
+      }
+
+      window.searchCentralVisit = searchCentralVisit;
     </script>
   </body>
 </html>
