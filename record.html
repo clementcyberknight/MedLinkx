@@ -361,23 +361,22 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const userEmail = sessionStorage.getItem("userEmail");
-        const userId = sessionStorage.getItem("userID");
+      const userEmail = sessionStorage.getItem("userEmail");
+      const userId = sessionStorage.getItem("userID");
+      loadUserData(userId);
 
-        if (!userEmail) {
-          window.location.href = "login.html";
-        } else {
-          loadUserData(userId);
-        }
+      if (!userEmail) {
+        window.location.href = "login.html";
+      } else {
+        loadUserData(userId);
+      }
 
-        document
-          .getElementById("editForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            updateUserProfile(userId);
-          });
-      });
+      document
+        .getElementById("editForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          updateUserProfile(userId);
+        });
 
       async function loadUserData(userId) {
         try {
