@@ -307,41 +307,48 @@
     <script type="module">
       import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const userFullname = sessionStorage.getItem("userFullname");
-        const userEmail = sessionStorage.getItem("userEmail");
-        const userMedicalCondition = sessionStorage.getItem(
-          "userMedicalCondition"
-        );
-        const userCurrentMedication = sessionStorage.getItem(
-          "userCurrentMedication"
-        );
-        const userAllergies = sessionStorage.getItem("userAllergies");
-        const userGender = sessionStorage.getItem("userGender");
-        const userHeight = sessionStorage.getItem("userHeight");
-        const userWeight = sessionStorage.getItem("userWeight");
-
-        fetchHealthTips(
-          userFullname,
-          userMedicalCondition,
-          userCurrentMedication,
-          userAllergies,
-          userGender,
-          userHeight,
-          userWeight
-        );
-
-        if (!userFullname) {
-          window.location.href = "login.html";
-        } else {
-        }
-      });
+      const userFullname = sessionStorage.getItem("userFullname");
+      const userEmail = sessionStorage.getItem("userEmail");
+      const userMedicalCondition = sessionStorage.getItem(
+        "userMedicalCondition"
+      );
+      const userCurrentMedication = sessionStorage.getItem(
+        "userCurrentMedication"
+      );
+      const userAllergies = sessionStorage.getItem("userAllergies");
+      const userGender = sessionStorage.getItem("userGender");
+      const userHeight = sessionStorage.getItem("userHeight");
+      const userWeight = sessionStorage.getItem("userWeight");
 
       const API_KEY = "AIzaSyBNUqanEBKJvOrOvmkmsDnHVGTv7kVXZ44";
       const genAI = new GoogleGenerativeAI(API_KEY);
       const model = genAI.getGenerativeModel({
         model: "gemini-1.5-pro-latest",
       });
+      initializeModelAndFetchTips();
+
+      async function initializeModelAndFetchTips() {
+        try {
+          await fetchHealthTips(
+            userFullname,
+            userMedicalCondition,
+            userCurrentMedication,
+            userAllergies,
+            userGender,
+            userHeight,
+            userWeight,
+            model
+          );
+        } catch (error) {
+          console.error(
+            "Error initializing model or fetching health tips:",
+            error
+          );
+          displayHealthTips(
+            "Sorry, there was an error fetching your health tips. Please try again later."
+          );
+        }
+      }
 
       async function fetchHealthTips(
         userFullname,
@@ -359,7 +366,7 @@
           - Gender: ${userGender}
           - Height: ${userHeight}
           - Weight: ${userWeight}
-          
+
           i want you to provide a "health fact or health tips" for the user "Maximun of 100 words":`;
 
         try {
