@@ -330,20 +330,10 @@
           userHeight,
           userWeight
         );
-        displayHealthTips(tips);
 
         if (!userFullname) {
           window.location.href = "login.html";
         } else {
-          fetchHealthTips(
-            userFullname,
-            userMedicalCondition,
-            userCurrentMedication,
-            userAllergies,
-            userGender,
-            userHeight,
-            userWeight
-          );
         }
       });
 
