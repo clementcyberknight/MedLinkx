@@ -262,6 +262,45 @@
           font-size: 14px;
         }
       }
+      .alert {
+        padding: 20px;
+        margin: 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        text-align: center;
+        width: 80%;
+        max-width: 500px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1001; /* Ensures alert is above other elements */
+      }
+
+      .alert-success {
+        background-color: #4caf50; /* Green */
+        color: white;
+      }
+
+      .alert-error {
+        background-color: #f44336; /* Red */
+        color: white;
+      }
+
+      .alert .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .alert .closebtn:hover {
+        color: black;
+      }
     </style>
   </head>
 
@@ -443,15 +482,39 @@
             weight: document.getElementById("edit_weight").value,
           });
 
-          alert("Profile updated successfully!");
+          showAlert("Profile updated successfully!", "success");
           closeEditModal();
           loadUserData(userId);
         } catch (error) {
           console.error("Error updating profile:", error);
-          alert(
-            "An error occurred while updating your profile. Please try again."
+          showAlert(
+            "An error occurred while updating your profile. Please try again.",
+            "error"
           );
         }
+      }
+
+      function showAlert(message, type) {
+        const alertDiv = document.createElement("div");
+        alertDiv.classList.add("alert");
+        if (type === "success") {
+          alertDiv.classList.add("alert-success");
+        } else if (type === "error") {
+          alertDiv.classList.add("alert-error");
+        }
+        alertDiv.innerHTML = `
+    ${message}
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  `;
+
+        document.body.appendChild(alertDiv);
+
+        // Automatically remove the alert after 5 seconds
+        setTimeout(() => {
+          if (alertDiv) {
+            alertDiv.style.display = "none";
+          }
+        }, 5000);
       }
 
       window.openEditModal = function () {
