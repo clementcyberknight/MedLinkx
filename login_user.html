@@ -96,7 +96,6 @@
         background-color: #f44336;
         border-radius: 5px;
         text-align: center;
-        display: none;
       }
 
       .hidden {
@@ -256,7 +255,14 @@
             displayAlert("No user data found");
           }
         } catch (error) {
-          displayAlert(error.message);
+          if (
+            error.code === "auth/wrong-password" ||
+            error.code === "auth/invalid-credential"
+          ) {
+            displayAlert("Incorrect password or user does not exist.");
+          } else {
+            displayAlert("Login check network status");
+          }
           spinner.style.display = "none";
           console.error(error.code, error.message);
         } finally {

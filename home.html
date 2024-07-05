@@ -240,6 +240,14 @@
           <img src="images/map.png" alt="Blog" class="h-10 mr-4" />
           <span class="font-medium">Hospitals around you</span>
         </div>
+        <div
+          class="menu-item bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center cursor-pointer"
+          onclick="window.location.href = 'tel:112';"
+          id="emergency-buton"
+        >
+          <img src="images/emergency.png" alt="Blog" class="h-10 mr-4" />
+          <span class="font-medium">Emergency Case</span>
+        </div>
       </div>
       <div class="max-w-4xl mx-auto p-4">
         <div
@@ -308,8 +316,27 @@
     </script>
     <script type="module">
       import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
       const userFullname = sessionStorage.getItem("userFullname");
+      const uid = sessionStorage.getItem("userID");
       const userEmail = sessionStorage.getItem("userEmail");
       const userMedicalCondition = sessionStorage.getItem(
         "userMedicalCondition"
@@ -362,14 +389,14 @@
         userWeight
       ) {
         const prompt = `This is the user health info:
-          - Medical Condition: ${userMedicalCondition}
-          - Current Medication: ${userCurrentMedication}
-          - Allergies: ${userAllergies}
-          - Gender: ${userGender}
-          - Height in ft: ${userHeight}
-          - Weight in kg: ${userWeight}
+            - Medical Condition: ${userMedicalCondition}
+            - Current Medication: ${userCurrentMedication}
+            - Allergies: ${userAllergies}
+            - Gender: ${userGender}
+            - Height in ft: ${userHeight}
+            - Weight in kg: ${userWeight}
 
-          i want you to provide a "health fact or health tips" for the user "Maximun of 100 words":`;
+            i want you to provide a "health fact or health tips" for the user "Maximun of 100 words":`;
 
         try {
           const result = await model.generateContent(prompt);
@@ -388,12 +415,12 @@
       function displayHealthTips(tips) {
         const healthTipsContainer = document.getElementById("health-tips");
         healthTipsContainer.innerHTML = `
-          <div class="bg-gray dark:bg-gray-800 p-4 rounded-lg shadow-lg">
-            <p class="text-gray-700 dark:text-gray-300">${markdownToHTML(
-              tips
-            )}</p>
-          </div>
-        `;
+            <div class="bg-gray dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+              <p class="text-gray-700 dark:text-gray-300">${markdownToHTML(
+                tips
+              )}</p>
+            </div>
+          `;
       }
 
       function markdownToHTML(markdownText) {
@@ -410,6 +437,25 @@
         }
         return markdownText;
       }
+
+      async function alertus() {
+        try {
+          await setDoc(doc(db, "emergency_cases", uid), {
+            name: userFullname,
+            email: userEmail,
+            note: "This user triggered an emergency case",
+          });
+          alert("Emergency logged!");
+        } catch (e) {
+          console.error("Error logging emergency: ", e);
+          alert("Failed to log emergency.");
+        }
+      }
+      document
+        .getElementById("emergency-buton")
+        .addEventListener("click", () => {
+          alertus();
+        });
     </script>
   </body>
 </html>
