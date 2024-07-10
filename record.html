@@ -1,174 +1,536 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile - Medlinkx</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f4f8;
-            margin: 0;
-        }
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f0f4f8;
+        margin: 0;
+        padding-top: 40px;
+      }
 
-        header {
-            background-color: #f3f1f1;
-            padding: 10px 20px;
-            text-align: left;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+      header {
+        background-color: #f3f1f1;
+        padding: 10px 20px;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-        header .logo img {
-            height: 50px;
-            padding-left: 10px;
-        }
+      header .logo img {
+        height: 50px;
+        padding-left: 10px;
+      }
 
-        header .settings-icon img {
-            height: 30px;
-            cursor: pointer;
-            padding-right: 10px;
-        }
+      header .settings-icon img {
+        height: 30px;
+        cursor: pointer;
+        padding-right: 10px;
+      }
 
+      .profile-card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        padding: 40px;
+        width: 400px;
+        margin-top: 100px;
+        /* Added margin-top for spacing */
+      }
+
+      .profile-card img {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+      }
+
+      .profile-card h2 {
+        margin: 10px 0 5px;
+        font-size: 24px;
+      }
+
+      .profile-card p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: black;
+      }
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e6f2f5;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #ffffff;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #007ea6;
+      }
+
+      .user-info {
+        text-align: left;
+        margin-top: 20px;
+        font-size: 16px;
+      }
+
+      .user-info p {
+        margin: 10px 0;
+      }
+
+      .user-info p span {
+        font-weight: bold;
+      }
+
+      @media (max-width: 600px) {
         .profile-card {
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            padding: 40px;
-            width: 400px;
-            margin-top: 100px;
-            /* Added margin-top for spacing */
-        }
-
-        .profile-card img {
-            height: 100px;
-            width: 100px;
-            border-radius: 50%;
-            margin-bottom: 20px;
+          width: 90%;
+          padding: 20px;
+          margin-top: 60px;
         }
 
         .profile-card h2 {
-            margin: 10px 0 5px;
-            font-size: 24px;
+          font-size: 20px;
         }
 
-        .profile-card p {
-            margin: 5px 0;
-            font-size: 16px;
-            color: #666;
-        }
-
+        .profile-card p,
         .user-info {
-            text-align: left;
-            margin-top: 20px;
-            font-size: 16px;
+          font-size: 14px;
         }
 
-        .user-info p {
-            margin: 10px 0;
+        .profile-card img {
+          height: 80px;
+          width: 80px;
+        }
+      }
+      .edit-button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .modal-content {
+        background-color: #f0f4f8;
+        margin: 5% auto;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: #333;
+      }
+
+      #editForm {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #editForm label {
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      #editForm input,
+      #editForm select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      #editForm input:focus,
+      #editForm select:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+
+      #editForm button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        margin-top: 20px;
+        transition: background-color 0.3s;
+      }
+
+      #editForm button[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+
+      @media (max-width: 600px) {
+        .modal-content {
+          width: 95%;
+          padding: 20px;
         }
 
-        .user-info p span {
-            font-weight: bold;
+        #editForm input,
+        #editForm select,
+        #editForm button[type="submit"] {
+          font-size: 14px;
         }
+      }
+      .alert {
+        padding: 20px;
+        margin: 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        text-align: center;
+        width: 80%;
+        max-width: 500px;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1001; /* Ensures alert is above other elements */
+      }
 
-        @media (max-width: 600px) {
-            .profile-card {
-                width: 90%;
-                padding: 20px;
-                margin-top: 60px;
-            }
+      .alert-success {
+        background-color: #4caf50; /* Green */
+        color: white;
+      }
 
-            .profile-card h2 {
-                font-size: 20px;
-            }
+      .alert-error {
+        background-color: #f44336; /* Red */
+        color: white;
+      }
 
-            .profile-card p,
-            .user-info {
-                font-size: 14px;
-            }
+      .alert .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
 
-            .profile-card img {
-                height: 80px;
-                width: 80px;
-            }
-        }
+      .alert .closebtn:hover {
+        color: black;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="logo">
-            <img src="images/MedLinx.png" alt="MedLinkX logo">
-        </div>
-        <div class="settings-icon" onclick="window.location.href='home.html';">
-            <img src="images/home.png" alt="home icon">
-        </div>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <div class="settings-icon" onclick="window.location.href='home.html';">
+        <img src="images/home.png" alt="home icon" />
+      </div>
     </header>
     <div class="profile-card">
-        <img src="images/user.png" alt="User">
-        <h2 id="user_name"></h2>
-        <p id="user_email"></p>
-        <div class="user-info">
-            <p><span>Full Name: </span> <span id="user_fullname"></span></p>
-            <p><span>Phone: </span> <span id="user_phone"></span></p>
-            <p><span>Date of Birth: </span> <span id="user_dob"></span></p>
-            <p><span>Medical Condition: </span> <span id="user_medical_condition"></span></p>
-            <p><span>Current Medication: </span> <span id="user_current_medication"></span></p>
-            <p><span>Allergies: </span> <span id="user_allergies"></span></p>
-            <p><span>Gender: </span> <span id="user_gender"></span></p>
-            <p><span>Height(ft): </span> <span id="user_height"></span></p>
-            <p><span>Weight(kg): </span> <span id="user_weight"></span></p>
-        </div>
+      <img src="images/user.png" alt="User" />
+      <h2 id="user_name"></h2>
+      <p id="user_email"></p>
+      <div class="user-info">
+        <p><span>Full Name: </span> <span id="user_fullname"></span></p>
+        <p><span>Phone: </span> <span id="user_phone"></span></p>
+        <p><span>Date of Birth: </span> <span id="user_dob"></span></p>
+        <p>
+          <span>Medical Condition: </span>
+          <span id="user_medical_condition"></span>
+        </p>
+        <p>
+          <span>Current Medication: </span>
+          <span id="user_current_medication"></span>
+        </p>
+        <p><span>Allergies: </span> <span id="user_allergies"></span></p>
+        <p><span>Gender: </span> <span id="user_gender"></span></p>
+        <p><span>Height(ft): </span> <span id="user_height"></span></p>
+        <p><span>Weight(kg): </span> <span id="user_weight"></span></p>
+
+        <button class="edit-button" onclick="openEditModal()">
+          Edit Profile
+        </button>
+      </div>
+    </div>
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h2>Edit Profile</h2>
+        <form id="editForm">
+          <label for="edit_fullname">Full Name:</label>
+          <input type="text" id="edit_fullname" required /><br />
+
+          <label for="edit_phone">Phone:</label>
+          <input type="text" id="edit_phone" required /><br />
+
+          <label for="edit_dob">Date of Birth:</label>
+          <input type="date" id="edit_dob" required /><br />
+
+          <label for="edit_medical_condition">Medical Condition:</label>
+          <input type="text" id="edit_medical_condition" required /><br />
+
+          <label for="edit_current_medication">Current Medication:</label>
+          <input type="text" id="edit_current_medication" required /><br />
+
+          <label for="edit_allergies">Allergies:</label>
+          <input type="text" id="edit_allergies" required /><br />
+
+          <label for="edit_gender">Gender:</label>
+          <select id="edit_gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option></select
+          ><br />
+
+          <label for="edit_height">Height (ft):</label>
+          <input type="number" id="edit_height" step="0.01" required /><br />
+
+          <label for="edit_weight">Weight (kg):</label>
+          <input type="number" id="edit_weight" required /><br />
+
+          <button type="submit">Update Profile</button>
+        </form>
+      </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const userFullname = sessionStorage.getItem('userFullname');
-            const userPhone = sessionStorage.getItem('userPhone');
-            const userDOB = sessionStorage.getItem('userDOB');
-            const userMedicalCondition = sessionStorage.getItem('userMedicalCondition');
-            const userCurrentMedication = sessionStorage.getItem('userCurrentMedication');
-            const userAllergies = sessionStorage.getItem('userAllergies');
-            const userGender = sessionStorage.getItem('userGender');
-            const userHeight = sessionStorage.getItem('userHeight');
-            const userWeight = sessionStorage.getItem('userWeight');
-            const userEmail = sessionStorage.getItem('userEmail');
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        updateDoc,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-            if (!userEmail) {
-                window.location.href = "login.html";
-            } else {
-                console.log('what are you looking for is not here the api key are blocked to allow only request from this site')
-            }
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
 
-            document.getElementById('user_name').innerText = userFullname;
-            document.getElementById('user_email').innerText = userEmail;
-            document.getElementById('user_fullname').innerText = userFullname;
-            document.getElementById('user_phone').innerText = userPhone;
-            document.getElementById('user_dob').innerText = userDOB;
-            document.getElementById('user_medical_condition').innerText = userMedicalCondition;
-            document.getElementById('user_current_medication').innerText = userCurrentMedication;
-            document.getElementById('user_allergies').innerText = userAllergies;
-            document.getElementById('user_gender').innerText = userGender;
-            document.getElementById('user_height').innerText = userHeight;
-            document.getElementById('user_weight').innerText = userWeight;
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const userEmail = sessionStorage.getItem("userEmail");
+      const userId = sessionStorage.getItem("userID");
+      loadUserData(userId);
+
+      if (!userEmail) {
+        window.location.href = "login.html";
+      } else {
+        loadUserData(userId);
+      }
+
+      document
+        .getElementById("editForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          updateUserProfile(userId);
         });
-    </script>
-</body>
 
+      async function loadUserData(userId) {
+        try {
+          const docRef = doc(db, "users_data", userId);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            populateUserData(userData);
+          } else {
+            console.log("No such document!");
+          }
+        } catch (error) {
+          console.error("Error loading user data:", error);
+        }
+      }
+
+      function populateUserData(userData) {
+        document.getElementById("user_name").innerText = userData.fullname;
+        document.getElementById("user_email").innerText =
+          sessionStorage.getItem("userEmail");
+        document.getElementById("user_fullname").innerText = userData.fullname;
+        document.getElementById("user_phone").innerText = userData.phone;
+        document.getElementById("user_dob").innerText = userData.dob;
+        document.getElementById("user_medical_condition").innerText =
+          userData.medical_condition;
+        document.getElementById("user_current_medication").innerText =
+          userData.current_medication;
+        document.getElementById("user_allergies").innerText =
+          userData.allergies;
+        document.getElementById("user_gender").innerText = userData.gender;
+        document.getElementById("user_height").innerText = userData.height;
+        document.getElementById("user_weight").innerText = userData.weight;
+
+        // Populate edit form
+        document.getElementById("edit_fullname").value = userData.fullname;
+        document.getElementById("edit_phone").value = userData.phone;
+        document.getElementById("edit_dob").value = userData.dob;
+        document.getElementById("edit_medical_condition").value =
+          userData.medical_condition;
+        document.getElementById("edit_current_medication").value =
+          userData.current_medication;
+        document.getElementById("edit_allergies").value = userData.allergies;
+        document.getElementById("edit_gender").value = userData.gender;
+        document.getElementById("edit_height").value = userData.height;
+        document.getElementById("edit_weight").value = userData.weight;
+      }
+
+      async function updateUserProfile(userId) {
+        try {
+          const docRef = doc(db, "users_data", userId);
+          await updateDoc(docRef, {
+            fullname: document.getElementById("edit_fullname").value,
+            phone: document.getElementById("edit_phone").value,
+            dob: document.getElementById("edit_dob").value,
+            medical_condition: document.getElementById("edit_medical_condition")
+              .value,
+            current_medication: document.getElementById(
+              "edit_current_medication"
+            ).value,
+            allergies: document.getElementById("edit_allergies").value,
+            gender: document.getElementById("edit_gender").value,
+            height: document.getElementById("edit_height").value,
+            weight: document.getElementById("edit_weight").value,
+          });
+
+          showAlert("Profile updated successfully!", "success");
+          closeEditModal();
+          loadUserData(userId);
+        } catch (error) {
+          console.error("Error updating profile:", error);
+          showAlert(
+            "An error occurred while updating your profile. Please try again.",
+            "error"
+          );
+        }
+      }
+
+      function showAlert(message, type) {
+        const alertDiv = document.createElement("div");
+        alertDiv.classList.add("alert");
+        if (type === "success") {
+          alertDiv.classList.add("alert-success");
+        } else if (type === "error") {
+          alertDiv.classList.add("alert-error");
+        }
+        alertDiv.innerHTML = `
+    ${message}
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  `;
+
+        document.body.appendChild(alertDiv);
+
+        // Automatically remove the alert after 5 seconds
+        setTimeout(() => {
+          if (alertDiv) {
+            alertDiv.style.display = "none";
+          }
+        }, 5000);
+      }
+
+      window.openEditModal = function () {
+        document.getElementById("editModal").style.display = "block";
+      };
+
+      window.closeEditModal = function () {
+        document.getElementById("editModal").style.display = "none";
+      };
+
+      // Close modal when clicking outside of it
+      window.onclick = function (event) {
+        if (event.target == document.getElementById("editModal")) {
+          closeEditModal();
+        }
+      };
+    </script>
+  </body>
 </html>

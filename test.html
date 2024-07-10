@@ -1,134 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Medlinkx</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Record</title>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f4f8;
-            margin: 0;
-        }
-
-        header {
-            background-color: #FFFFFF;
-            padding: 10px 20px;
-            text-align: left;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        header .logo img {
-            height: 50px;
-        }
-
-        header .home-icon img {
-            height: 40px;
-            cursor: pointer;
-        }
-
-        .container {
-            text-align: center;
-            padding: 20px;
-            border-radius: 12px;
-            background-color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            margin-top: 80px;
-        }
-
-        h1 {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        .user-info {
-            margin-top: 20px;
-            text-align: left;
-            font-size: 16px;
-        }
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 80%;
+        margin: 0 auto;
+      }
+      .record {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+      }
+      .btn {
+        display: inline-block;
+        margin: 20px 0;
+        padding: 10px 20px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+      }
     </style>
-</head>
-
-<body>
-    <header>
-        <div class="logo">
-            <img src="images/MedLinx.png" alt="MedLinkX logo">
-        </div>
-        <a href="index.html" class="home-icon">
-            <img src="images/home.png" alt="Home">
-        </a>
-    </header>
+  </head>
+  <body>
     <div class="container">
-        <h1 id="welcome_message">Welcome!</h1>
-        <div class="user-info">
-            <p><strong>Full Name:</strong> <span id="user_fullname"></span></p>
-            <p><strong>Phone:</strong> <span id="user_phone"></span></p>
-            <p><strong>Date of Birth:</strong> <span id="user_dob"></span></p>
-            <p><strong>Medical Condition:</strong> <span id="user_medical_condition"></span></p>
-            <p><strong>Current Medication:</strong> <span id="user_current_medication"></span></p>
-            <p><strong>Allergies:</strong> <span id="user_allergies"></span></p>
-            <p><strong>Emergency Contact 1:</strong> <span id="user_emergency_contact1"></span></p>
-            <p><strong>Relationship 1:</strong> <span id="user_relationship1"></span></p>
-            <p><strong>Emergency Contact 2:</strong> <span id="user_emergency_contact2"></span></p>
-            <p><strong>Relationship 2:</strong> <span id="user_relationship2"></span></p>
-            <p><strong>Nationality:</strong> <span id="user_nationality"></span></p>
-            <p><strong>Gender:</strong> <span id="user_gender"></span></p>
-            <p><strong>Height:</strong> <span id="user_height"></span></p>
-            <p><strong>Weight:</strong> <span id="user_weight"></span></p>
-        </div>
+      <h1>User Record</h1>
+      <div class="record" id="userRecord">
+        <h2>John Doe</h2>
+        <p><strong>Age:</strong> 30</p>
+        <p><strong>Gender:</strong> Male</p>
+        <p><strong>Conditions:</strong> Hypertension, Diabetes</p>
+        <p><strong>Medications:</strong> Lisinopril, Metformin</p>
+        <p><strong>Allergies:</strong> Penicillin</p>
+      </div>
+      <button class="btn" id="generatePDF">Download PDF</button>
     </div>
 
+    <!-- jsPDF, DOMPurify, and html2canvas CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.0/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const userFullname = sessionStorage.getItem('userFullname');
-            const userPhone = sessionStorage.getItem('userPhone');
-            const userDOB = sessionStorage.getItem('userDOB');
-            const userMedicalCondition = sessionStorage.getItem('userMedicalCondition');
-            const userCurrentMedication = sessionStorage.getItem('userCurrentMedication');
-            const userAllergies = sessionStorage.getItem('userAllergies');
-            const userEmergencyContact1 = sessionStorage.getItem('userEmergencyContact1');
-            const userRelationship1 = sessionStorage.getItem('userRelationship1');
-            const userEmergencyContact2 = sessionStorage.getItem('userEmergencyContact2');
-            const userRelationship2 = sessionStorage.getItem('userRelationship2');
-            const userNationality = sessionStorage.getItem('userNationality');
-            const userGender = sessionStorage.getItem('userGender');
-            const userHeight = sessionStorage.getItem('userHeight');
-            const userWeight = sessionStorage.getItem('userWeight');
+      document.getElementById("generatePDF").addEventListener("click", () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const userRecord = document.getElementById("userRecord");
 
-            document.getElementById('welcome_message').innerText = `Welcome, ${userFullname}!`;
+        // Use DOMPurify to sanitize the HTML
+        const cleanHtml = DOMPurify.sanitize(userRecord.innerHTML);
 
-            document.getElementById('user_fullname').innerText = userFullname;
-            document.getElementById('user_email').innerText = userEmail;
-            document.getElementById('user_phone').innerText = userPhone;
-            document.getElementById('user_dob').innerText = userDOB;
-            document.getElementById('user_medical_condition').innerText = userMedicalCondition;
-            document.getElementById('user_current_medication').innerText = userCurrentMedication;
-            document.getElementById('user_allergies').innerText = userAllergies;
-            document.getElementById('user_emergency_contact1').innerText = userEmergencyContact1;
-            document.getElementById('user_relationship1').innerText = userRelationship1;
-            document.getElementById('user_emergency_contact2').innerText = userEmergencyContact2;
-            document.getElementById('user_relationship2').innerText = userRelationship2;
-            document.getElementById('user_nationality').innerText = userNationality;
-            document.getElementById('user_gender').innerText = userGender;
-            document.getElementById('user_height').innerText = userHeight;
-            document.getElementById('user_weight').innerText = userWeight;
-        });
+        // Create a temporary container for the sanitized HTML
+        const tempContainer = document.createElement("div");
+        tempContainer.innerHTML = cleanHtml;
+        document.body.appendChild(tempContainer);
+
+        // Use html2canvas to render the HTML to a canvas
+        html2canvas(tempContainer)
+          .then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const imgProps = doc.getImageProperties(imgData);
+            const pdfWidth = doc.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            doc.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            doc.save("user_record.pdf");
+            document.body.removeChild(tempContainer);
+          })
+          .catch((error) => {
+            console.error("Error generating PDF:", error);
+          });
+      });
     </script>
-</body>
-
+  </body>
 </html>

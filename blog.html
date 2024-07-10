@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog - MedLinkX</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f0f4f8;
+        margin: 0;
+        padding-top: 50px;
+      }
+
+      header {
+        background-color: #ffffff;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 70px;
+        padding: 0 20px;
+      }
+
+      header .logo img {
+        height: 50px;
+      }
+
+      .relative {
+        position: relative;
+      }
+
+      .logo img {
+        padding-left: 10px;
+      }
+
+      .settings-icon img {
+        height: 40px;
+        cursor: pointer;
+      }
+
+      .settings-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        padding: 30px;
+        top: 50px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        z-index: 1001;
+      }
+
+      .settings-menu a {
+        display: block;
+        padding: 20px 50px;
+        text-decoration: none;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .settings-menu a:hover {
+        background-color: #f0f4f8;
+      }
+
+      .container {
+        margin-top: 90px;
+        width: 90%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .post-form {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        margin-bottom: 20px;
+        display: none; /* Initially hidden */
+      }
+
+      .post-form h3 {
+        margin-top: 0;
+      }
+
+      .post-form input,
+      .post-form textarea,
+      .post-form button {
+        width: 100%;
+        padding: 2px;
+        resize: vertical;
+        font-family: "Roboto", "Times New Roman", Times, serif;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .post-form img {
+        max-width: 100%;
+        height: auto;
+        margin: 10px 0;
+      }
+
+      .post {
+        width: 100%;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        margin-bottom: 20px;
+        cursor: pointer;
+      }
+
+      .post img {
+        width: 100%;
+        height: auto;
+        margin: 10px 0;
+        border-radius: 8px;
+      }
+
+      .post .post-header {
+        display: flex;
+        align-items: center;
+      }
+
+      .post .post-header img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+      }
+
+      .post .post-user-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .post .post-user-info .user-name {
+        font-weight: bold;
+      }
+
+      .post .post-user-info .post-time {
+        color: gray;
+        font-size: 0.8em;
+      }
+
+      .post .post-content {
+        display: none;
+        padding-top: 10px;
+      }
+
+      .but {
+        background-color: #007bff;
+        color: white;
+        height: 30px;
+        margin: 10px 0;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      .but:hover {
+        opacity: 0.9;
+      }
+
+      .title {
+        height: 25px;
+      }
+
+      .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <h3>Blog</h3>
+      <div class="relative">
+        <button class="settings-icon" onclick="toggleSettingsMenu()">
+          <img src="images/setting.png" alt="Settings" class="h-8" />
+        </button>
+        <div class="settings-menu" id="settingsMenu">
+          <a href="#" onclick="togglePostForm()">Post Blog</a>
+          <a href="index.html" onclick="sessionStorage.clear();">Logout</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="post-form" id="postForm">
+        <h3>Add a New Post</h3>
+        <input type="file" id="postImage" accept="image/*" />
+        <img id="postimg" src="" alt="Post Image Preview" />
+        <input
+          type="text"
+          class="title"
+          id="postTitle"
+          placeholder="Post Title"
+        />
+        <textarea id="postContent" placeholder="Write your post..."></textarea>
+        <button class="but" id="upload">Upload Post</button>
+        <div id="upProgress"></div>
+      </div>
+
+      <div id="posts"></div>
+    </div>
+
+    <div class="spinner" id="spinner"></div>
+    <script>
+      function toggleSettingsMenu() {
+        const settingsMenu = document.getElementById("settingsMenu");
+        settingsMenu.style.display =
+          settingsMenu.style.display === "block" ? "none" : "block";
+      }
+
+      function togglePostForm() {
+        const postForm = document.getElementById("postForm");
+        postForm.style.display =
+          postForm.style.display === "block" ? "none" : "block";
+        toggleSettingsMenu(); // Hide the settings menu after clicking
+      }
+
+      function togglePostContent(postElement) {
+        const content = postElement.querySelector(".post-content");
+        const isVisible = content.style.display === "block";
+        content.style.display = isVisible ? "none" : "block";
+      }
+    </script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import {
+        getStorage,
+        ref,
+        uploadBytesResumable,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+      var files = [];
+      var reader;
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+      const storage = getStorage(app);
+
+      document.getElementById("postImage").onchange = function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          files[0] = file;
+          reader = new FileReader();
+          reader.onload = function () {
+            document.getElementById("postimg").src = reader.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+
+      const writeup = document.getElementById("postContent");
+      const postTitle = document.getElementById("postTitle");
+      const upbtn = document.getElementById("upload");
+      const upProgress = document.getElementById("upProgress");
+      fetchPosts();
+
+      async function uploadPost() {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          const userEmail = sessionStorage.getItem("userEmail");
+          const title = postTitle.value.trim();
+          const content = writeup.value.trim();
+          const file = files[0];
+
+          if (title && content && file) {
+            const storageRef = ref(storage, "Images/" + file.name);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+              "state_changed",
+              (snapshot) => {
+                const progress = Math.round(
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                upProgress.textContent = "Upload is " + progress + "% done";
+              },
+              (error) => {
+                console.error("Upload failed:", error);
+              },
+              async () => {
+                const downloadURL = await getDownloadURL(
+                  uploadTask.snapshot.ref
+                );
+                await addDoc(collection(db, "posts"), {
+                  email: userEmail,
+                  title: title,
+                  content: content,
+                  imageUrl: downloadURL,
+                  timestamp: new Date(),
+                });
+                upProgress.textContent = "Upload successful!";
+                postTitle.value = "";
+                writeup.value = "";
+                document.getElementById("postimg").src = "";
+                fetchPosts();
+              }
+            );
+          } else {
+            alert("Please fill in all fields and select an image.");
+          }
+        } else {
+          alert("You must be logged in to post.");
+        }
+      }
+
+      upbtn.addEventListener("click", uploadPost);
+
+      async function fetchPosts() {
+        const querySnapshot = await getDocs(collection(db, "posts"));
+        const postsContainer = document.getElementById("posts");
+        postsContainer.innerHTML = "";
+        querySnapshot.forEach((doc) => {
+          const post = doc.data();
+          const postElement = document.createElement("div");
+          postElement.classList.add("post");
+          postElement.innerHTML = `
+            <div class="post-header">
+              <div class="post-user-info">
+                <span class="user-name">${post.email}</span>
+                <span class="post-time">${post.timestamp
+                  .toDate()
+                  .toLocaleString()}</span>
+              </div>
+            </div>
+            <h3>${post.title}</h3>
+            <img src="${post.imageUrl}" alt="Post Image" />
+            <div class="post-content">
+              <p>${post.content}</p>
+            </div>
+          `;
+          postElement.addEventListener("click", () =>
+            togglePostContent(postElement)
+          );
+          postsContainer.appendChild(postElement);
+        });
+      }
+    </script>
+  </body>
+</html>

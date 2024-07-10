@@ -1,284 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signup - Medlinkx</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #ccced3;
-            margin: 0;
-            overflow: hidden;
-            padding-top: 20px;
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #ccced3;
+        margin: 0;
+        overflow: hidden;
+        padding-top: 30px;
+      }
+
+      header {
+        background-color: #ffffff;
+        padding: 10px 20px;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header .logo img {
+        height: 50px;
+        padding: 10px;
+      }
+
+      header .home-icon img {
+        height: 40px;
+        padding: 7px;
+        cursor: pointer;
+      }
+
+      .form_container {
+        background: #f0f4f8;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        width: 90%;
+        /* Wider form for laptop view */
+        max-width: 800px;
+        /* Maximum width for larger screens */
+        margin: 0 auto;
+        /* Center form container */
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="date"],
+      input[type="number"],
+      select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-sizing: border-box;
+      }
+
+      button {
+        background-color: #007bff;
+        color: white;
+        padding: 14px 20px;
+        margin: 10px 0;
+        border: none;
+        cursor: pointer;
+        font-size: medium;
+        width: 100%;
+        border-radius: 5px;
+      }
+
+      button:hover {
+        opacity: 0.8;
+      }
+
+      .container {
+        padding: 16px;
+      }
+
+      .switch-form {
+        color: rgb(0, 0, 0);
+        font-size: 12px;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .switch-form a {
+        color: #2779f6;
+        text-decoration: none;
+      }
+
+      .switch-form a:hover {
+        text-decoration: underline;
+      }
+
+      .success-message {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-size: 16px;
+        border-radius: 5px;
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+      }
+
+      .alert {
+        padding: 15px;
+        margin: 15px 0;
+        color: white;
+        background-color: #f44336;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .spinner {
+        position: absolute;
+        top: 50%;
+        left: 42%;
+        transform: translate(-50%, -50%);
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
 
-        header {
-            background-color: #FFFFFF;
-            padding: 10px 20px;
-            text-align: left;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        100% {
+          transform: rotate(360deg);
         }
-
-        header .logo img {
-            height: 50px;
-            padding: 6px;
-        }
-
-        header .home-icon img {
-            height: 40px;
-            padding: 7px;
-            cursor: pointer;
-        }
-
-
-        .form_container {
-            background: #f0f4f8;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            width: 90%;
-            /* Wider form for laptop view */
-            max-width: 800px;
-            /* Maximum width for larger screens */
-            margin: 0 auto;
-            /* Center form container */
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        input[type="date"],
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 14px 20px;
-            margin: 10px 0;
-            border: none;
-            cursor: pointer;
-            font-size: medium;
-            width: 100%;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            opacity: 0.8;
-        }
-
-        .container {
-            padding: 16px;
-        }
-
-        .switch-form {
-            color: rgb(0, 0, 0);
-            font-size: 12px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .switch-form a {
-            color: #2779F6;
-            text-decoration: none;
-        }
-
-        .switch-form a:hover {
-            text-decoration: underline;
-        }
-
-        .success-message {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 16px;
-            border-radius: 5px;
-            position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-        }
-
-        .alert {
-            padding: 15px;
-            margin: 15px 0;
-            color: white;
-            background-color: #f44336;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .spinner {
-            position: absolute;
-            top: 50%;
-            left: 42%;
-            transform: translate(-50%, -50%);
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-top: 4px solid #007bff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="logo">
-            <img src="images/MedLinx.png" alt="MedLinkX logo">
-        </div>
-        <a href="index.html" class="home-icon">
-            <img src="images/home.png" alt="Home">
-        </a>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <a href="index.html" class="home-icon">
+        <img src="images/home.png" alt="Home" />
+      </a>
     </header>
     <div class="form_container" id="form_container">
-        <form id="signup_form">
-            <div id="error_alert" class="alert hidden">Error message here.</div>
-            <div class="container">
-                <label for="signup_fullname"><b>Name</b></label>
-                <input type="text" placeholder="Name" name="fullname" id="signup_fullname" required>
+      <form id="signup_form">
+        <div id="error_alert" class="alert hidden">Error message here.</div>
+        <div class="container">
+          <label for="signup_fullname"><b>Name</b></label>
+          <input
+            type="text"
+            placeholder="Name"
+            name="fullname"
+            id="signup_fullname"
+            required
+          />
 
-                <label for="signup_email"><b>Email</b></label>
-                <input type="email" placeholder="Enter Email" name="email" id="signup_email" required>
+          <label for="signup_email"><b>Email</b></label>
+          <input
+            type="email"
+            placeholder="Enter Email"
+            name="email"
+            id="signup_email"
+            required
+          />
 
-                <label for="signup_password"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" id="signup_password" required>
-                <div>
-                    <input type="checkbox" id="signup_agreement" name="agreement" required>
-                    <label for="signup_agreement">I agree to the <a href="#">User Agreement</a></label>
-                </div>
+          <label for="signup_password"><b>Password</b></label>
+          <input
+            type="password"
+            placeholder="Enter Password"
+            name="password"
+            id="signup_password"
+            required
+          />
+          <div>
+            <input
+              type="checkbox"
+              id="signup_agreement"
+              name="agreement"
+              required
+            />
+            <label for="signup_agreement"
+              >I agree to the
+              <a href="important_note.html">User Agreement</a></label
+            >
+          </div>
 
-                <button type="submit">Next</button>
-                <p class="switch-form">Already registered? <a href="/login.html">Login</a></p>
-            </div>
-        </form>
+          <button type="submit">Next</button>
+          <p class="switch-form">
+            Already registered? <a href="/login.html">Login</a>
+          </p>
+        </div>
+      </form>
     </div>
     <div class="spinner" id="spinner"></div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
-            authDomain: "medlinkx.firebaseapp.com",
-            projectId: "medlinkx",
-            storageBucket: "medlinkx.appspot.com",
-            messagingSenderId: "565852723046",
-            appId: "1:565852723046:web:33d9cacb134d3dc5791aa7"
-        };
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
 
-        let signup_email = document.getElementById('signup_email');
-        let signup_password = document.getElementById('signup_password');
-        let signup_fullname = document.getElementById('signup_fullname');
-        let signup_form = document.getElementById('signup_form');
+      let signup_email = document.getElementById("signup_email");
+      let signup_password = document.getElementById("signup_password");
+      let signup_fullname = document.getElementById("signup_fullname");
+      let signup_form = document.getElementById("signup_form");
 
+      let RegisterUser = (evt) => {
+        evt.preventDefault();
+        spinner.style.display = "block";
 
-        let RegisterUser = evt => {
-            evt.preventDefault();
-            spinner.style.display = 'block';
+        createUserWithEmailAndPassword(
+          auth,
+          signup_email.value,
+          signup_password.value
+        )
+          .then(async (credentials) => {
+            var ref = doc(db, "UserAuthList", credentials.user.uid);
+            await setDoc(ref, {
+              fullname: signup_fullname.value,
+            });
 
-            createUserWithEmailAndPassword(auth, signup_email.value, signup_password.value)
-                .then(async (credentials) => {
-                    var ref = doc(db, "UserAuthList", credentials.user.uid);
-                    await setDoc(ref, {
-                        fullname: signup_fullname.value,
+            sessionStorage.setItem("userID", credentials.user.uid);
+            sessionStorage.setItem("userFullname", signup_fullname.value);
 
-                    });
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "success-message";
+            messageDiv.textContent = "User signed up successfully!";
+            console.log("userID:", sessionStorage.getItem("userID"));
+            console.log(
+              "userFullname:",
+              sessionStorage.getItem("userFullname")
+            );
 
-                    sessionStorage.setItem('userID', credentials.user.uid);
-                    sessionStorage.setItem('userFullname', signup_fullname.value);
-
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = 'success-message';
-                    messageDiv.textContent = 'User signed up successfully!';
-                    console.log('userID:', sessionStorage.getItem('userID'));
-                    console.log('userFullname:', sessionStorage.getItem('userFullname'));
-
-                    document.body.appendChild(messageDiv);
-                    setTimeout(() => document.body.removeChild(messageDiv), 3000);
-                    window.location.href = 'signup1.html';
-                    document.getElementById('signup_fullname').value = '';
-                    document.getElementById('signup_email').value = '';
-                    document.getElementById('signup_password').value = '';
-                    spinner.style.display = 'none';
-
-                })
-                .catch((error) => {
-                    if (error.code === "auth/email-already-in-use" || error.code === "auth/fullname-already-in-use") {
-                        displayAlert("User already exist.");
-                    } else {
-                        displayAlert("Login failed: " + error.message);
-                    }
-                    console.log(error.code, error.message);
-                });
-            function displayAlert(message) {
-                const alertBox = document.getElementById('error_alert');
-                alertBox.textContent = message;
-                alertBox.classList.remove('hidden');
-
-                // Optionally hide the alert after some time
-                setTimeout(() => {
-                    alertBox.classList.add('hidden');
-                }, 5000);
+            document.body.appendChild(messageDiv);
+            setTimeout(() => document.body.removeChild(messageDiv), 3000);
+            window.location.href = "signup1.html";
+            document.getElementById("signup_fullname").value = "";
+            document.getElementById("signup_email").value = "";
+            document.getElementById("signup_password").value = "";
+            spinner.style.display = "none";
+          })
+          .catch((error) => {
+            if (
+              error.code === "auth/email-already-in-use" ||
+              error.code === "auth/fullname-already-in-use"
+            ) {
+              displayAlert("User already exist.");
+              spinner.style.display = "none";
+            } else {
+              displayAlert("Login failed: " + error.message);
+              spinner.style.display = "none";
             }
+            console.log(error.code, error.message);
+          });
+        function displayAlert(message) {
+          const alertBox = document.getElementById("error_alert");
+          alertBox.textContent = message;
+          alertBox.classList.remove("hidden");
+
+          // Optionally hide the alert after some time
+          setTimeout(() => {
+            alertBox.classList.add("hidden");
+          }, 5000);
         }
+      };
 
-        signup_form.addEventListener('submit', RegisterUser);
-
-
-
+      signup_form.addEventListener("submit", RegisterUser);
     </script>
-</body>
-
+  </body>
 </html>

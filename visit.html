@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Hospitals Records</title>
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ccced3;
+        margin: 0;
+        padding-top: 70px; /* Adjust this value to the height of your header */
+      }
+
+      header {
+        background-color: #ffffff;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 70px;
+        padding: 0 20px;
+      }
+
+      header .logo img {
+        height: 50px;
+        padding-left: 10px;
+      }
+
+      header h3 {
+        margin: 0;
+      }
+
+      header .home-icon img {
+        height: 40px;
+        cursor: pointer;
+        padding-right: 10px;
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e6f2f5;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #ffffff;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #007ea6;
+      }
+
+      .container {
+        margin-top: 20px; /* Reduced margin as padding-top is added to body */
+        padding: 20px;
+        width: 90%;
+        max-width: 1000px;
+        background: #f0f4f8;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .record-card {
+        background-color: #ffffff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .record-card h4 {
+        margin: 0;
+        color: #333;
+      }
+
+      .record-card p {
+        margin: 5px 0;
+        color: #666;
+      }
+
+      .record-card p strong {
+        color: #333;
+      }
+
+      .record-card .visit {
+        margin-bottom: 15px;
+      }
+
+      .search-bar {
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      .search-bar input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px 0 0 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+
+      .search-bar button {
+        padding: 10px;
+        border-radius: 0 5px 5px 0;
+        border: 1px solid #ccc;
+        background-color: #007ea6;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .search-bar button img {
+        height: 20px;
+        width: 20px;
+      }
+
+      .update-button {
+        background-color: #007ea6;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+        margin-top: 15px; /* Added margin to separate the button from the visits */
+      }
+
+      .update-button:hover {
+        background-color: #005f7a;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <h3>Hospitals Records</h3>
+      <a href="hospital_dashboard.html" class="home-icon">
+        <img src="images/home.png" alt="Home" />
+      </a>
+    </header>
+    <div class="container">
+      <div class="search-bar">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by Patient name"
+        />
+        <button onclick="searchCentralVisit()">
+          <img src="images/search.svg" alt="Search" />
+        </button>
+      </div>
+      <div id="visitDetails"></div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      let visitRecords = [];
+      searchCentralVisit();
+
+      async function searchCentralVisit() {
+        const searchInput = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const recordsRef = collection(db, "Centralised_Visit");
+        const querySnapshot = await getDocs(recordsRef);
+
+        visitRecords = [];
+        querySnapshot.forEach((doc) => {
+          const visitData = doc.data();
+          visitData.id = doc.id;
+          visitRecords.push(visitData);
+        });
+
+        filterRecords(searchInput);
+      }
+
+      function filterRecords(searchInput) {
+        const filteredRecords = visitRecords.filter((record) =>
+          record.name ? record.name.toLowerCase().includes(searchInput) : false
+        );
+        displayVisitDetails(filteredRecords);
+      }
+
+      function displayVisitDetails(records) {
+        const visitDetailsContainer = document.getElementById("visitDetails");
+        visitDetailsContainer.innerHTML = "";
+
+        records.forEach((record) => {
+          const recordCard = document.createElement("div");
+          recordCard.classList.add("record-card");
+          recordCard.id = `record-${record.id}`;
+
+          recordCard.innerHTML = `
+                  <h4>${record.name}</h4>
+                  <h5>${record.hospitalname}</h5>
+                  <p><strong>Visit Date:</strong> ${record.visitDate}</p>
+                  <p><strong>Attendant:</strong> ${record.visitAttendant}</p>
+                  <p><strong>Visit Details:</strong> ${record.visitDetails}</p>
+                  <p><strong>Relevant Documents:</strong> ${
+                    record.visitDocumentUrl
+                      ? `<a href="${record.visitDocumentUrl}" target="_blank">View Document</a>`
+                      : "No document available"
+                  }</p>
+                `;
+
+          visitDetailsContainer.appendChild(recordCard);
+        });
+      }
+
+      window.searchCentralVisit = searchCentralVisit;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Patient Records - MedLink</title>
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ccced3;
+        margin: 0;
+        padding-top: 70px; /* Adjust this value to the height of your header */
+      }
+
+      header {
+        background-color: #f3f1f1;
+        padding: 10px 20px;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      header .logo img {
+        height: 50px;
+        padding-left: 10px;
+      }
+
+      header .home-icon img {
+        height: 30px;
+        cursor: pointer;
+        padding-right: 10px;
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e6f2f5;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #ffffff;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #007ea6;
+      }
+
+      .container {
+        margin-top: 20px; /* Reduced margin as padding-top is added to body */
+        padding: 20px;
+        width: 90%;
+        max-width: 1000px;
+        background: #f0f4f8;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      h3 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .search-bar {
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      .search-bar input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px 0 0 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+
+      .search-bar button {
+        padding: 10px;
+        border-radius: 0 5px 5px 0;
+        border: 1px solid #ccc;
+        background-color: #007ea6;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .search-bar button img {
+        height: 20px;
+        width: 20px;
+      }
+
+      .record {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .record div {
+        margin-bottom: 10px;
+      }
+
+      .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @media (max-width: 600px) {
+        header {
+          height: 60px;
+        }
+
+        header .logo img {
+          height: 40px;
+        }
+
+        header .home-icon img {
+          height: 30px;
+        }
+
+        .record {
+          padding: 10px;
+        }
+
+        .record div {
+          margin-bottom: 8px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <a href="home.html" class="home-icon">
+        <img src="images/home.png" alt="Home" />
+      </a>
+    </header>
+
+    <div class="container">
+      <h3>Patient Records</h3>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by name..." />
+        <button onclick="filterRecords()">
+          <img src="images/search.svg" alt="Search" />
+        </button>
+      </div>
+      <div id="recordsContainer"></div>
+      <div class="spinner" id="spinner"></div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const recordsContainer = document.getElementById("recordsContainer");
+      const spinner = document.getElementById("spinner");
+      let patientRecords = [];
+
+      const fetchRecords = async () => {
+        spinner.style.display = "block";
+
+        const hospitalUserId = sessionStorage.getItem("userID"); // Retrieve the actual hospitalUserId from your application logic
+
+        if (!hospitalUserId) {
+          recordsContainer.innerHTML =
+            "<div class='alert'>Error: Hospital user ID is missing.</div>";
+          spinner.style.display = "none";
+          return;
+        }
+
+        const patientrecordsCollectionRef = collection(
+          db,
+          "patient_records",
+          hospitalUserId,
+          "records"
+        );
+
+        try {
+          const querySnapshot = await getDocs(patientrecordsCollectionRef);
+          patientRecords = [];
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            patientRecords.push(data);
+          });
+
+          displayRecords(patientRecords);
+        } catch (error) {
+          console.error("Error fetching documents: ", error);
+          recordsContainer.innerHTML =
+            "<div class='alert'>Error: Could not fetch records.</div>";
+        } finally {
+          spinner.style.display = "none";
+        }
+      };
+
+      const displayRecords = (records) => {
+        recordsContainer.innerHTML = "";
+        records.forEach((data) => {
+          const recordElement = document.createElement("div");
+          recordElement.classList.add("record");
+
+          recordElement.innerHTML = `
+            <div><strong>Name:</strong> ${data.name}</div>
+            <div><strong>Date of Birth:</strong> ${data.dob}</div>
+            <div><strong>Gender:</strong> ${data.gender}</div>
+            <div><strong>Patient ID:</strong> ${data.patientId}</div>
+            <div><strong>Address:</strong> ${data.address}</div>
+            <div><strong>Phone:</strong> ${data.phone}</div>
+            <div><strong>Email:</strong> ${data.email}</div>
+            <div><strong>Emergency Contact:</strong> ${
+              data.emergencyContact
+            }</div>
+            <div><strong>Emergency Phone:</strong> ${data.emergencyPhone}</div>
+            <div><strong>Relation:</strong> ${data.relation}</div>
+            <div><strong>Allergies:</strong> ${data.allergies}</div>
+            <div><strong>Current Medications:</strong> ${data.medications}</div>
+            <div><strong>Past Conditions:</strong> ${data.pastConditions}</div>
+            <div><strong>Family History:</strong> ${data.familyHistory}</div>
+            <div><strong>Height:</strong> ${data.height}</div>
+            <div><strong>Weight:</strong> ${data.weight}</div>
+            <div><strong>Blood Pressure:</strong> ${data.bloodPressure}</div>
+             <div><strong>Heart Rate:</strong> ${data.heartRate}</div>
+            <h4>Hospital Visit:</h4>
+            ${
+              data.visits
+                ? data.visits
+                    .map(
+                      (visit) => `
+              <div class="visit">
+                <p><strong>Date:</strong> ${visit.visitDate}</p>
+                <p><strong>Details:</strong> ${visit.visitDetails}</p>
+                <p><strong>Attendant:</strong> ${visit.visitAttendant}</p>
+                <p><strong>Relevant Documents:</strong> ${
+                  visit.visitDocumentUrl
+                    ? `<a href="${visit.visitDocumentUrl}" target="_blank">View Document</a>`
+                    : "No document available"
+                }</p>
+              </div>`
+                    )
+                    .join("")
+                : "<div>No visits recorded</div>"
+            }
+          `;
+          recordsContainer.appendChild(recordElement);
+        });
+      };
+
+      const filterRecords = () => {
+        const query = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const filteredRecords = patientRecords.filter((record) =>
+          record.name.toLowerCase().includes(query)
+        );
+        displayRecords(filteredRecords);
+      };
+
+      fetchRecords();
+    </script>
+  </body>
+</html>

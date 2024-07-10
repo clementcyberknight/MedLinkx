@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Centralized Database - MedLink</title>
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ccced3;
+        margin: 0;
+        padding-top: 70px; /* Adjust this value to the height of your header */
+      }
+
+      header {
+        background-color: #ffffff;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 70px;
+        padding: 0 20px;
+      }
+
+      header .logo img {
+        height: 50px;
+      }
+
+      header h3 {
+        margin: 0;
+      }
+
+      header .home-icon img {
+        height: 40px;
+        cursor: pointer;
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e6f2f5;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #ffffff;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #007ea6;
+      }
+
+      .container {
+        margin-top: 20px; /* Reduced margin as padding-top is added to body */
+        padding: 20px;
+        width: 90%;
+        max-width: 1000px;
+        background: #f0f4f8;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .record-card {
+        background-color: #ffffff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .record-card h4 {
+        margin: 0;
+        color: #333;
+      }
+
+      .record-card p {
+        margin: 5px 0;
+        color: #666;
+      }
+
+      .record-card p strong {
+        color: #333;
+      }
+
+      .search-bar {
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      .search-bar input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px 0 0 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+
+      .search-bar button {
+        padding: 10px;
+        border-radius: 0 5px 5px 0;
+        border: 1px solid #ccc;
+        background-color: #007ea6;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .search-bar button img {
+        height: 20px;
+        width: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <h3>Patient Database</h3>
+      <a href="hospital_dashboard.html" class="home-icon">
+        <img src="images/home.png" alt="Home" />
+      </a>
+    </header>
+    <div class="container">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by name..." />
+        <button onclick="filterRecords()">
+          <img src="images/search.svg" alt="Search" />
+        </button>
+      </div>
+      <div id="recordHistory">
+        <!-- Patient records will be injected here -->
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      let records = [];
+      loadPatientRecords();
+
+      async function loadPatientRecords() {
+        const recordsRef = collection(db, "Centralized_Storage");
+        const querySnapshot = await getDocs(recordsRef);
+
+        records = [];
+        querySnapshot.forEach((doc) => {
+          const recordData = doc.data();
+          records.push(recordData);
+        });
+      }
+
+      function displayRecords(records) {
+        const recordHistoryContainer = document.getElementById("recordHistory");
+        recordHistoryContainer.innerHTML = "";
+
+        records.forEach((recordData) => {
+          const recordCard = document.createElement("div");
+          recordCard.classList.add("record-card");
+
+          recordCard.innerHTML = `
+          <h4>${recordData.name}</h4>
+          <p><strong>Date of Birth:</strong> ${recordData.dob}</p>
+          <p><strong>Gender:</strong> ${recordData.gender}</p>
+          <p><strong>Patient ID:</strong> ${recordData.patientId}</p>
+          <p><strong>Address:</strong> ${recordData.address}</p>
+          <p><strong>Phone:</strong> ${recordData.phone}</p>
+          <p><strong>Email:</strong> ${recordData.email || "N/A"}</p>
+          <p><strong>Emergency Contact 1:</strong> ${
+            recordData.emergencyContact || "N/A"
+          }</p>
+          <p><strong>Emergency Contact 2:</strong> ${
+            recordData.emergencyPhone || "N/A"
+          }</p>
+          <p><strong>Relation:</strong> ${recordData.relation || "N/A"}</p>
+          <p><strong>Allergies:</strong> ${recordData.allergies || "N/A"}</p>
+          <p><strong>Current Medications:</strong> ${
+            recordData.medications || "N/A"
+          }</p>
+          <p><strong>Past Conditions:</strong> ${
+            recordData.pastConditions || "N/A"
+          }</p>
+          <p><strong>Family History:</strong> ${
+            recordData.familyHistory || "N/A"
+          }</p>
+          <p><strong>Height:</strong> ${recordData.height}</p>
+          <p><strong>Weight:</strong> ${recordData.weight}</p>
+          <p><strong>Blood Pressure:</strong> ${
+            recordData.bloodPressure || "N/A"
+          }</p>
+          <p><strong>Heart Rate:</strong> ${recordData.heartRate || "N/A"}</p>
+        `;
+
+          recordHistoryContainer.appendChild(recordCard);
+        });
+      }
+
+      window.filterRecords = function () {
+        const searchInput = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const filteredRecords = records.filter((record) =>
+          record.name.toLowerCase().includes(searchInput)
+        );
+        displayRecords(filteredRecords);
+      };
+
+      document.addEventListener("DOMContentLoaded", loadPatientRecords);
+    </script>
+  </body>
+</html>

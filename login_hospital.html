@@ -1,224 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - MedLink</title>
-    <link rel="icon" sizes="16x16" href="images/MedLinx.png" type="image/x-png">
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #ccced3;
-            margin: 0;
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #ccced3;
+        margin: 0;
+      }
+
+      header {
+        background-color: #ffffff;
+        padding: 10px 20px;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      header .logo img {
+        height: 50px;
+        padding: 13px;
+      }
+
+      header .home-icon img {
+        height: 40px;
+        cursor: pointer;
+      }
+
+      .form_container {
+        background: #f0f4f8;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        width: 300px;
+        margin-top: 70px;
+        /* To avoid header overlap */
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+      }
+
+      button {
+        background-color: #007bff;
+        color: white;
+        padding: 14px 20px;
+        margin: 10px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      .alert {
+        padding: 15px;
+        margin: 15px 0;
+        color: white;
+        background-color: #f44336;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
 
-        header {
-            background-color: #FFFFFF;
-            padding: 10px 20px;
-            text-align: left;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        100% {
+          transform: rotate(360deg);
         }
-
-        header .logo img {
-            height: 50px;
-            padding: 10px;
-        }
-
-        header .home-icon img {
-            height: 40px;
-            cursor: pointer;
-        }
-
-        .form_container {
-            background: #f0f4f8;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            width: 300px;
-            margin-top: 70px;
-            /* To avoid header overlap */
-        }
-
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 14px 20px;
-            margin: 10px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 16px;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        .alert {
-            padding: 15px;
-            margin: 15px 0;
-            color: white;
-            background-color: #f44336;
-            border-radius: 5px;
-            text-align: center;
-            display: none;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-top: 4px solid #007bff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+      }
     </style>
+  </head>
 
-
-<body>
+  <body>
     <header>
-        <div class="logo">
-            <img src="images/MedLinx.png" alt="MedLinkX logo">
-        </div>
-        <a href="index.html" class="home-icon">
-            <img src="images/home.png" alt="Home">
-        </a>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <a href="index.html" class="home-icon">
+        <img src="images/home.png" alt="Home" />
+      </a>
     </header>
     <div class="form_container" id="form_container">
-        <form id="login_form">
-            <div id="error_alert" class="alert hidden">Error message here.</div>
-            <div class="container">
-                <label for="login_email"><b>Email</b></label>
-                <input type="email" placeholder="Enter Email" name="email" id="login_email" required>
+      <form id="login_form">
+        <div id="error_alert" class="alert hidden">Error message here.</div>
+        <div class="container">
+          <label for="login_email"><b>Email</b></label>
+          <input
+            type="email"
+            placeholder="Enter Email"
+            name="email"
+            id="login_email"
+            required
+          />
 
-                <label for="login_password"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" id="login_password" required>
+          <label for="login_password"><b>Password</b></label>
+          <input
+            type="password"
+            placeholder="Enter Password"
+            name="password"
+            id="login_password"
+            required
+          />
 
-                <button type="submit">Login</button>
-                <p class="switch-form">Not registered? <a href="/signup.html">Signup</a></p>
-            </div>
-        </form>
+          <button type="submit">Login</button>
+          <p class="switch-form">
+            Not registered? <a href="/signup.html">Signup</a>
+          </p>
+        </div>
+      </form>
     </div>
 
     <div class="spinner" id="spinner"></div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
-            authDomain: "medlinkx.firebaseapp.com",
-            projectId: "medlinkx",
-            storageBucket: "medlinkx.appspot.com",
-            messagingSenderId: "565852723046",
-            appId: "1:565852723046:web:33d9cacb134d3dc5791aa7"
-        };
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
 
-        let login_email = document.getElementById('login_email');
-        let login_password = document.getElementById('login_password');
-        let login_form = document.getElementById('login_form');
+      let login_email = document.getElementById("login_email");
+      let login_password = document.getElementById("login_password");
+      let login_form = document.getElementById("login_form");
 
-        login_form.addEventListener('submit', async (evt) => {
-            evt.preventDefault();
-            spinner.style.display = 'block';
-            sessionStorage.setItem('userEmail', login_email.value);
+      login_form.addEventListener("submit", async (evt) => {
+        evt.preventDefault();
+        spinner.style.display = "block";
 
-            try {
-                const credentials = await signInWithEmailAndPassword(auth, login_email.value, login_password.value);
-                const user = credentials.user;
-                const docRef = doc(db, "hospital_data", user.uid);
-                const docSnap = await getDoc(docRef);
-                sessionStorage.setItem('userEmail', login_email.value);
+        try {
+          const credentials = await signInWithEmailAndPassword(
+            auth,
+            login_email.value,
+            login_password.value
+          );
+          const user = credentials.user;
+          console.log("User ID:", user.uid);
+          const docRef = doc(db, "hospital_data", user.uid);
+          const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists()) {
-                    const userData = docSnap.data();
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
 
-                    sessionStorage.setItem('hospitalName', userData.hospitalName);
-                    sessionStorage.setItem('establishmentDate', userData.establishmentDate);
-                    sessionStorage.setItem('address', userData.address);
-                    sessionStorage.setItem('city', userData.city);
-                    sessionStorage.setItem('state', userData.state);
-                    sessionStorage.setItem('country', userData.country);
-                    sessionStorage.setItem('phoneNumber', userData.phoneNumber);
-                    sessionStorage.setItem('email', userData.email);
-                    sessionStorage.setItem('website', userData.website);
-                    sessionStorage.setItem('hospitalType', userData.hospitalType);
-                    sessionStorage.setItem('emergencyContact', userData.emergencyContact);
-                    window.location.href = 'hospital_dashboard.html';
-                } else {
-                    displayAlert("No user data found");
-                }
-            } catch (error) {
-                displayAlert(error.message);
-                spinner.style.display = 'none';
-                console.error(error.code, error.message);
-            } finally {
-                console.log("hehehe");
-                spinner.style.display = 'none';
-            }
-        });
-
-        function displayAlert(message) {
-            const alertBox = document.getElementById('error_alert');
-            alertBox.textContent = message;
-            alertBox.classList.remove('hidden');
-
-            setTimeout(() => {
-                alertBox.classList.add('hidden');
-            }, 5000);
+            sessionStorage.setItem("userEmail", login_email.value);
+            sessionStorage.setItem("hospitalName", userData.hospitalName);
+            sessionStorage.setItem("userID", user.uid);
+            sessionStorage.setItem(
+              "establishmentDate",
+              userData.establishmentDate
+            );
+            sessionStorage.setItem("address", userData.address);
+            sessionStorage.setItem("city", userData.city);
+            sessionStorage.setItem("state", userData.state);
+            sessionStorage.setItem("country", userData.country);
+            sessionStorage.setItem("phoneNumber", userData.phoneNumber);
+            sessionStorage.setItem("email", userData.email);
+            sessionStorage.setItem("website", userData.website);
+            sessionStorage.setItem("hospitalType", userData.hospitalType);
+            sessionStorage.setItem(
+              "emergencyContact",
+              userData.emergencyContact
+            );
+            window.location.href = "hospital_dashboard.html";
+          } else {
+            displayAlert("No user data found");
+          }
+        } catch (error) {
+          if (
+            error.code === "auth/wrong-password" ||
+            error.code === "auth/invalid-credential"
+          ) {
+            displayAlert("Incorrect password or user does not exist.");
+          } else {
+            displayAlert("Login check network status");
+          }
+          spinner.style.display = "none";
+          console.error(error.code, error.message);
+        } finally {
+          console.log("hehehe");
+          spinner.style.display = "none";
         }
-    </script>
-</body>
+      });
 
+      function displayAlert(message) {
+        const alertBox = document.getElementById("error_alert");
+        alertBox.textContent = message;
+        alertBox.classList.remove("hidden");
+
+        setTimeout(() => {
+          alertBox.classList.add("hidden");
+        }, 5000);
+      }
+    </script>
+  </body>
 </html>

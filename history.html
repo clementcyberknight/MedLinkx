@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical History</title>
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="images/MedLinx.png"
+      type="image/x-png"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ccced3;
+        margin: 0;
+        padding-top: 70px; /* Adjust this value to the height of your header */
+      }
+
+      header {
+        background-color: #ffffff;
+        text-align: left;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 70px;
+        padding: 0 20px;
+      }
+
+      header .logo img {
+        height: 50px;
+        padding: 10px;
+      }
+
+      header h3 {
+        margin: 0;
+      }
+
+      header .home-icon img {
+        height: 40px;
+        cursor: pointer;
+        padding: 10px;
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e6f2f5;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #ffffff;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #007ea6;
+      }
+
+      .container {
+        margin-top: 20px; /* Reduced margin as padding-top is added to body */
+        padding: 20px;
+        width: 90%;
+        max-width: 1000px;
+        background: #f0f4f8;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .appointment-card {
+        background-color: #e0e0e0;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+      }
+
+      .appointment-card h4 {
+        margin: 0;
+      }
+
+      .appointment-card p {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="images/MedLinx.png" alt="MedLinkX logo" />
+      </div>
+      <h3>Medical History</h3>
+      <a href="home.html" class="home-icon">
+        <img src="images/home.png" alt="Home" />
+      </a>
+    </header>
+    <div class="container" id="appointmentHistory">
+      <!-- Appointment history will be injected here -->
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAc0gSgpkOe8UWVomuw6CWWTEpcgCOHJ7Q",
+        authDomain: "medlinkx.firebaseapp.com",
+        projectId: "medlinkx",
+        storageBucket: "medlinkx.appspot.com",
+        messagingSenderId: "565852723046",
+        appId: "1:565852723046:web:33d9cacb134d3dc5791aa7",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      loadAppointmentHistory();
+
+      async function loadAppointmentHistory() {
+        const userID = sessionStorage.getItem("userID");
+        const userHistoryRef = collection(
+          db,
+          "user_history",
+          userID,
+          "appointments"
+        );
+        const querySnapshot = await getDocs(userHistoryRef);
+        const appointmentHistoryContainer =
+          document.getElementById("appointmentHistory");
+
+        querySnapshot.forEach((doc) => {
+          const appointmentData = doc.data();
+          const appointmentCard = document.createElement("div");
+          appointmentCard.classList.add("appointment-card");
+
+          appointmentCard.innerHTML = `
+                    <h4>${appointmentData.fullName}</h4>
+                    <p><strong>Date:</strong> ${appointmentData.appointmentDate}</p>
+                    <p><strong>Time:</strong> ${appointmentData.appointmentTime}</p>
+                    <p><strong>Hospital:</strong> ${appointmentData.hospitalType}</p>
+                    <p><strong>Reason:</strong> ${appointmentData.reason}</p>
+                `;
+
+          appointmentHistoryContainer.appendChild(appointmentCard);
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", loadAppointmentHistory);
+    </script>
+  </body>
+</html>
