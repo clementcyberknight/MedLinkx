@@ -33,18 +33,12 @@
 <body>
     <div class="container">
         <h1>Weather for Farming</h1>
-        <div>
-            <label for="location">Enter Location:</label>
-            <input type="text" id="location" placeholder="City, State or Zip Code">
-            <button onclick="getWeather()">Get Weather</button>
-        </div>
         <div class="weather-info" id="weather-info"></div>
     </div>
     <script>
-        async function getWeather() {
-            const location = document.getElementById('location').value;
+        async function getWeather(lat, lon) {
             const apiKey = '6643a51c878047b6aed175732241007'; // Replace with your WeatherAPI.com API key
-            const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}`;
+            const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}`;
 
             try {
                 const response = await fetch(url);
@@ -57,13 +51,13 @@
 
                 const weatherInfo = document.getElementById('weather-info');
                 weatherInfo.innerHTML = `
-            <h2>Weather Details for ${data.location.name}, ${data.location.region}, ${data.location.country}</h2>
-            <p><strong>Temperature:</strong> ${data.current.temp_c}°C</p>
-            <p><strong>Condition:</strong> ${data.current.condition.text}</p>
-            <p><strong>Humidity:</strong> ${data.current.humidity}%</p>
-            <p><strong>Wind Speed:</strong> ${data.current.wind_kph} kph</p>
-            <p><strong>Precipitation:</strong> ${data.current.precip_mm} mm</p>
-        `;
+                    <h2>Weather Details for ${data.location.name}, ${data.location.region}, ${data.location.country}</h2>
+                    <p><strong>Temperature:</strong> ${data.current.temp_c}°C</p>
+                    <p><strong>Condition:</strong> ${data.current.condition.text}</p>
+                    <p><strong>Humidity:</strong> ${data.current.humidity}%</p>
+                    <p><strong>Wind Speed:</strong> ${data.current.wind_kph} kph</p>
+                    <p><strong>Precipitation:</strong> ${data.current.precip_mm} mm</p>
+                `;
 
                 // Store weather details in a variable
                 const weatherDetails = {
@@ -97,6 +91,29 @@
             document.getElementById('weather-info').innerHTML += `<p><strong>Farming Advice:</strong> ${message}</p>`;
         }
 
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    console.log('Location:', { latitude, longitude });
+
+                    // Store location in a variable
+                    const userLocation = { latitude, longitude };
+
+                    // Fetch weather data for the current location
+                    getWeather(latitude, longitude);
+                }, (error) => {
+                    alert('Unable to retrieve your location. Please enter it manually.');
+                    console.error(error);
+                });
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        }
+
+        // Get the user's location on page load
+        window.onload = getLocation;
     </script>
 </body>
 

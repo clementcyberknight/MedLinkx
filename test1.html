@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cozy Weather App</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #weather-data {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        .breathing {
+            animation: breathe 2s infinite;
+        }
+
+        @keyframes breathe {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cozy Weather</h1>
+        <div class="weather-info" id="weather-data">
+            <!-- Weather details will be displayed here -->
+        </div>
+    </div>
+    <script>
+        const apiKey = '6643a51c878047b6aed175732241007'; // Replace with your WeatherAPI.com API key
+        const weatherData = document.getElementById('weather-data');
+
+        let currentIndex = 0;
+        let weatherDetails = [];
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        fetchWeatherData(latitude, longitude);
+                    },
+                    (error) => {
+                        displayError('Unable to retrieve your location. Please enable location services and refresh the page.');
+                        console.error(error);
+                    }
+                );
+            } else {
+                displayError('Geolocation is not supported by your browser.');
+            }
+        }
+
+        function fetchWeatherData(lat, lon) {
+            fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}`)
+                .then(response => response.json())
+                .then(data => {
+                    weatherDetails = [
+                        `Temperature: ${data.current.temp_c}°C`,
+                        `Location: ${data.location.name}, ${data.location.region}`,
+                        `Condition: ${data.current.condition.text}`
+                    ];
+                    currentIndex = 0;
+                    updateWeatherDisplay();
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                });
+        }
+
+        function updateWeatherDisplay() {
+            weatherData.textContent = weatherDetails[currentIndex];
+            weatherData.classList.remove('breathing');
+            void weatherData.offsetWidth; // trigger reflow
+            weatherData.classList.add('breathing');
+
+            currentIndex = (currentIndex + 1) % weatherDetails.length;
+            setTimeout(updateWeatherDisplay, 2000); // Change every 2 seconds
+        }
+
+        function displayError(message) {
+            weatherData.innerHTML = `<p class="error">${message}</p>`;
+        }
+
+        // Get the user's location on page load
+        window.onload = getLocation;
+    </script>
+</body>
+
+</html>
